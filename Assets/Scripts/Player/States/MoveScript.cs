@@ -12,7 +12,7 @@ public class MoveScript : BaseState
 
     private bool onGround = true;
 
-    private Vector3 toMove = Vector3.zero;
+    public Vector3 toMove = Vector3.zero;
     public Vector3 lastDirection = Vector3.up;
 
 
@@ -28,14 +28,21 @@ public class MoveScript : BaseState
         characterController = GetComponent<CharacterController>();
         myCamera = Camera.main.gameObject;
         distanceWithCamera = myCamera.transform.position.y - player.gameObject.transform.position.y;
+        gravity = player.gravity;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(player.currentState != PlayerScript.State.INSIDEPLANT && player.currentState != PlayerScript.State.FLYINGKICK 
-            && player.currentState != PlayerScript.State.JUMPING && player.currentState != PlayerScript.State.PLANNING)
+            && player.currentState != PlayerScript.State.JUMPING && player.currentState != PlayerScript.State.PLANNING &&
+            player.currentState != PlayerScript.State.AEREOPUNCH)
             CheckGravity();
+        else
+        {
+            verticalSpeed = 0;
+            onGround = false;
+        }
     }
 
     public void MoveCameraUpLayer()
@@ -50,10 +57,10 @@ public class MoveScript : BaseState
         CollisionFlags collisionFlags = characterController.Move(new Vector3(0, verticalSpeed, 0) * Time.deltaTime);
         if ((collisionFlags & CollisionFlags.Below) != 0)
         {
-            onGround = false;
+            onGround = true;
         }
         else
-            onGround = true;
+            onGround = false;
         if (onGround)
             verticalSpeed = 0;
     }

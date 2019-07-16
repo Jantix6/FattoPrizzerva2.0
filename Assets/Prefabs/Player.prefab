@@ -167,6 +167,8 @@ GameObject:
   - component: {fileID: 8003491913502437916}
   - component: {fileID: 1884834215058353478}
   - component: {fileID: 7842384416627766031}
+  - component: {fileID: 660253347802251056}
+  - component: {fileID: 2895637405274633820}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -218,13 +220,16 @@ MonoBehaviour:
   punchFly: {fileID: 604154518}
   knockBack: {fileID: 1884834215058353478}
   jumping: {fileID: 7842384416627766031}
-  planning: {fileID: 0}
+  planning: {fileID: 660253347802251056}
+  aereoPunch: {fileID: 2895637405274633820}
   normalSpeed: 7
   speed: 21
   recoverStamina: 0
   damageBase: 2
   currentTimePunch: 0
   currentTimeState: 0
+  toMove: {x: 0, y: 0, z: 0}
+  gravity: 60
   spriteRenderer: {fileID: 7471284608171117888}
   anim: {fileID: 201859387920961851}
   children: {fileID: 7471284608171117916}
@@ -290,6 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 7471284608528957259}
   gravity: 20
+  toMove: {x: 0, y: 0, z: 0}
   lastDirection: {x: 0, y: 1, z: 0}
 --- !u!114 &5426443396405995202
 MonoBehaviour:
@@ -354,3 +360,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7471284608528957259}
+--- !u!114 &660253347802251056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471284608528957254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8499ecdb369fc9542976e92280678a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7471284608528957259}
+  dividendoGravity: 60
+  dividendoSpeed: 2
+--- !u!114 &2895637405274633820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471284608528957254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77cbad2fea55d74eb4f8b487e04de02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7471284608528957259}
+  speedPunch: 35

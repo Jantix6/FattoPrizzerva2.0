@@ -9,14 +9,12 @@ public class JumpScript : BaseState
     private CharacterController characterController;
     private Vector3 direction;
 
-    private GameObject myCamera;
     private bool planning = false;
 
 
     private void Start()
     {
         characterController = player.GetComponent<CharacterController>();
-        myCamera = Camera.main.gameObject;
     }
 
     public override void Enter()

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    public enum State { MOVING, PUNCHING, RUNING, PUNCHRUNNING, KNOCKBACK, FLYINGKICK, HABILITY, INSIDEPLANT,
-        JUMPING, PLANNING };
+    public enum State
+    {
+        MOVING, PUNCHING, RUNING, PUNCHRUNNING, KNOCKBACK, FLYINGKICK, HABILITY, INSIDEPLANT,
+        JUMPING, PLANNING, AEREOPUNCH
+    };
     public State currentState = State.MOVING;
     public KeyCode upKey = KeyCode.W;
     public KeyCode downKey = KeyCode.S;
@@ -27,6 +30,7 @@ public class PlayerScript : MonoBehaviour
     public BaseState knockBack;
     public BaseState jumping;
     public BaseState planning;
+    public BaseState aereoPunch;
 
     private PunchScript punchScript;
     private MoveScript moveScript;
@@ -45,10 +49,12 @@ public class PlayerScript : MonoBehaviour
     private Vector3 lastDirection = Vector3.up;
     private bool running = false;
     private bool onGround = false;
-    private float gravity = 30;
-    private float verticalSpeed = 0;
+    public float gravity = 60;
     private float distanceWithCamera;
     private int layer = 0;
+
+    public float staminaPerColetazo = 3;
+    private float currentTimeColetazo = 0;
 
     private float speedKnockBack = 0;
     private float timeKnockBack = 0;
@@ -77,7 +83,7 @@ public class PlayerScript : MonoBehaviour
 
         punch = children.GetComponent<PunchScript>();
         punchFly = children.GetComponent<PunchFly>();
-       
+
         punchScript = punch.GetComponent<PunchScript>();
         moveScript = moving.GetComponent<MoveScript>();
         runScript = run.GetComponent<RunScript>();
@@ -146,6 +152,11 @@ public class PlayerScript : MonoBehaviour
                 break;
 
             case State.PLANNING:
+                stateMachine.ChangeState(planning);
+                break;
+
+            case State.AEREOPUNCH:
+                stateMachine.ChangeState(aereoPunch);
                 break;
         }
 
@@ -165,17 +176,33 @@ public class PlayerScript : MonoBehaviour
             ChangeState(State.RUNING);
             return;
         }
-        else if (Input.GetKeyUp(runKey) && running)
+        else if (Input.GetKeyUp(runKey) && currentState == State.RUNING)
+        {
+            running = false;
             ChangeState(State.MOVING);
+        }
 
-        if (Input.GetKeyDown(jumpKey) && currentState == State.MOVING)
+        if (Input.GetKeyDown(jumpKey) && (currentState == State.MOVING || currentState == State.RUNING) && currentTimeColetazo == 0)
+        {
+            currentTimeColetazo = 0.3f;
+            running = false;
             StartJump();
+        }
 
         if (Input.GetKey(runKey) && running && CanPunchRunning() && speed > normalSpeed + 1 && Input.GetMouseButton(0))
             ChangeState(State.PUNCHRUNNING);
 
         if (Input.GetMouseButton(1) && currentState.Equals(State.MOVING))
             OnActionButton();
+
+        if (currentTimeColetazo > 0)
+        {
+            currentTimeColetazo -= Time.deltaTime;
+            if (currentTimeColetazo < 0)
+            {
+                currentTimeColetazo = 0;
+            }
+        }
 
     }
 
@@ -186,13 +213,13 @@ public class PlayerScript : MonoBehaviour
 
     private bool CanPunchRunning()
     {
-        return currentTimePunch == 0 && stamina.Stamina >= punchRunningScript.costStaminaPerPunch * (speed - normalSpeed) 
+        return currentTimePunch == 0 && stamina.Stamina >= punchRunningScript.costStaminaPerPunch * (speed - normalSpeed)
             && currentState == State.RUNING;
     }
 
     private void CheckStats()
     {
-        if (currentTimePunch > 0 && currentState != State.PUNCHING && currentState != State.PUNCHRUNNING && 
+        if (currentTimePunch > 0 && currentState != State.PUNCHING && currentState != State.PUNCHRUNNING &&
             currentState != State.FLYINGKICK)
         {
             currentTimePunch += Time.deltaTime;
@@ -202,11 +229,6 @@ public class PlayerScript : MonoBehaviour
 
         if (!running)
         {
-            if (stamina.CurrentRegenStamina > 0)
-            {
-                stamina.RegenStamina();
-            }
-
             if (speed > normalSpeed)
             {
                 speed -= Time.deltaTime * runScript.decreseSpeedSecond;
@@ -276,7 +298,7 @@ public class PlayerScript : MonoBehaviour
         ChangeState(State.KNOCKBACK);
     }
 
-    public void GetStatsKnockBack( out float _speed, out float _time, out Vector3 _direction)
+    public void GetStatsKnockBack(out float _speed, out float _time, out Vector3 _direction)
     {
         _speed = speedKnockBack;
         _time = timeKnockBack;
@@ -303,14 +325,25 @@ public class PlayerScript : MonoBehaviour
         return layer;
     }
 
+    #region PlantaFunctions
+
     public void StartJump()
     {
-        if(plantaTierra != null)
+        stamina.ModifiyStamina(-staminaPerColetazo);
+        if (plantaTierra != null)
         {
             planningPlant = plantaTierra.planningPlant;
-            if(planningPlant)
+            if (planningPlant)
             {
-                toMove = toMove * speed / normalSpeed;
+                if (currentState == State.MOVING)
+                {
+                    toMove = moveScript.toMove;
+                    if (toMove.magnitude == 0)
+                        toMove = moveScript.lastDirection;
+                }
+                else if (currentState == State.RUNING)
+                    toMove = runScript.toMove;
+                toMove = toMove * speed / 2;
             }
             else
             {
@@ -345,4 +378,5 @@ public class PlayerScript : MonoBehaviour
         else
             forceJump = 0;
     }
+    #endregion
 }

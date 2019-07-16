@@ -62,16 +62,19 @@ public class StaminaScript : MonoBehaviour, IEstaminable
 
     private void ModifyRecoverStamina(float _value)
     {
-        recoverStamina += _value;
-        if (recoverStamina < 0)
+        if (recoverStamina > 0)
         {
-            currentStamina += recoverStamina;
-            recoverStamina = 0;
-        }
-        if (recoverStamina > maxStamina)
-            recoverStamina = maxStamina;
+            recoverStamina += _value;
+            if (recoverStamina < 0)
+            {
+                currentStamina += recoverStamina;
+                recoverStamina = 0;
+            }
+            if (recoverStamina > maxStamina)
+                recoverStamina = maxStamina;
 
-        canvasPlayer.ChangeStamina();
+            canvasPlayer.ChangeStamina();
+        }
 
     }
 
