@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Daniel
   sprite: {fileID: 21300000, guid: 5be373b13a7b61d458b3feb08b1970d6, type: 3}
+  characterDescription: 
   bibliography: Just a programer doing not a very fine job.

@@ -19,13 +19,6 @@ namespace Dialogues
         [SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
         [SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
 
-        private void Awake()
-        {
-            if (qAStructures is null || qAStructures.Count == 0)
-                Debug.LogError("QAStructures ERROR");
-            currentStructureIndex = 0;
-        }
-
 
 
         #region (Internal)
@@ -63,7 +56,7 @@ namespace Dialogues
                 ShowDialogueStructure(_objectIndex);
             } else
             {
-                Debug.LogError("The target Structure is not set on the managers list");
+                Debug.Log("The target Structure is not set on the managers list");
             }
 
 
@@ -97,11 +90,21 @@ namespace Dialogues
 
         #endregion
 
+
+        #region (Engine)
+
+
+        private void Awake()
+        {
+            if (qAStructures is null || qAStructures.Count == 0)
+                Debug.LogError("QAStructures ERROR");
+            currentStructureIndex = 0;
+        }
+
         private void Start()
         {
             StartDialogue(0);
         }
-
         private void Update()
         {
             if (Input.GetKeyDown(nextStrcutre_Key))
@@ -113,7 +116,7 @@ namespace Dialogues
                 PreviousStructure();
             }
         }
-
+#endregion;
     }
 }
 

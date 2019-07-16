@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 namespace Dialogues
 {
@@ -12,6 +13,7 @@ namespace Dialogues
         [SerializeField] private TMP_Text answerText;
         [SerializeField] private QuestionAnswerStructure targetQuestionAnswerStructure;
         [SerializeField] private Button answerButton;
+
 
         public void Initialize(Answer _answer, DialogueManager _dialogueManager)
         {
@@ -24,7 +26,10 @@ namespace Dialogues
 
         private void OpenTargetQAStructure()
         {
-            dialogueManager.ShowDialogueStructure(targetQuestionAnswerStructure);
+            if (targetQuestionAnswerStructure)
+                dialogueManager.ShowDialogueStructure(targetQuestionAnswerStructure);
+            else 
+                Debug.LogWarning("The target Structure is not set ");
         }
     }
 }

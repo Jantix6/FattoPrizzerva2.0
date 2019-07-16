@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Dialogues
 {
@@ -9,7 +11,7 @@ namespace Dialogues
     {
         [SerializeField] [TextArea] private string answerBody;
         [SerializeField] private QuestionAnswerStructure targetStructure;
-
+        
         public string GetAnswerBody()
         {
             return answerBody;
@@ -18,6 +20,8 @@ namespace Dialogues
         {
             return targetStructure;
         }
+
+
     }
 
 }

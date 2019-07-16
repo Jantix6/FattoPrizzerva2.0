@@ -7,13 +7,14 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "CharacterData", menuName = "Characters/New Character Profile")]
     public class CharacterData : ScriptableObject
     {
-        [SerializeField] private string name;
+        [SerializeField] private string characterName;
         [SerializeField] private Sprite sprite;
+        [SerializeField] [TextArea] private string characterDescription;
         [SerializeField] [TextArea] private string bibliography;
 
         public string GetName()
         {
-            return name;
+            return characterName;
         }
         public Sprite GetSprite()
         {
@@ -22,6 +23,10 @@ namespace Dialogues
         public string GetBibliography()
         {
             return bibliography;
+        }
+        public string GetCharacterDescription() 
+        {
+            return characterDescription;
         }
 
     }
