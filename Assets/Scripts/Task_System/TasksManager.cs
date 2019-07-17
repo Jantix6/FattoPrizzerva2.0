@@ -5,21 +5,25 @@ using UnityEngine;
 
 namespace Tasks
 {
-    [RequireComponent(typeof(TasksBlacboard))]
     public class TasksManager : MonoBehaviour
     {
         // singleton
         private static TasksManager _instance;
         public static TasksManager Instance { get { return _instance; } }
+        public PseudoGM gameController;
 
+        [SerializeField] private TasksBlackboard blackboard;
 
         [Header("References")]
-        [SerializeField] private TasksCanvasController tasksCanvasController;
-        [SerializeField] private TasksBlacboard tasksBlackboard;
+        [SerializeField] private TasksCanvasController playerTasksCanvasController;
+        [SerializeField] private TasksCanvasController hostileTasksCanvasController;
 
         [Header("Perfomance")]
-        [SerializeField] private int tickPerSecond;
-        private float currentTime;
+        [SerializeField] private int updatesPerSecond;
+        private float currentUpdateTime;
+        private float timeForUpdate;
+        [SerializeField] private int checksPerSecond;
+        private float currentCheckTime;
         private float timeForCheck;
 
         [Header("Task Lists")]
@@ -27,7 +31,8 @@ namespace Tasks
         [SerializeField] private List<Task> activeTasks;            // tasks being checked
         [SerializeField] private List<Task> achievedTasks;          // tasks completed SUCCESFULLY
         [SerializeField] private List<Task> failedTasks;            // tasks completed in FAILURE
-    
+
+
 
         #region ENGINE METHODS
 
@@ -46,73 +51,91 @@ namespace Tasks
             }
             #endregion
 
-            tasksBlackboard = GetComponent<TasksBlacboard>();
-
             // null checks
-            if (tasksCanvasController == null) Debug.LogError("TASKS_MANAGER_NULL: tasksCanvasController");
-            if (tasksBlackboard == null) Debug.LogError("TASKS_MANAGER_NULL: No blackboard found");
+            if (playerTasksCanvasController == null) Debug.LogError("TASKS_MANAGER_NULL: tasksCanvasController");
+            if (hostileTasksCanvasController == null) Debug.LogError("TASKS_MANAGER_NULL: hostileTasksCanvasController");
 
 
             // Performance setup
-            timeForCheck = ((1.0000f / (float)tickPerSecond) * 0.6000f);     // ticks per second caching
+            timeForUpdate = ((1.0000f / (float)updatesPerSecond) * 0.6000f);     // ticks per second caching
+            timeForCheck = ((1.0000f / (float)checksPerSecond) * 0.6000f);     // ticks per second caching
 
-            // initializations
-            activeTasks = new List<Task>();
-            achievedTasks = new List<Task>();
-            failedTasks = new List<Task>();
-
-            TasksSetup();
+            TasksBlackboardSetup();
 
         }
 
-        private void Start()
-        {
-            foreach (Task task in activeTasks)
-            {
-                tasksCanvasController.AddTaskToCanvas(task);
-            }
-
-        }
 
 
         private void Update()
         {
-            currentTime += Time.deltaTime;
-            if (currentTime >= timeForCheck)
-            {
-                // check for completion and tick
-                foreach (Task task in activeTasks)
-                {
-                    // CHECK 
-                    if (CheckTask(task))
-                        return;
+            currentUpdateTime += Time.deltaTime;
+            currentCheckTime += Time.deltaTime;
 
-                    // TICK
+            if (currentCheckTime >= timeForCheck)
+            {
+                foreach (Task task in gameTasks)
+                {
+                    CheckTask(task);
+                }
+                currentCheckTime = 0f;
+            }
+
+            if (currentUpdateTime >= timeForUpdate)
+            {
+                foreach (Task task in gameTasks)
+                {
                     TickTask(task);
                 }
-
-                currentTime = 0f;
+                currentUpdateTime = 0f;
             }
+
+
         }
 
         #endregion
 
         #region PUBLIC METHODS
 
-        public List<Task> GetActiveTasks ()
-        {
-            return activeTasks;
-        }  
-        public List<Task> GetAllTasks ()
+        public List<Task> GetGameTasks()
         {
             return gameTasks;
         }
 
-        public static TasksManager GetInstance()
+
+        public Task GetTask(int _taskID, List<Task> _tasksListToSearchFrom) 
         {
-            return Instance;
+            Task currentTask;
+
+            for (int index = 0; index < gameTasks.Count; index++)
+            {
+                currentTask = gameTasks[index];
+
+                // if is a complex task we start doing recursion ............................. //
+                if (currentTask is ComplexTask)
+                {
+                    List<Task> childrenTasks = new List<Task>();
+                    childrenTasks = (currentTask as ComplexTask).GetTasksList();
+
+                    foreach (Task childTask in childrenTasks)
+                    {
+                        GetTask(_taskID, childrenTasks);
+                    }
+
+                    // If is a simple task we just check if the id coincides targetId == taskId ....... //
+                }
+                else
+                {
+                    if (CheckIsDesiredTask(_taskID, currentTask))
+                        return currentTask;
+                }
+            }
+
+            Debug.LogWarning("WARNING: la tarea con indice " + _taskID + " no ha sido encontrada en la lista GAMETASKS");
+            return null;
         }
 
+
+        
         public void ActivateTask(Task _taskToActivate, bool _safeActivation = true)
         {
             // check if task is already active or not (just in case)
@@ -135,43 +158,102 @@ namespace Tasks
 
         }
 
+        public void SetupTask(Task _task, TaskData _taskInitializationData, bool _addToActiveTasks = true)
+        {
+            Debug.Log("Settuping task " + _task + " will show on canvas= " + _addToActiveTasks);
+
+            AddToGameTasks(_task);
+            _task.Setup(blackboard);            // le damos la informacion comun de todas las tareas
+
+            if (_task is I_RequiereInitialization)
+                (_task as I_RequiereInitialization).SetTaskData(_taskInitializationData);
+
+            // debido a la propia recursividad de este metodo y el hecho que no queremos que todas las subtareas se añadan a las tareas activas utilizaremos el flag
+            if (_addToActiveTasks)
+            {
+                ActivateTask(_task, true);
+                AddTaskToCanvas(_task);
+            }
+
+            // Propagation
+            if (_task is ComplexTask)
+            {
+                // buscamos sus hijos
+                foreach (Task task in (_task as ComplexTask).GetTasksList())
+                {
+                    task.SetIsChildOfTask();
+                    SetupTask(task, false);
+                }
+            }
+        }
+        public void SetupTask(Task _task, bool _addToActiveTasks = true)
+        {
+            Debug.Log("Settuping task " + _task + " will show on canvas= " + _addToActiveTasks);
+
+            AddToGameTasks(_task);          
+            _task.Setup(blackboard);            // le damos la informacion comun de todas las tareas
+
+            // debido a la propia recursividad de este metodo y el hecho que no queremos que todas las subtareas se añadan a las tareas activas utilizaremos el flag
+            if (_addToActiveTasks)
+            {
+                ActivateTask(_task, true);
+                AddTaskToCanvas(_task);
+            }
+
+            // Propagation
+            if (_task is ComplexTask)
+            {
+                // buscamos sus hijos
+                foreach (Task task in (_task as ComplexTask).GetTasksList())
+                {
+                    task.SetIsChildOfTask();
+                    SetupTask(task, false);
+                }
+            }
+        }
 
         #endregion
 
         #region PRIVATE METHODS
 
-        private void TasksSetup()
+        private void AddToGameTasks (Task _task, bool _secureAddition = true)
         {
-            foreach (Task _task in gameTasks)
+            if (_secureAddition)
             {
-                Debug.LogWarning("Initiallizing " + _task.name);
-
-                // SIMPLE ----------------------------------------- //
-                if (_task is SimpleTask)
+                if (!(gameTasks.Contains(_task)))
+                    gameTasks.Add(_task);
+                else
                 {
-                    SimpleTask _simpleTask = _task as SimpleTask;
-
-                    if (_simpleTask is ReachTask)
-                        _simpleTask.Setup(tasksBlackboard.GetPlayer().gameObject);
-
-                }
-                // COMPLEX --------------------------------------- //   
-                else if (_task is ComplexTask)
-                {
-                    ComplexTask _complexTask = _task as ComplexTask;
-
-                    foreach (Task _internalTask in _complexTask.GetTasksList())
-                    {
-                        // Dani esto estaria bien que el setup de los hijos los haga el padre
-                        if (_internalTask is ReachTask)
-                            _internalTask.Setup(tasksBlackboard.GetPlayer().gameObject);
-                    }
-
-                }
-
-                ActivateTask(_task, true);
+                    Debug.LogError("TASKS MANAGER: The task you are trying to add to GAME TASKS is already in there");
+                }              
+            }
+            else
+            {
+                gameTasks.Add(_task);
             }
         }
+
+        private void AddTaskToCanvas(Task _task)
+        {
+            playerTasksCanvasController.AddTaskToCanvas(_task);
+            playerTasksCanvasController.UpdatetaskStatus(_task);
+        }
+
+        private bool CheckIsDesiredTask(int _targetIndex, Task _taskToCheck)
+        {
+            // Is it the task we are looking for?
+            if (_taskToCheck.GetTaskId() == _targetIndex)
+                return true;
+            else
+                return false;
+        }
+
+
+        private void TasksBlackboardSetup()
+        {
+            blackboard.Player = GameObject.FindGameObjectWithTag("Player").GetComponent<TestPlayer>();
+        }
+        
         private bool CheckTask(Task _task)
         {
             TaskStatus previousTaskState = _task.GetPreviousTaskState();
@@ -182,6 +264,11 @@ namespace Tasks
             if ((int)previousTaskState != (int)newTaskState)
             {
                 SetTaskCategory(_task, newTaskState, previousTaskState);
+                playerTasksCanvasController.UpdatetaskStatus(_task);
+
+                if (newTaskState == TaskStatus.ACHIEVED)
+                    _task.ApplyReward();
+
                 return true;
             }
             else
@@ -191,10 +278,9 @@ namespace Tasks
             }
         }
 
-
         private void TickTask(Task _task)
         {
-            _task.Tick(timeForCheck);       // el dt pasado tiene una precision muy baja BUSCAR SOLUCION A ESTO
+            _task.Tick(timeForUpdate);
         }
 
         private void SetTaskCategory(Task _task, TaskStatus _newStatus, TaskStatus _previousStatus = TaskStatus.NONE)
@@ -242,6 +328,10 @@ namespace Tasks
                     Debug.LogError("ERROR_TASKS: Someghing went wrong, make sure the task " + _task.name + " of type " + _task.GetType() + " inherits properly");
                     break;
             }
+
+            // asi es como deberia estar
+            // tasksCanvasController.UpdatetaskStatus(_task);
+
         }
 
         #endregion

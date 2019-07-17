@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taskName: Move to Origin
   taskDescription: NONE
-  objectToFollow: {fileID: 0}
-  targetPosition: {x: 0, y: 0, z: 0}
+  rewards_Lst:
+  - {fileID: 11400000, guid: 7b2ef3cb3538dbe40ab6fec64169e3b8, type: 2}
+  host: {fileID: 0}
+  taskId: 2
   targetRadius: 0.1

@@ -7,14 +7,19 @@ public class TestPlayer : MonoBehaviour
 {
     TasksManager tasksManager;
 
-
-
     private void Start()
     {
-        tasksManager = TasksManager.GetInstance();
+        tasksManager = TasksManager.Instance;
     }
 
-    
+    private void OnEnable()
+    {
+
+    }
+
+
+
+
 
 
 

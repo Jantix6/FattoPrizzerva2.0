@@ -8,6 +8,7 @@ namespace Tasks
     {
         [SerializeField] protected float targetTime;
         protected float currentTime;
+        protected bool autoFinalizeComplexTask;         // This bool controls if this timed task is dominant at the time of determining if a complex task is done or not (ex, if the time ends the complex task should fail)
 
         public float GetCurrentTime() {
             return currentTime;
@@ -15,6 +16,7 @@ namespace Tasks
         public float GetTargetTime() {
             return targetTime;
         }
+        
 
     }
 
