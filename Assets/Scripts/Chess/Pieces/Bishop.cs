@@ -10,11 +10,11 @@ public class Bishop : Piece, IHealth
 
     public float Health { get => health; set => health = value; }
 
-    private PieceNavigation nav;
+    private PieceNavigation pieceNaviation;
 
     private void Start()
     {
-        nav = GetComponent<PieceNavigation>();
+        pieceNaviation = GetComponent<PieceNavigation>();
         board = Board.instance;
 
         //Testing Purposes
@@ -26,12 +26,14 @@ public class Bishop : Piece, IHealth
 
     public override void Move(Cell cell)
     {
-        StartCoroutine(nav.MoveTo(this, cell, MovementDone));
+        StartCoroutine(pieceNaviation.MoveTo(this, cell, MovementDone));
     }
 
-    public void MovementDone(Cell cell)
+    public void MovementDone(PieceNavigation.MovementData data)
     {
-        MoveToCell(cell);
+        if (data.pieceInTargetCell) PushPiece(data.cost, data.pieceInTargetCell, data.direction);
+
+        MoveToCell(data.currentCell);
         GetPossibleMoves();
         ShowPossibleMoves(true);
     }
@@ -51,7 +53,7 @@ public class Bishop : Piece, IHealth
     {
         for (int i = 0; i < MovePositions.Count; i++)
         {
-            board.GetCell(MovePositions[i].x, MovePositions[i].y).ShowAvailable(show);
+            MovePositions[i].ShowAvailable(show);
         }
     }
 
@@ -83,24 +85,41 @@ public class Bishop : Piece, IHealth
         Destroy(gameObject);
     }
 
-    private List<Vector2Int> FindPossibleMoves(int xDirection, int yDirection)
+    private List<Cell> FindPossibleMoves(int xDirection, int yDirection)
     {
         bool IsValid = true;
 
-        List<Vector2Int> positions = new List<Vector2Int>();
+        List<Cell> positions = new List<Cell>();
 
-        Cell currentCell = new Cell();
+        Cell currentCell = boardPosition;
 
-        currentCell.position = boardPosition.position;
+        int iteration = 0;
 
         while (IsValid)
         {
-            currentCell.position += new Vector2Int(xDirection, yDirection);
+            iteration++;
 
-            IsValid = board.ValidIndex(currentCell.position.x, currentCell.position.y);
+            int x = boardPosition.position.x + (xDirection * iteration);
+            int y = boardPosition.position.y + (yDirection * iteration);
+
+            currentCell = board.GetCell(x, y);
+
+            IsValid = currentCell;
 
             if (!IsValid) break;
-            if (CalculateCost(currentCell) <= ChessPlayer.instance.movements) positions.Add(currentCell.position);
+
+            if (CalculateCost(currentCell) <= ChessPlayer.instance.movements)
+            {
+                if (currentCell.piecePlaced != null)
+                {
+                    if (currentCell.piecePlaced.AI_Controlled) positions.Add(currentCell);
+                    break;
+                }
+                else
+                {
+                    positions.Add(currentCell);
+                }
+            }
         }
 
         return positions;

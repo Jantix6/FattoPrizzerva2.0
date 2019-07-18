@@ -25,9 +25,9 @@ public class PieceSelector : MonoBehaviour
 
         for (int i = 0; i < selectedPiece.MovePositions.Count; i++)
         {
-            if (selectedCell.position != selectedPiece.MovePositions[i]) continue;
+            if (selectedCell != selectedPiece.MovePositions[i]) continue;
 
-            Cell cellToGo = Board.instance.GetCell(selectedPiece.MovePositions[i].x, selectedPiece.MovePositions[i].y);
+            Cell cellToGo = selectedPiece.MovePositions[i];
             player.movements -= selectedPiece.CalculateCost(cellToGo);
             selectedPiece.Move(cellToGo);
         }

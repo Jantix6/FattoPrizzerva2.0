@@ -12,7 +12,9 @@ public abstract class Piece : MonoBehaviour
     public bool selected;
 
     public Cell boardPosition;
-    public List<Vector2Int> MovePositions;
+    public List<Cell> MovePositions;
+
+    public Piece target;
 
     public void Selected(bool selected)
     {
@@ -40,9 +42,8 @@ public abstract class Piece : MonoBehaviour
         //if indestrucible/destructible wall
 
         MoveToCell(board.GetCell(pushedPosition.x, pushedPosition.y));
-
-
     }
+
     public void PushPiece(int cost, Piece pieceToPush, Vector2Int direction)
     {
         IHealth pieceHealth = pieceToPush.GetComponent<IHealth>();

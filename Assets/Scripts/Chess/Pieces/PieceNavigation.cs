@@ -7,7 +7,7 @@ public class PieceNavigation : MonoBehaviour
 {
     [SerializeField] private float speed;
 
-    public IEnumerator MoveTo(Piece piece, Cell cell, UnityAction<Cell> MovementDone)
+    public IEnumerator MoveTo(Piece piece, Cell cell, UnityAction<MovementData> MovementDone)
     {
         Board.instance.ClearValidPositions();
 
@@ -33,9 +33,14 @@ public class PieceNavigation : MonoBehaviour
             yield return null;
         }
 
-        if (pieceInNextPosition) piece.PushPiece(piece.CalculateCost(cell), pieceInNextPosition, direction);
+        MovementData movementData;
 
-        MovementDone(cell);
+        movementData.cost = piece.CalculateCost(cell);
+        movementData.direction = direction;
+        movementData.pieceInTargetCell = pieceInNextPosition;
+        movementData.currentCell = cell;
+
+        MovementDone(movementData);
     }
 
     private Vector2Int GetDirection(Cell origin, Cell destination)
@@ -46,5 +51,13 @@ public class PieceNavigation : MonoBehaviour
         if (direction.y != 0) direction.y = direction.y > 1 ? 1 : -1;
 
         return direction;
+    }
+
+    public struct MovementData
+    {
+        public int cost;
+        public Vector2Int direction;
+        public Piece pieceInTargetCell;
+        public Cell currentCell;
     }
 }
