@@ -42,7 +42,7 @@ namespace Dialogues
             dialogueManager = _manager;
             dialogueData = _inputData as SO_QuestionAnswerStructure;
 
-            question.text = dialogueData.GetQuestion();
+            question.text = dialogueData.GetQuestion(_targetlanguage);
             spekerImage.sprite = _inputData.GetSpeakerSprite();
 
             foreach (SO_Answer answer in dialogueData.GetAnswers())

@@ -9,13 +9,13 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "Answer", menuName = "Answers/New Answer")]
     public class SO_Answer : ScriptableObject 
     {
-        //[SerializeField] [TextArea] private string answerBody;
         [SerializeField] private List<LanguageBasedString> answers;
-        [SerializeField] private SO_QuestionAnswerStructure targetStructure;
+
+        [SerializeField] private SO_DialogStructure targetStructure;
         
         public string GetAnswerBody(Language _targetLanguage)
         {
-            Debug.LogError("Requested lenguage" + _targetLanguage);
+            //Debug.LogError("Requested lenguage" + _targetLanguage);
 
             if (answers.Count == 0)
             {
@@ -40,7 +40,7 @@ namespace Dialogues
             return answerBody;
         }
         */
-        public SO_QuestionAnswerStructure GetTargetStructure()
+        public SO_DialogStructure GetTargetStructure()
         {
             return targetStructure;
         }
