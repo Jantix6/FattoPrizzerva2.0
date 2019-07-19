@@ -6,19 +6,20 @@ using UnityEngine.UI;
 
 namespace Dialogues
 {
-    public class CanvasedDialogue : MonoBehaviour
+    public class CanvasedDialogue : CanvasedDialogElement , I_DialogElement
     {
-        [SerializeField] private DialogueManager dialogueManager;
-        [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] private QuestionAnswerStructure dialogueData;
+        [Header("Dialogue References")]
+        [SerializeField] private SO_QuestionAnswerStructure dialogueData;
 
+        [Header("Canvas dialoge references")]
         [SerializeField] private TMPro.TMP_Text question;
         [SerializeField] private Image spekerImage;
         [SerializeField] private CanvasedAnswer answerPrefab;
 
         [SerializeField] private Transform answersContainer;
 
-        public void Initialize(QuestionAnswerStructure _questionAnswerData, DialogueManager _dialoguemanager)
+        /*
+        public void Initialize(QuestionAnswerStructure_SO _questionAnswerData, DialogueManager _dialoguemanager)
         {
             dialogueManager = _dialoguemanager;
             dialogueData = _questionAnswerData;
@@ -26,7 +27,7 @@ namespace Dialogues
             question.text = dialogueData.GetQuestion();
             spekerImage.sprite = _questionAnswerData.GetSpeakerSprite();
 
-            foreach (Answer answer in dialogueData.GetAnswers())
+            foreach (Answer_SO answer in dialogueData.GetAnswers())
             {
                 CanvasedAnswer canvasedAnswer = Instantiate(answerPrefab, answersContainer);
                 canvasedAnswer.Initialize(answer ,dialogueManager);
@@ -34,17 +35,24 @@ namespace Dialogues
 
             EnableVisibility();
         }
+        */
 
-        private void EnableVisibility()
+        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Language _targetlanguage)
         {
-            canvasGroup.alpha = 1f;
-        }
+            dialogueManager = _manager;
+            dialogueData = _inputData as SO_QuestionAnswerStructure;
 
-        public void DisableVisibilty()
-        {
-            canvasGroup.alpha = 0f;
-        }
+            question.text = dialogueData.GetQuestion();
+            spekerImage.sprite = _inputData.GetSpeakerSprite();
 
+            foreach (SO_Answer answer in dialogueData.GetAnswers())
+            {
+                CanvasedAnswer canvasedAnswer = Instantiate(answerPrefab, answersContainer);
+                canvasedAnswer.Initialize(answer, dialogueManager, _targetlanguage);
+            }
+
+            EnableVisibility();
+        }
     }
 }
 

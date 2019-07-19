@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2fc87c82fad6da46bc03fee73ec2e2c, type: 3}
   m_Name: Daniel
   m_EditorClassIdentifier: 
-  name: Daniel
+  characterName: Daniel
   sprite: {fileID: 21300000, guid: 5be373b13a7b61d458b3feb08b1970d6, type: 3}
-  characterDescription: 
-  bibliography: Just a programer doing not a very fine job.
+  characterDescription: Just a programer programing things onto this game
+  bibliography: I was born once.

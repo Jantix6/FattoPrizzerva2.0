@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
-  m_Name: Comida
+  m_Script: {fileID: 11500000, guid: d3a387e57d15864488ef86f684c2a885, type: 3}
+  m_Name: ESP_A4
   m_EditorClassIdentifier: 
-  answerBody: Comida
-  answers:
-  - {fileID: 11400000, guid: da8cb5f33a3a3b14989e51ed23414733, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  targetStructure: {fileID: 0}
+  language: 1
+  text: "Maaare meva el pesat que torna a pretendre que li rebenti el cul de nou \xE9s
+    qui sento?"

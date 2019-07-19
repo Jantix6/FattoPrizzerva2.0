@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
-  m_Name: Comida
+  m_Name: A2
   m_EditorClassIdentifier: 
-  answerBody: Comida
   answers:
-  - {fileID: 11400000, guid: da8cb5f33a3a3b14989e51ed23414733, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: db2df8841a11e714aace1375f90c178f, type: 2}
+  - {fileID: 11400000, guid: 8809ab7aba21aa94eab2d3ecdfbd0756, type: 2}
+  - {fileID: 11400000, guid: f9e81b2b99d55c84d9d9d909e4c3963a, type: 2}
   targetStructure: {fileID: 0}

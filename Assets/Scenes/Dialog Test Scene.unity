@@ -179,7 +179,7 @@ Canvas:
   m_GameObject: {fileID: 203550319}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
@@ -246,7 +246,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.3295901, g: 0.7924528, b: 0.2878248, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -390,12 +390,12 @@ MonoBehaviour:
   dialogueCanvas: {fileID: 203550322}
   canvasedDialoguePrefab: {fileID: 7372392568412857422, guid: 930d03786bfbe4a448d5d6e0cbfdbbd5,
     type: 3}
+  canvasedSpeachPrefab: {fileID: 5260582259950289474, guid: c8c1a21e2112d7e409fe38b60c77931a,
+    type: 3}
   qAStructures:
+  - {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
   - {fileID: 11400000, guid: 4824398ba5876a94f948a54121716e8b, type: 2}
-  - {fileID: 11400000, guid: a02808e5b2526c8419c22f995fc05369, type: 2}
-  - {fileID: 11400000, guid: fd52bcdee7fbed9428dc06c119418865, type: 2}
   currentStructureIndex: 0
-  activeDialogueStructure: {fileID: 0}
   previousStrcture_Key: 282
   nextStrcutre_Key: 283
 --- !u!4 &1853820471

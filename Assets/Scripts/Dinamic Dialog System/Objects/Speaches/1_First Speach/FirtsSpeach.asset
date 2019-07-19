@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7376201b65c5314f96e2bce73791734, type: 3}
+  m_Name: FirtsSpeach
+  m_EditorClassIdentifier: 
+  speaker: {fileID: 11400000, guid: be89006906a6e874d9e3da192d66a313, type: 2}
+  titles:
+  - {fileID: 11400000, guid: 9e5afae499cdc1446b46dd95789455a1, type: 2}
+  - {fileID: 11400000, guid: b7c83b088c844db4db55a4a10670933e, type: 2}
+  - {fileID: 11400000, guid: a4fd0e2b73ad331488015e13add24982, type: 2}
+  bodies:
+  - {fileID: 11400000, guid: fcd07a07920dbc84d982a03ce82cd82f, type: 2}
+  - {fileID: 11400000, guid: 3641daa5ab9480b4bbd5694c7fe0f0b2, type: 2}
+  - {fileID: 11400000, guid: 4d889a771759d0142b7b56d5ea2329a2, type: 2}

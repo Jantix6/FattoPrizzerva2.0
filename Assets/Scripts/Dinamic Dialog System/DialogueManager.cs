@@ -7,13 +7,17 @@ namespace Dialogues
 {
     public class DialogueManager : MonoBehaviour
     {
+
+
+
         [SerializeField] private Canvas dialogueCanvas;
         [SerializeField] private CanvasedDialogue canvasedDialoguePrefab;
+        [SerializeField] private CanvasedSpeach canvasedSpeachPrefab;
 
-        [SerializeField] private List<QuestionAnswerStructure> qAStructures;
+        [SerializeField] private List<SO_DialogStructure> qAStructures;
         [SerializeField] private int currentStructureIndex;
 
-        [SerializeField] private CanvasedDialogue activeDialogueStructure;
+        private CanvasedDialogElement activeDialogueElement;
 
         [Header("Debug")]
         [SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
@@ -28,27 +32,38 @@ namespace Dialogues
         }
         private void EndDialogue()
         {
-            if (activeDialogueStructure != null)
-                DestroyDialogueElement(activeDialogueStructure);
+            if (activeDialogueElement != null)
+                DestroyDialogueElement(activeDialogueElement);
         }
-        private void DestroyDialogueElement (CanvasedDialogue _target)
+        private void DestroyDialogueElement (CanvasedDialogElement _target)
         {
             Destroy(_target.gameObject);
         }
         private void ShowDialogueStructure(int _index)
         {
-            if (activeDialogueStructure != null)
+            // destroy the previous shown element
+            if (activeDialogueElement != null)
             {
-                DestroyDialogueElement(activeDialogueStructure);
+                DestroyDialogueElement(activeDialogueElement);
             }
 
-            Debug.Log("Instantiating" + qAStructures[_index].GetQuestion());
-
-            activeDialogueStructure = Instantiate(canvasedDialoguePrefab, dialogueCanvas.transform);
-            activeDialogueStructure.Initialize(qAStructures[_index],this);
+            // DANI REFACTORIZA ESTO, NO NOS GUSTAN LOS IFs ----------------------------------------------------------------------------- //
+            // Is it a question?
+            if (qAStructures[_index] is SO_QuestionAnswerStructure)
+            {
+                activeDialogueElement = Instantiate(canvasedDialoguePrefab, dialogueCanvas.transform);
+                (activeDialogueElement as CanvasedDialogue).Initialize(qAStructures[_index] as SO_QuestionAnswerStructure, this, LanguageManager.gameLanguage);
+            }
+            // Is it a speach element?
+            else if (qAStructures[_index] is SO_SpeachStructure)
+            {
+                activeDialogueElement = Instantiate(canvasedSpeachPrefab,dialogueCanvas.transform);
+                (activeDialogueElement as CanvasedSpeach).Initialize(qAStructures[_index] as SO_SpeachStructure,this, LanguageManager.gameLanguage);
+            }
             currentStructureIndex = _index;
+            // ---------------------------------------------------------------------------------------------------------------------------- //   
         }
-        public void ShowDialogueStructure(QuestionAnswerStructure _targetStructure)
+        public void ShowDialogueStructure(SO_QuestionAnswerStructure _targetStructure)
         {
             if (qAStructures.Contains(_targetStructure) )
             {
@@ -62,7 +77,7 @@ namespace Dialogues
 
         }
 
-        private void NextStructure()
+        public void NextStructure()
         {
             if (currentStructureIndex + 1 <= qAStructures.Count - 1)
             {
@@ -74,7 +89,7 @@ namespace Dialogues
                 EndDialogue();
             }
         }
-        private void PreviousStructure()
+        public void PreviousStructure()
         {
             if (currentStructureIndex - 1 >= 0)
             {
@@ -96,6 +111,9 @@ namespace Dialogues
 
         private void Awake()
         {
+            // El idioma no se seteara desde aqui aunque lo hago asi para hacer pruebas
+            LanguageManager.gameLanguage = Language.ENGLISH;
+
             if (qAStructures is null || qAStructures.Count == 0)
                 Debug.LogError("QAStructures ERROR");
             currentStructureIndex = 0;

@@ -7,22 +7,23 @@ using UnityEngine.Events;
 
 namespace Dialogues
 {
-    public class CanvasedAnswer : MonoBehaviour
+    public class CanvasedAnswer : MonoBehaviour 
     {
         [SerializeField] private DialogueManager dialogueManager;
         [SerializeField] private TMP_Text answerText;
-        [SerializeField] private QuestionAnswerStructure targetQuestionAnswerStructure;
+        [SerializeField] private SO_QuestionAnswerStructure targetQuestionAnswerStructure;
         [SerializeField] private Button answerButton;
 
 
-        public void Initialize(Answer _answer, DialogueManager _dialogueManager)
+        public void Initialize(SO_Answer _answer, DialogueManager _dialogueManager, Language _targetLanguage)
         {
-            answerText.text = _answer.GetAnswerBody();
+            answerText.text = _answer.GetAnswerBody(_targetLanguage);
             dialogueManager = _dialogueManager;
             targetQuestionAnswerStructure = _answer.GetTargetStructure();
 
             answerButton.onClick.AddListener(OpenTargetQAStructure);
         }
+
 
         private void OpenTargetQAStructure()
         {
