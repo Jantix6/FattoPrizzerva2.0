@@ -128,8 +128,7 @@ namespace Dialogues
 
         private void Awake()
         {
-            // El idioma no se seteara desde aqui aunque lo hago asi para hacer pruebas
-            LanguageManager.gameLanguage = selectedLanguage;
+            DebugSetLenguage();
 
             if (dialogStructures is null || dialogStructures.Count == 0)
                 Debug.LogError("QAStructures ERROR");
@@ -151,7 +150,19 @@ namespace Dialogues
                 PreviousStructure();
             }
         }
-#endregion;
+
+        private void OnValidate()
+        {
+            DebugSetLenguage();
+        }
+
+        private void DebugSetLenguage()
+        {
+            // El idioma no se seteara desde aqui aunque lo hago asi para hacer pruebas
+            LanguageManager.gameLanguage = selectedLanguage;
+            Debug.Log("lenguage set to " + selectedLanguage);
+        }
+        #endregion;
     }
 }
 

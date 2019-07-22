@@ -5,6 +5,7 @@ using UnityEditor.Experimental.UIElements;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 
+[SerializeField]
 [CreateAssetMenu(fileName = "Text", menuName = "new Language Constrained text")]
 public class LanguageBasedString : ScriptableObject
 {
@@ -61,6 +62,18 @@ public class LanguageBasedString : ScriptableObject
 
         Debug.LogError("No language identified by the name of the object (LLL_NameOfTheObject");
         return null;
+    }
+
+    public static void CheckListIntegrity(Language _targetLanguage, List<LanguageBasedString> _list, string _caller)
+    {
+        string debugString = "";
+        debugString += "The language " + nameof(_targetLanguage) + " is not defined on the object " + _caller + "\n";
+        foreach (LanguageBasedString lString in _list)
+        {
+            debugString += "REPORT OF " + lString.name + ": --> " + lString.language + "\n";
+        }
+        Debug.LogError(debugString);
+
     }
 }
 

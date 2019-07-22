@@ -26,24 +26,15 @@ namespace Dialogues
             for (int i = 0; i < questions.Count; i++)
             {
                 if (questions[i].language == _targetLanguage)
-                    return questions[i].text;
+                    return questions[i].text;         
             }
 
-            //Console.WriteLine("The language {0} is not defined on the object {1}", nameof(_targetLanguage), this.name);
-            Debug.LogError("The language " + nameof(_targetLanguage) + " is not defined on the object " + this.name);
-            foreach (LanguageBasedString lString in questions)
-            {
-                Debug.LogWarning("REPORT OF " + lString.name + ": --> " + lString.language);
-            }
+            LanguageBasedString.CheckListIntegrity(_targetLanguage, questions, this.name);
             return null;
 
+
         }
-        /*
-        public string GetQuestion()
-        {
-            return question;
-        }
-        */
+
         public List<SO_Answer> GetAnswers()
         {
             return answers_Lst;

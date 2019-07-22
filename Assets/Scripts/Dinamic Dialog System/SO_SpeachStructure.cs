@@ -32,12 +32,7 @@ namespace Dialogues
                     return titles[i].text;
             }
 
-            //Console.WriteLine("The language {0} is not defined on the object {1}", nameof(_targetLanguage), this.name);
-            Debug.LogError("The language " + nameof(_targetLanguage) + " is not defined on the object " + this.name);
-            foreach (LanguageBasedString lString in titles)
-            {
-                Debug.LogWarning("REPORT OF " + lString.name + ": --> " + lString.language);
-            }
+            LanguageBasedString.CheckListIntegrity(_targetLanguage, titles, this.name);
             return null;
         }
         internal string GetSpeachBody(Language _targetLanguage)

@@ -21,7 +21,6 @@ namespace Dialogues
             return speaker.GetName();
         }
 
-
     }
 }
 

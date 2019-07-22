@@ -18,25 +18,6 @@ namespace Dialogues
 
         [SerializeField] private Transform answersContainer;
 
-        /*
-        public void Initialize(QuestionAnswerStructure_SO _questionAnswerData, DialogueManager _dialoguemanager)
-        {
-            dialogueManager = _dialoguemanager;
-            dialogueData = _questionAnswerData;
-
-            question.text = dialogueData.GetQuestion();
-            spekerImage.sprite = _questionAnswerData.GetSpeakerSprite();
-
-            foreach (Answer_SO answer in dialogueData.GetAnswers())
-            {
-                CanvasedAnswer canvasedAnswer = Instantiate(answerPrefab, answersContainer);
-                canvasedAnswer.Initialize(answer ,dialogueManager);
-            }
-
-            EnableVisibility();
-        }
-        */
-
         public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Language _targetlanguage)
         {
             dialogueManager = _manager;

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a387e57d15864488ef86f684c2a885, type: 3}
   m_Name: ESP_Q1
   m_EditorClassIdentifier: 
-  language: 3
+  language: 1
   text: "B\xE9 que et comentes?\r\n"

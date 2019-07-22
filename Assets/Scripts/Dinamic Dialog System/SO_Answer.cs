@@ -29,8 +29,7 @@ namespace Dialogues
                     return answers[i].text;
             }
 
-            //Console.WriteLine("The language {0} is not defined on the object {1}", nameof(_targetLanguage), this.name);
-            Debug.LogError("The language " + nameof(_targetLanguage) + " is not defined on the object " + this.name);
+            LanguageBasedString.CheckListIntegrity(_targetLanguage, answers, this.name);
             return null;
         }
 
