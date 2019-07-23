@@ -11,7 +11,7 @@ namespace Dialogues
     {
         [SerializeField] private DialogueManager dialogueManager;
         [SerializeField] private TMP_Text answerText;
-        [SerializeField] private SO_DialogStructure targetQuestionAnswerStructure;
+        [SerializeField] private SO_DialogStructure nextDialogStructure;
         [SerializeField] private Button answerButton;
 
 
@@ -19,18 +19,16 @@ namespace Dialogues
         {
             answerText.text = _answer.GetAnswerBody(_targetLanguage);
             dialogueManager = _dialogueManager;
-            targetQuestionAnswerStructure = _answer.GetTargetStructure();
+            nextDialogStructure = _answer.GetTargetStructure();
 
-            answerButton.onClick.AddListener(OpenTargetQAStructure);
+            answerButton.onClick.AddListener(ShowStructure);
         }
 
 
-        private void OpenTargetQAStructure()
+        private void ShowStructure()
         {
-            if (targetQuestionAnswerStructure)
-            {
-                dialogueManager.ShowDialogueStructure(targetQuestionAnswerStructure);
-            }
+            if (nextDialogStructure)
+                dialogueManager.ShowDialogueStructure(nextDialogStructure);
             else 
                 Debug.LogWarning("The target Structure is not set ");
         }

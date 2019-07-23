@@ -20,29 +20,40 @@ public class LanguageBasedString : ScriptableObject
 
     private void OnEnable()
     {
+        // nomenclature based lenguage
+        Language expectedLanguage = AutoLanguageIdentification();
         if (language == Language.NONE)
         {
-            AutoLanguageIdentification();
+            // auto asignation of language if none is set
+            language = expectedLanguage;
+
+        } else
+        {
+            // notifiation of a wrong nomenclature on the object name
+            if (language != expectedLanguage && expectedLanguage != Language.NONE)
+            {
+                Debug.LogError("The object " + this.name + "might have a nomenclature problem LANGUAGE != NAME LANGUAGE");
+            }
         }
        
 
     }
 
 
-    private void AutoLanguageIdentification()
+    private Language AutoLanguageIdentification()
     {
         string identifiedLanguage = ReadLanguageFromName();
         if (identifiedLanguage != "")
         {
             if (identifiedLanguage == "CAT")
-                language = Language.CATALAN;
+                return Language.CATALAN;
             else if (identifiedLanguage == "ESP" || identifiedLanguage == "CAST")
-                language = Language.SPANISH;
+                return Language.SPANISH;
             else if (identifiedLanguage == "ENG")
-                language = Language.ENGLISH;
+                return Language.ENGLISH;
         }
+        return Language.NONE;
 
-        Debug.LogWarning("Lenguage identified as " + language);
     }
 
     private string ReadLanguageFromName()
@@ -64,7 +75,7 @@ public class LanguageBasedString : ScriptableObject
         return null;
     }
 
-    public static void CheckListIntegrity(Language _targetLanguage, List<LanguageBasedString> _list, string _caller)
+    public static void CheckIfLanguageSet(Language _targetLanguage, List<LanguageBasedString> _list, string _caller)
     {
         string debugString = "";
         debugString += "The language " + nameof(_targetLanguage) + " is not defined on the object " + _caller + "\n";

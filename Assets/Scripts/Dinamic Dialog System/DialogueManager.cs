@@ -91,10 +91,9 @@ namespace Dialogues
                 Debug.Log("The target Structure is not set on the managers list" + _targetStructure);
             }
 
-
         }
 
-        public void NextStructure()
+        public void GoToNextStructure()
         {
             if (currentStructureIndex + 1 <= dialogStructures.Count - 1)
             {
@@ -106,7 +105,7 @@ namespace Dialogues
                 EndDialogue();
             }
         }
-        public void PreviousStructure()
+        public void GoToPreviousStructure()
         {
             if (currentStructureIndex - 1 >= 0)
             {
@@ -143,11 +142,11 @@ namespace Dialogues
         {
             if (Input.GetKeyDown(nextStrcutre_Key))
             {
-                NextStructure();
+                GoToNextStructure();
             }
             if (Input.GetKeyDown(previousStrcture_Key))
             {
-                PreviousStructure();
+                GoToPreviousStructure();
             }
         }
 

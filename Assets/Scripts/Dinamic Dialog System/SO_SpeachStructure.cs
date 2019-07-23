@@ -32,7 +32,7 @@ namespace Dialogues
                     return titles[i].text;
             }
 
-            LanguageBasedString.CheckListIntegrity(_targetLanguage, titles, this.name);
+            LanguageBasedString.CheckIfLanguageSet(_targetLanguage, titles, this.name);
             return null;
         }
         internal string GetSpeachBody(Language _targetLanguage)

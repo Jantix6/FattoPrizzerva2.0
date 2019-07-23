@@ -29,8 +29,6 @@ public class Editor_LanguageBasedString : Editor
         }
 
 
-        //EditorGUILayout.LabelField(nameof(stringObject.textLanguage));
-        //EditorGUILayout.LabelField(stringObject.text);
     }
 
 

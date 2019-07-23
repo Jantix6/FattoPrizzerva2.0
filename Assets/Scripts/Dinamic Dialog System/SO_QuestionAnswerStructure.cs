@@ -29,7 +29,7 @@ namespace Dialogues
                     return questions[i].text;         
             }
 
-            LanguageBasedString.CheckListIntegrity(_targetLanguage, questions, this.name);
+            LanguageBasedString.CheckIfLanguageSet(_targetLanguage, questions, this.name);
             return null;
 
 

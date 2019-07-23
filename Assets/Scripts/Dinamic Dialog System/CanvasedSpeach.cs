@@ -52,7 +52,7 @@ namespace Dialogues
         private void OnNextButtonClick()
         {
             // Change to the next dialogue
-            dialogueManager.NextStructure();
+            dialogueManager.GoToNextStructure();
         }
     }
 

@@ -10,13 +10,10 @@ namespace Dialogues
     public class SO_Answer : ScriptableObject 
     {
         [SerializeField] private List<LanguageBasedString> answers;
-
         [SerializeField] private SO_DialogStructure targetStructure;
         
         public string GetAnswerBody(Language _targetLanguage)
         {
-            //Debug.LogError("Requested lenguage" + _targetLanguage);
-
             if (answers.Count == 0)
             {
                 Debug.LogError("No answers found on object " + this.name);
@@ -29,16 +26,10 @@ namespace Dialogues
                     return answers[i].text;
             }
 
-            LanguageBasedString.CheckListIntegrity(_targetLanguage, answers, this.name);
+            LanguageBasedString.CheckIfLanguageSet(_targetLanguage, answers, this.name);
             return null;
         }
 
-        /*
-        public string GetAnswerBody()
-        {
-            return answerBody;
-        }
-        */
         public SO_DialogStructure GetTargetStructure()
         {
             return targetStructure;
