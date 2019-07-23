@@ -58,7 +58,7 @@ public class PunchFly : BaseState
     {
         if (other.gameObject.tag == "Enemie")
         {
-            if (player.currentState == PlayerScript.State.FLYINGKICK) //(player.stateMachine.currentState == this)
+            if (player.stateMachine.currentState == this) //(player.stateMachine.currentState == this)
                 other.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((direction).normalized, damageBase * player.speed);
             player.ChangeState(PlayerScript.State.MOVING);
         }

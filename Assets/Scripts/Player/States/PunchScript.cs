@@ -57,7 +57,7 @@ public class PunchScript : BaseState
     {
         if (other.gameObject.tag == "Enemie")
         {
-            if (player.currentState == PlayerScript.State.PUNCHING) //(player.stateMachine.currentState == this)
+            if (player.stateMachine.currentState == this)
                 other.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((other.gameObject.transform.position - gameObject.transform.position).normalized, damageBase * speedPunch);
             player.ChangeState(PlayerScript.State.MOVING);
         }

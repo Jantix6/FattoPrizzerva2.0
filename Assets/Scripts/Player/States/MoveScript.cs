@@ -13,7 +13,7 @@ public class MoveScript : BaseState
     private bool onGround = true;
 
     public Vector3 toMove = Vector3.zero;
-    public Vector3 lastDirection = Vector3.up;
+    public Vector3 lastDirection = Vector3.forward;
 
 
     private CharacterController characterController;
@@ -45,9 +45,9 @@ public class MoveScript : BaseState
         }
     }
 
-    public void MoveCameraUpLayer()
+    public void MoveCameraUpLayer(Vector3 _position)
     {
-        myCamera.gameObject.transform.position = new Vector3(myCamera.transform.position.x, gameObject.transform.position.y + distanceWithCamera, myCamera.transform.position.z);
+        myCamera.gameObject.transform.position = new Vector3(myCamera.transform.position.x, _position.y + distanceWithCamera, myCamera.transform.position.z);
 
     }
 

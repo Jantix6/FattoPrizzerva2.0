@@ -230,6 +230,7 @@ MonoBehaviour:
   currentTimeState: 0
   toMove: {x: 0, y: 0, z: 0}
   gravity: 60
+  staminaPerColetazo: 3
   spriteRenderer: {fileID: 7471284608171117888}
   anim: {fileID: 201859387920961851}
   children: {fileID: 7471284608171117916}
@@ -296,7 +297,7 @@ MonoBehaviour:
   player: {fileID: 7471284608528957259}
   gravity: 20
   toMove: {x: 0, y: 0, z: 0}
-  lastDirection: {x: 0, y: 1, z: 0}
+  lastDirection: {x: 0, y: 0, z: 1}
 --- !u!114 &5426443396405995202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +376,7 @@ MonoBehaviour:
   player: {fileID: 7471284608528957259}
   dividendoGravity: 60
   dividendoSpeed: 2
+  staminaPerPunchAereo: 25
 --- !u!114 &2895637405274633820
 MonoBehaviour:
   m_ObjectHideFlags: 0

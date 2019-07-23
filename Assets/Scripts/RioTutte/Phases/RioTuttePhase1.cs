@@ -4,40 +4,65 @@ using UnityEngine;
 
 public class RioTuttePhase1 : MonoBehaviour
 {
-    public enum State { MOVING, KNOCKBACK, DASH}; //dash provisional
+    public enum State { MOVING, KNOCKBACK }; //dash provisional
     public State currentState = State.MOVING;
+    private RioTutteMainScript mainScript;
     private StateMachine stateMachine;
     public BaseState moving;
     public BaseState knockback;
-    public BaseState dash;
+    public float damageImpact = 10;
+    public float timeImpact = 0.2f;
+    public float damageMinToMove = 15;
 
-    public void StartExecution(StateMachine _stateMachine)
+    public void StartExecution()
     {
-        stateMachine = _stateMachine;
-        ChangeState(State.DASH);
+        mainScript = GetComponent<RioTutteMainScript>();
+        stateMachine = mainScript.GetStateMachine();
+        ChangeState(State.MOVING);
+
+
+        mainScript.SetDamageMin(damageMinToMove);
+
+
     }
 
     public void Execute()
     {
         stateMachine.ExecuteState();
-        /*if (Input.GetKey(KeyCode.Space))
-            ChangeState(State.DASH);*/
+        switch (mainScript.GetTypeOfDamage())
+        {
+            case EnemieBasic.TypeOfDamage.PLAYEREMPUJADO:
+                break;
+            case EnemieBasic.TypeOfDamage.PLAYERREBOTA:
+                mainScript.GetPlayer().StartKnockBack(damageImpact, timeImpact,
+                    (mainScript.GetPlayer().transform.position - gameObject.transform.position).normalized);
+                mainScript.RerstartTypeOfDamage();
+                break;
+            case EnemieBasic.TypeOfDamage.NADA:
+                break;
+            case EnemieBasic.TypeOfDamage.EMPUJAAMBOS:
+                break;
+            case EnemieBasic.TypeOfDamage.EMPUJAENEMIGO:
+                ChangeState(State.KNOCKBACK);
+                mainScript.RerstartTypeOfDamage();
+                break;
+        }
+
     }
 
     public void ChangeState(State _newState)
     {
-        switch(_newState)
+        switch (_newState)
         {
             case State.MOVING:
                 stateMachine.ChangeState(moving);
                 break;
             case State.KNOCKBACK:
-                //stateMachine.ChangeState(knockback);
+                stateMachine.ChangeState(knockback);
                 break;
-            case State.DASH:
-                stateMachine.ChangeState(dash);
-                //provisional
-                break;
+
         }
+        currentState = _newState;
     }
+
 }

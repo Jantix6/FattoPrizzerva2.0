@@ -48,4 +48,13 @@ public class PunchRunning : BaseState
         player.currentTimePunch += Time.deltaTime;
         player.ResetSpeed();
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.tag == "Enemie" && player.stateMachine.currentState == this)
+        {
+            hit.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((run.toMove).normalized, player.damageBase * player.speed / 2);
+            player.ChangeState(PlayerScript.State.MOVING);
+        }
+    }
 }

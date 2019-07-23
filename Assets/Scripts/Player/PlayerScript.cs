@@ -46,7 +46,7 @@ public class PlayerScript : MonoBehaviour
     private float coolDownPunch = 0.75f;
     public float currentTimeState = 0;
     public Vector3 toMove = Vector3.zero;
-    private Vector3 lastDirection = Vector3.up;
+    private Vector3 lastDirection = Vector3.forward;
     private bool running = false;
     private bool onGround = false;
     public float gravity = 60;
@@ -89,6 +89,8 @@ public class PlayerScript : MonoBehaviour
         runScript = run.GetComponent<RunScript>();
         punchRunningScript = punchRunning.GetComponent<PunchRunning>();
         punchFlyScript = punchFly.GetComponent<PunchFly>();
+
+        ChangeState(State.MOVING);
     }
 
     // Update is called once per frame
@@ -184,7 +186,7 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetKeyDown(jumpKey) && (currentState == State.MOVING || currentState == State.RUNING) && currentTimeColetazo == 0)
         {
-            currentTimeColetazo = 0.3f;
+            currentTimeColetazo = 0.5f;
             running = false;
             StartJump();
         }
@@ -192,7 +194,7 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetKey(runKey) && running && CanPunchRunning() && speed > normalSpeed + 1 && Input.GetMouseButton(0))
             ChangeState(State.PUNCHRUNNING);
 
-        if (Input.GetMouseButton(1) && currentState.Equals(State.MOVING))
+        if (Input.GetMouseButton(1) && currentState == State.MOVING)
             OnActionButton();
 
         if (currentTimeColetazo > 0)
@@ -238,32 +240,6 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.tag == "Enemie")
-        {
-            if (currentState == State.PUNCHING)
-                hit.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((hit.gameObject.transform.position - gameObject.transform.position).normalized, damageBase * speed);
-            if (currentState == State.PUNCHRUNNING || currentState == State.FLYINGKICK)
-                hit.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((hit.gameObject.transform.position - gameObject.transform.position).normalized, damageBase * speed / 3F);
-            ChangeState(State.MOVING);
-        }
-
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Enemie")
-        {
-            if (currentState == State.PUNCHING)
-                other.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((other.gameObject.transform.position - gameObject.transform.position).normalized, damageBase * speed);
-            if (currentState == State.PUNCHRUNNING || currentState == State.FLYINGKICK)
-                other.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((other.gameObject.transform.position - gameObject.transform.position).normalized, damageBase * speed / 3F);
-            ChangeState(State.MOVING);
-        }
-    }
-
     private void OnActionButton()
     {
         RaycastHit rayHit;
@@ -279,6 +255,7 @@ public class PlayerScript : MonoBehaviour
                 }
 
             }
+
 
         }
     }

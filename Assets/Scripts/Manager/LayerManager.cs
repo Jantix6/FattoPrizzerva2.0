@@ -33,7 +33,7 @@ public class LayerManager : MonoBehaviour
             }
 
             if(player.GetLayerPlayer() != maxLayer)
-                moving.MoveCameraUpLayer();
+                moving.MoveCameraUpLayer(floors[maxLayer].gameObject.transform.position);
 
 
             player.SetLayerPlayer(maxLayer);

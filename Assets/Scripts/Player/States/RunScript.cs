@@ -12,7 +12,7 @@ public class RunScript : BaseState
     public float resistenceToGirRunning = 15;
 
     public Vector3 toMove = Vector3.zero;
-    private Vector3 lastDirection = Vector3.up;
+    private Vector3 lastDirection = Vector3.forward;
 
     private CharacterController characterController;
     private GameObject myCamera;

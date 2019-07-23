@@ -10,15 +10,16 @@ GameObject:
   m_Component:
   - component: {fileID: 5971155505212697159}
   - component: {fileID: 5971155505212697157}
-  - component: {fileID: 5971155505212697211}
   - component: {fileID: 5971155505212697210}
   - component: {fileID: 5971155505212697209}
+  - component: {fileID: 1337925805842572045}
   - component: {fileID: 5971155505212697208}
   - component: {fileID: 5971155505212697158}
   - component: {fileID: 5971155505212697212}
+  - component: {fileID: 280633563}
   m_Layer: 0
   m_Name: RioTutte
-  m_TagString: RioTutte
+  m_TagString: Enemie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,25 +51,12 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.5
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &5971155505212697211
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971155505212697156}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.61825275
-  m_Center: {x: 0.008069992, y: 0, z: 0}
 --- !u!114 &5971155505212697210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,8 +85,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   moving: {fileID: 5971155505212697212}
-  knockback: {fileID: 0}
+  knockback: {fileID: 280633563}
+  damageImpact: 10
+  timeImpact: 0.2
+  damageMinToMove: 15
+--- !u!114 &1337925805842572045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7135778b7ca574db2bdd697e93c253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  moving: {fileID: 5971155505212697212}
+  knockback: {fileID: 280633563}
   dash: {fileID: 5971155505212697158}
+  damageImpact: 10
+  timeImpact: 0.2
+  damageMinToMove: 15
+  numOfDashes: 2
+  timeBetweenDash: 0.5
+  currentTimeDash: 0
 --- !u!114 &5971155505212697208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +139,7 @@ MonoBehaviour:
   player: {fileID: 0}
   speedDash: 30
   timeDelay: 0.1
-  timeDash: 1
+  timeDash: 0.7
 --- !u!114 &5971155505212697212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +153,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  speed: 1
+--- !u!114 &280633563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d90ee5c7b6fded429cfaeeeca8748e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  speed: 5
+  timeKnockback: 0.3
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1 &5971155505687106188
 GameObject:
   m_ObjectHideFlags: 0

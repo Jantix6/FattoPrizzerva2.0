@@ -12,7 +12,7 @@ public class DashSimpleRioTutte : BaseState
     public float timeDash = 1f;
     private bool dashing = false;
 
-    private void Awake()
+    private void Start()
     {
         mainScript = GetComponent<RioTutteMainScript>();
         player = mainScript.GetPlayer();
@@ -41,6 +41,10 @@ public class DashSimpleRioTutte : BaseState
                     case 1:
                         mainScript.GetPhase1().ChangeState(RioTuttePhase1.State.MOVING);
                         break;
+                    case 2:
+                        mainScript.GetPhase2().currentTimeDash += Time.deltaTime;
+                        mainScript.GetPhase2().ChangeState(RioTuttePhase2.State.MOVING);
+                        break;
                 }
             }
         }
@@ -59,11 +63,32 @@ public class DashSimpleRioTutte : BaseState
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(hit.gameObject == player.gameObject && dashing)
+        if (mainScript.GetStateMachine().currentState == this)
         {
-            player.StartKnockBack(35, 0.3f, (player.gameObject.transform.position - gameObject.transform.position).normalized);
-            if (currentTime < timeDash - timeDash / 10)
-                currentTime = timeDash - timeDash / 10;
+            if (hit.gameObject == player.gameObject && dashing)
+            {
+                if (player.currentState == PlayerScript.State.PUNCHRUNNING || player.currentState == PlayerScript.State.FLYINGKICK)
+                {
+                    mainScript.GetPhase2().currentDash = 0;
+                    mainScript.GetPhase2().currentTimeDash = 0;
+                    mainScript.GetPhase2().ChangeState(RioTuttePhase2.State.MOVING);
+
+                    Vector3 _direction = (player.gameObject.transform.position - gameObject.transform.position).normalized;
+                    _direction = new Vector3(_direction.x, 0, _direction.z);
+                    player.StartKnockBack(speedDash * 0.5f, 0.1f, _direction);
+                }
+                else { 
+                Vector3 _direction = (player.gameObject.transform.position - gameObject.transform.position).normalized;
+                Vector2 guia = new Vector2(_direction.x, _direction.z).normalized;
+                guia = Vector2.Perpendicular(guia);
+                _direction = new Vector3(guia.x, 0, guia.y);
+                if (((player.transform.position + _direction) - (gameObject.transform.position)).magnitude < ((player.transform.position - _direction) - (gameObject.transform.position)).magnitude)
+                    _direction *= -1;
+                player.StartKnockBack(speedDash * 1.05f, 0.25f, _direction);
+                if (currentTime < timeDash - timeDash / 10)
+                    currentTime = timeDash - timeDash / 10;
+            }
+            }
         }
     }
 
