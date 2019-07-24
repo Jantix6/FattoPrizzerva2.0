@@ -400,7 +400,7 @@ MonoBehaviour:
   currentStructureIndex: 0
   previousStrcture_Key: 282
   nextStrcutre_Key: 283
-  selectedLanguage: 2
+  selectedLanguage: 1
 --- !u!4 &1853820471
 Transform:
   m_ObjectHideFlags: 0

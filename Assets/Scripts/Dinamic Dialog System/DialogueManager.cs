@@ -35,6 +35,7 @@ namespace Dialogues
             {
                 // busca el indice del objeto donde a (parametro) es igual al objeto que estamos buscando 
                 // iteramos por los elementos de la lista y devolvemos el indice de aquel qu ecumple la equivalencia 
+                // it returns -1 if not found
                 int index = dialogStructures.FindIndex(a => a == _dialogStructure);
                  
                 if (index != -1)
@@ -48,7 +49,12 @@ namespace Dialogues
         private void EndDialogue()
         {
             if (activeDialogueElement != null)
+            {
                 DestroyDialogueElement(activeDialogueElement);
+
+                // we do set the current index to -1 to make the dialog restart after completing it (just for testing porposes)
+                currentStructureIndex = -1;                     
+            }
         }
         private void DestroyDialogueElement (CanvasedDialogElement _target)
         {
@@ -57,6 +63,7 @@ namespace Dialogues
         private void ShowDialogueStructure(int _index)
         {
             Debug.LogWarning("Loading index " + _index);
+            currentStructureIndex = _index;
 
             // destroy the previous shown element
             if (activeDialogueElement != null)
@@ -77,7 +84,6 @@ namespace Dialogues
                 activeDialogueElement = Instantiate(canvasedSpeachPrefab,dialogueCanvas.transform);
                 (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, LanguageManager.gameLanguage);
             }
-            currentStructureIndex = _index;
             // ---------------------------------------------------------------------------------------------------------------------------- //   
         }
         public void ShowDialogueStructure(SO_DialogStructure _targetStructure)
@@ -95,11 +101,13 @@ namespace Dialogues
 
         public void GoToNextStructure()
         {
+            int desiredIndex;
+            desiredIndex = currentStructureIndex + 1;
 
-            if (currentStructureIndex + 1 < dialogStructures.Count)
+            if (desiredIndex < dialogStructures.Count  )
             {
                 Debug.Log("Proceed to the next structure");
-                ShowDialogueStructure(currentStructureIndex + 1);
+                ShowDialogueStructure(desiredIndex);
             } else
             {
                 Debug.LogWarning("Unable to go to next structure, you are the last (current : "  + currentStructureIndex + ")");
@@ -108,10 +116,13 @@ namespace Dialogues
         }
         public void GoToPreviousStructure()
         {
-            if (currentStructureIndex - 1 >= 0)
+            int desiredIndex;
+            desiredIndex = currentStructureIndex - 1;
+
+            if (desiredIndex >= 0)
             {
                 Debug.Log("Proceed to the previous structure");
-                ShowDialogueStructure(currentStructureIndex - 1);
+                ShowDialogueStructure(desiredIndex);
             }
             else
             {

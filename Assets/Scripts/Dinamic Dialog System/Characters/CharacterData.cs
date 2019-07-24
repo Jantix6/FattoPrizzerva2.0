@@ -10,7 +10,7 @@ namespace Dialogues
         [SerializeField] private string characterName;
         [SerializeField] private Sprite sprite;
         [SerializeField] [TextArea] private string characterDescription;
-        [SerializeField] [TextArea] private string bibliography;
+        [SerializeField] [TextArea] private string biography;
 
         public string GetName()
         {
@@ -22,7 +22,7 @@ namespace Dialogues
         }
         public string GetBibliography()
         {
-            return bibliography;
+            return biography;
         }
         public string GetCharacterDescription() 
         {

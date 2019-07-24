@@ -104,13 +104,21 @@ public class LanguageBasedString : ScriptableObject
     private static bool CheckIfLanguageSet(Language _targetLanguage, List<LanguageBasedString> _list, string _caller)
     {
         bool _isLanguagePresent = false;
-        foreach (LanguageBasedString stri in _list)
+        if (_list != null)
         {
-            if (stri.language == _targetLanguage)
+            foreach (LanguageBasedString stri in _list)
             {
-                _isLanguagePresent = true;
-            } 
+                if (stri.language == _targetLanguage)
+                {
+                    _isLanguagePresent = true;
+                }
+            }
+
+        } else
+        {
+            Debug.LogError(_caller + "Passed an empty list to check for languages");
         }
+        
         return _isLanguagePresent;
 
     }
