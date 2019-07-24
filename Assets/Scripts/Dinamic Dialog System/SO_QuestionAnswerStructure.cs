@@ -15,21 +15,19 @@ namespace Dialogues
 
         public string GetQuestion(Language _targetLanguage)
         {
-            Debug.LogError("Requested lenguage" + _targetLanguage);
-
-            if (questions.Count == 0)
+            if (LanguageBasedString.CheckListIntegrity(questions,_targetLanguage, this.name))
             {
-                Debug.LogError("No titles found on object " + this.name);
-                return null;
-            }
+                // buamos el texto de las pregutnas y nos quedamos con el que queremos
+                for (int i = 0; i < questions.Count; i++)
+                {
+                    if (questions[i].language == _targetLanguage)
+                        return questions[i].text;                   // encontramos el texto en el idioma que nos intersa
+                }
 
-            for (int i = 0; i < questions.Count; i++)
-            {
-                if (questions[i].language == _targetLanguage)
-                    return questions[i].text;         
-            }
+            } 
 
-            LanguageBasedString.CheckIfLanguageSet(_targetLanguage, questions, this.name);
+            // we make sure the language seleted is set at the language based string
+            //LanguageBasedString.CheckIfLanguageSet(_targetLanguage, questions, this.name);
             return null;
 
 
@@ -37,8 +35,34 @@ namespace Dialogues
 
         public List<SO_Answer> GetAnswers()
         {
-            return answers_Lst;
+            if (CheckAnswersIntegrity())
+            {
+                return answers_Lst;
+            }
+            else
+            {
+                Debug.LogError("There is some problem with the answers of the object " + this.name);
+                return null;
+            }
+
+            
         }
+      
+        private bool CheckAnswersIntegrity()
+        {
+            if (answers_Lst.Count == 0 || answers_Lst == null)
+            {
+                Debug.LogError("No titles found on object " + this.name);
+                return false;
+
+            } else
+            {
+                return true;
+            }
+
+
+        }
+
 
     }
 }

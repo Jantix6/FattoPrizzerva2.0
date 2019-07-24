@@ -15,7 +15,7 @@ public class LanguageBasedString : ScriptableObject
 
     public Language language;
 
-    [TextArea] public string text;
+    [TextArea(4,228)] public string text;
 
 
     private void OnEnable()
@@ -51,7 +51,11 @@ public class LanguageBasedString : ScriptableObject
                 return Language.SPANISH;
             else if (identifiedLanguage == "ENG")
                 return Language.ENGLISH;
+        } else
+        {
+            return Language.NONE;
         }
+
         return Language.NONE;
 
     }
@@ -71,19 +75,43 @@ public class LanguageBasedString : ScriptableObject
             _languageExpresion += character;
         }
 
-        Debug.LogError("No language identified by the name of the object (LLL_NameOfTheObject");
+        Debug.LogError("No language identified by the name of the object (is MANDATORY to use the structure: LLL_NameOfTheObject");
         return null;
     }
 
-    public static void CheckIfLanguageSet(Language _targetLanguage, List<LanguageBasedString> _list, string _caller)
+    // PROCESS ---------------------------------------------------------------------------------------------------------- //
+    public static bool CheckListIntegrity(List<LanguageBasedString> _languageBasedStrings, Language _targetLanguage, string _callerName)
     {
-        string debugString = "";
-        debugString += "The language " + nameof(_targetLanguage) + " is not defined on the object " + _caller + "\n";
-        foreach (LanguageBasedString lString in _list)
+        if (_languageBasedStrings.Count == 0 || _languageBasedStrings == null)
         {
-            debugString += "REPORT OF " + lString.name + ": --> " + lString.language + "\n";
+            Debug.Log("The list of language Based Strings is empty or null on " + _callerName);
+            return false;
         }
-        Debug.LogError(debugString);
+        else if (!CheckIfLanguageSet(_targetLanguage, _languageBasedStrings, _callerName))
+        {
+            Debug.LogError("The language " + _targetLanguage + " is not set on a list of " + _callerName);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+
+    }
+
+
+    private static bool CheckIfLanguageSet(Language _targetLanguage, List<LanguageBasedString> _list, string _caller)
+    {
+        bool _isLanguagePresent = false;
+        foreach (LanguageBasedString stri in _list)
+        {
+            if (stri.language == _targetLanguage)
+            {
+                _isLanguagePresent = true;
+            } 
+        }
+        return _isLanguagePresent;
 
     }
 }

@@ -14,25 +14,27 @@ namespace Dialogues
         
         public string GetAnswerBody(Language _targetLanguage)
         {
-            if (answers.Count == 0)
+            if (LanguageBasedString.CheckListIntegrity(answers,_targetLanguage,this.name))
             {
-                Debug.LogError("No answers found on object " + this.name);
-                return null;
+                for (int i = 0; i < answers.Count; i++)
+                {
+                    if (answers[i].language == _targetLanguage)
+                        return answers[i].text;
+                }
             }
-
-            for (int i = 0; i < answers.Count; i++)
-            {
-                if (answers[i].language == _targetLanguage)
-                    return answers[i].text;
-            }
-
-            LanguageBasedString.CheckIfLanguageSet(_targetLanguage, answers, this.name);
             return null;
         }
 
         public SO_DialogStructure GetTargetStructure()
         {
-            return targetStructure;
+            if (targetStructure)
+                return targetStructure;
+            else
+            {
+                Debug.LogError("Target strucuture is not set on " + this.name);
+                return null;
+            }
+                
         }
 
 

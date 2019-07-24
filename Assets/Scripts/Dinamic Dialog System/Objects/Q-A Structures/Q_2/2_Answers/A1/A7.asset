@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
   m_Name: A7
   m_EditorClassIdentifier: 
-  answers: []
+  answers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   targetStructure: {fileID: 0}

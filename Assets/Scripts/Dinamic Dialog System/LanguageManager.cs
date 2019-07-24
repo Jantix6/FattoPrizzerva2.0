@@ -19,14 +19,14 @@ public  static class LanguageManager
 
     public static void SetGameLanguage(Language _selectedLanguage)
     {
-        if (_selectedLanguage != gameLanguage)
+        if (_selectedLanguage != gameLanguage && _selectedLanguage != Language.NONE)
         {
             ProcessLanguageChange(_selectedLanguage);
         }
 
     }
 
-    // If we need to perform some actions after the lenguage change
+    // If we need to perform some actions before or after the lenguage change we use this method
     private static void ProcessLanguageChange(Language _newLanguage)
     {
         gameLanguage = _newLanguage;

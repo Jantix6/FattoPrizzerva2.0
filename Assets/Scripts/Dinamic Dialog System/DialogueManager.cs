@@ -56,6 +56,8 @@ namespace Dialogues
         }
         private void ShowDialogueStructure(int _index)
         {
+            Debug.LogWarning("Loading index " + _index);
+
             // destroy the previous shown element
             if (activeDialogueElement != null)
             {
@@ -80,8 +82,6 @@ namespace Dialogues
         }
         public void ShowDialogueStructure(SO_DialogStructure _targetStructure)
         {
-            Debug.LogError(_targetStructure);
-
             if (dialogStructures.Contains(_targetStructure) )
             {
                 int _objectIndex = dialogStructures.IndexOf(_targetStructure);
@@ -95,13 +95,14 @@ namespace Dialogues
 
         public void GoToNextStructure()
         {
-            if (currentStructureIndex + 1 <= dialogStructures.Count - 1)
+
+            if (currentStructureIndex + 1 < dialogStructures.Count)
             {
                 Debug.Log("Proceed to the next structure");
                 ShowDialogueStructure(currentStructureIndex + 1);
             } else
             {
-                Debug.LogWarning("Unable to go to next structure, you are the last");
+                Debug.LogWarning("Unable to go to next structure, you are the last (current : "  + currentStructureIndex + ")");
                 EndDialogue();
             }
         }
@@ -114,7 +115,7 @@ namespace Dialogues
             }
             else
             {
-                Debug.LogWarning("Unable to go to previous structure, you are the first");
+                Debug.LogWarning("Unable to go to previous structure, you are the first (current : " + currentStructureIndex + ")");
                 EndDialogue();
             }
         }
@@ -136,24 +137,21 @@ namespace Dialogues
 
         private void Start()
         {
-            StartDialogue(0);
+            StartDialogue(currentStructureIndex);
         }
         private void Update()
         {
-            if (Input.GetKeyDown(nextStrcutre_Key))
+            if (Input.GetKeyUp(nextStrcutre_Key))
             {
                 GoToNextStructure();
             }
-            if (Input.GetKeyDown(previousStrcture_Key))
+            if (Input.GetKeyUp(previousStrcture_Key))
             {
                 GoToPreviousStructure();
             }
         }
 
-        private void OnValidate()
-        {
-            DebugSetLenguage();
-        }
+
 
         private void DebugSetLenguage()
         {
