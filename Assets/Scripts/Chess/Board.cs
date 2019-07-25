@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class Board : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Board : MonoBehaviour
     public Cell NormalCell;
 
     public List<Cell> validPositions;
+
+    private Portal pendingPortal = null;
 
     private void Awake()
     {
@@ -47,6 +50,23 @@ public class Board : MonoBehaviour
                 SetCellPosition(board[x, y], x, y);
             }
         }
+
+        if (boardSettings) SpawnPieces();
+    }
+
+    private void SpawnPieces()
+    {
+        foreach (PieceSetting piece in boardSettings.pieces)
+        {
+            Cell cellToPositionate = GetCell(piece.position.x, piece.position.y);
+
+            if (!cellToPositionate || cellToPositionate.type != Cell.CellType.Normal) return;
+
+            Piece currentPiece = Instantiate(piece.PiecePrefab.gameObject).GetComponent<Piece>();
+
+            currentPiece.MoveToCell(cellToPositionate);
+            currentPiece.AI_Controlled = piece.AI_Controlled;
+        }
     }
 
     public void GetBoardSettings()
@@ -60,6 +80,24 @@ public class Board : MonoBehaviour
             SetCellPosition(currentCell, cell.position.x, cell.position.y);
             currentCell.position = cell.position;
             board[cell.position.x, cell.position.y] = currentCell;
+
+            ConnectPortal(currentCell.GetComponent<Portal>());
+        }
+    }
+
+    private void ConnectPortal(Portal portal)
+    {
+        if (!portal) return;
+
+        if (pendingPortal != null && pendingPortal != portal)
+        {
+            portal.connectedPortal = pendingPortal;
+            pendingPortal.connectedPortal = portal;
+            pendingPortal = null;
+        }
+        else
+        {
+            pendingPortal = portal;
         }
     }
 

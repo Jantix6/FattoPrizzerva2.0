@@ -10,15 +10,22 @@ public abstract class Piece : MonoBehaviour
 
     public bool AI_Controlled;
     public bool selected;
+    public bool Moved = false;
 
     public Cell boardPosition;
     public List<Cell> MovePositions;
+    public List<Cell> PortalPassedPositions;
 
-    public Piece target;
+    [Header("Decision Making ||DO NOT ASSIGN||")]
+
+    public Piece targetPiece = null;
+    public Cell targetCell = null;
+    public Vector2Int direction = Vector2Int.zero;
+    public int cost = 0;
 
     public void Selected(bool selected)
     {
-        GetComponent<MeshRenderer>().material.color = selected ? Color.red : Color.white;
+        GetComponent<MeshRenderer>().material.color = selected ? Color.red : Color.grey;
 
         this.selected = selected;
 
@@ -38,8 +45,6 @@ public abstract class Piece : MonoBehaviour
                                                    boardPosition.position.y + (direction.y * forceAmount));
 
         if (!board.ValidIndex(pushedPosition)) return;
-
-        //if indestrucible/destructible wall
 
         MoveToCell(board.GetCell(pushedPosition.x, pushedPosition.y));
     }

@@ -25,11 +25,27 @@ public class PieceSelector : MonoBehaviour
 
         for (int i = 0; i < selectedPiece.MovePositions.Count; i++)
         {
-            if (selectedCell != selectedPiece.MovePositions[i]) continue;
+            if (selectedCell.position != selectedPiece.MovePositions[i].position) continue;
 
             Cell cellToGo = selectedPiece.MovePositions[i];
+
             player.movements -= selectedPiece.CalculateCost(cellToGo);
             selectedPiece.Move(cellToGo);
+
+
+            //Deselect(); //Testing, Uncomment When done
+            break;
+        }
+
+        for (int i = 0; i < selectedPiece.PortalPassedPositions.Count; i++)
+        {
+            if (selectedCell.position != selectedPiece.PortalPassedPositions[i].position) continue;
+
+            Cell cellToGo = selectedPiece.PortalPassedPositions[i];
+
+            player.movements -= selectedPiece.CalculateCost(cellToGo);
+            selectedPiece.Move(cellToGo);
+
         }
     }
 
@@ -41,7 +57,7 @@ public class PieceSelector : MonoBehaviour
 
         if (!selectedPiece) return;
 
-        if (selectedPiece.AI_Controlled) selectedPiece = null;
+        if (selectedPiece.AI_Controlled || selectedPiece.Moved) selectedPiece = null;
         else selectedPiece.Selected(true);
     }
 
