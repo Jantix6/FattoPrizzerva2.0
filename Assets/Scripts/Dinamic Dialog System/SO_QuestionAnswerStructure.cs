@@ -8,29 +8,16 @@ namespace Dialogues
     public class SO_QuestionAnswerStructure : SO_DialogStructure
     {
         //[SerializeField] [TextArea] private string question;
-        [SerializeField] private List<LanguageBasedString> questions;
+        // [SerializeField] private List<LanguageBasedString> questions;
         [SerializeField] private List<SO_Answer> answers_Lst;
 
-
+        [SerializeField] private SO_langaugeBasedStringContainer question;
 
         public string GetQuestion(Language _targetLanguage)
         {
-            if (LanguageBasedString.CheckListIntegrity(questions,_targetLanguage, this.name))
-            {
-                // buamos el texto de las pregutnas y nos quedamos con el que queremos
-                for (int i = 0; i < questions.Count; i++)
-                {
-                    if (questions[i].language == _targetLanguage)
-                        return questions[i].text;                   // encontramos el texto en el idioma que nos intersa
-                }
-
-            } 
-
-            // we make sure the language seleted is set at the language based string
-            //LanguageBasedString.CheckIfLanguageSet(_targetLanguage, questions, this.name);
-            return null;
-
-
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = question.GetLanguageBasedString(_targetLanguage, this.name);
+            return desiredLBS.text;
         }
 
         public List<SO_Answer> GetAnswers()
@@ -59,8 +46,6 @@ namespace Dialogues
             {
                 return true;
             }
-
-
         }
 
 

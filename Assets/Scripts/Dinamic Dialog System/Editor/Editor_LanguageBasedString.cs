@@ -3,33 +3,39 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(LanguageBasedString))]
-public class Editor_LanguageBasedString : Editor
+namespace Dialogues
 {
-    string helpMesage;
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(SO_LanguageBasedString))]
+    public class Editor_LanguageBasedString : Editor
     {
-        base.OnInspectorGUI();
+        string helpMesage;
 
-        LanguageBasedString stringObject = target as LanguageBasedString;
-
-
-        if (stringObject.language is Language.NONE)
+        public override void OnInspectorGUI()
         {
-            stringObject.Usable = false;
+            base.OnInspectorGUI();
 
-            helpMesage = "The object " + stringObject.name + " does not have a language defined : LANGUAGE = " + stringObject.language;
+            SO_LanguageBasedString stringObject = target as SO_LanguageBasedString;
 
-            EditorGUILayout.HelpBox(helpMesage, MessageType.Warning, true);
 
-        } else
-        {
-            stringObject.Usable = true;
+            if (stringObject.language is Language.NONE)
+            {
+                stringObject.Usable = false;
+
+                helpMesage = "The object " + stringObject.name + " does not have a language defined : LANGUAGE = " + stringObject.language;
+
+                EditorGUILayout.HelpBox(helpMesage, MessageType.Warning, true);
+
+            }
+            else
+            {
+                stringObject.Usable = true;
+            }
+
+
         }
 
 
     }
-
-
 }
+
+

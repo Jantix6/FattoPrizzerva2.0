@@ -9,11 +9,14 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "Answer", menuName = "Answers/New Answer")]
     public class SO_Answer : ScriptableObject 
     {
-        [SerializeField] private List<LanguageBasedString> answers;
+        //[SerializeField] private List<LanguageBasedString> answers;
         [SerializeField] private SO_DialogStructure targetStructure;
+
+        [SerializeField] private SO_langaugeBasedStringContainer answer;
         
         public string GetAnswerBody(Language _targetLanguage)
         {
+            /*
             if (LanguageBasedString.CheckListIntegrity(answers,_targetLanguage,this.name))
             {
                 for (int i = 0; i < answers.Count; i++)
@@ -23,6 +26,12 @@ namespace Dialogues
                 }
             }
             return null;
+            */
+
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
+            return desiredLBS.text;
+
         }
 
         public SO_DialogStructure GetTargetStructure()

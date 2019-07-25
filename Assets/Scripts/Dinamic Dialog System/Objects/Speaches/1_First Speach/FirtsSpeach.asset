@@ -13,11 +13,5 @@ MonoBehaviour:
   m_Name: FirtsSpeach
   m_EditorClassIdentifier: 
   speaker: {fileID: 11400000, guid: be89006906a6e874d9e3da192d66a313, type: 2}
-  titles:
-  - {fileID: 11400000, guid: 9e5afae499cdc1446b46dd95789455a1, type: 2}
-  - {fileID: 11400000, guid: b7c83b088c844db4db55a4a10670933e, type: 2}
-  - {fileID: 11400000, guid: a4fd0e2b73ad331488015e13add24982, type: 2}
-  bodies:
-  - {fileID: 11400000, guid: fcd07a07920dbc84d982a03ce82cd82f, type: 2}
-  - {fileID: 11400000, guid: 3641daa5ab9480b4bbd5694c7fe0f0b2, type: 2}
-  - {fileID: 11400000, guid: 4d889a771759d0142b7b56d5ea2329a2, type: 2}
+  title: {fileID: 11400000, guid: 2abf1e018487c604db54d1dc9c869a84, type: 2}
+  body: {fileID: 11400000, guid: 55e1f4bccfd0af44999dbc69ddb20f0a, type: 2}

@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: Hola
   m_EditorClassIdentifier: 
   speaker: {fileID: 11400000, guid: be89006906a6e874d9e3da192d66a313, type: 2}
-  question: "\xBFQue quieres de comer?"
   answers_Lst:
-  - {fileID: 11400000, guid: 0d67f0740883d9f4995f01017f614ebc, type: 2}
-  - {fileID: 11400000, guid: 1db0d53d3401abe4c99877a3b1d5e8c2, type: 2}
-  - {fileID: 11400000, guid: 3e8eec469d226f64583a6fe95ed2e467, type: 2}
-  - {fileID: 11400000, guid: da742554c11226c4ea57875cb582e98f, type: 2}
-  - {fileID: 11400000, guid: 90f5f8afd7ee1f548af1e7f7d3eb099f, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  question: {fileID: 0}

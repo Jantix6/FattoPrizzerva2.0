@@ -12,16 +12,33 @@ public enum Language
 }
 
 
-public  static class LanguageManager 
+public static class LanguageManager 
 {
-    [SerializeField] public static Language gameLanguage = Language.CATALAN;
+    [SerializeField]
+    private static Language gameLanguage = Language.NONE;
 
+    public delegate Language LanguageChangeEventManger();
+    public static event LanguageChangeEventManger OnLanguageChange;         // event called when language is changed
+    
+    // Class Constructor
+    static LanguageManager()
+    {
+        
+    }
 
+    public static Language GetGameLanguage()
+    {
+        return gameLanguage;
+    }
     public static void SetGameLanguage(Language _selectedLanguage)
     {
         if (_selectedLanguage != gameLanguage && _selectedLanguage != Language.NONE)
         {
             ProcessLanguageChange(_selectedLanguage);
+
+        } else
+        {
+            Debug.LogError("You need to define a valid language (selected language = " + _selectedLanguage + ")");
         }
 
     }
@@ -30,6 +47,9 @@ public  static class LanguageManager
     private static void ProcessLanguageChange(Language _newLanguage)
     {
         gameLanguage = _newLanguage;
+        Debug.Log("lenguage set to " + gameLanguage);
     }
+
+
 
 }

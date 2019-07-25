@@ -62,27 +62,25 @@ namespace Dialogues
         }
         private void ShowDialogueStructure(int _index)
         {
-            Debug.LogWarning("Loading index " + _index);
+
             currentStructureIndex = _index;
 
             // destroy the previous shown element
             if (activeDialogueElement != null)
-            {
                 DestroyDialogueElement(activeDialogueElement);
-            }
 
             // DANI REFACTORIZA ESTO, NO NOS GUSTAN LOS IFs ----------------------------------------------------------------------------- //
             // Is it a question?
             if (dialogStructures[_index] is SO_QuestionAnswerStructure)
             {
                 activeDialogueElement = Instantiate(canvasedDialoguePrefab, dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, LanguageManager.gameLanguage);
+                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, LanguageManager.GetGameLanguage());               
             }
             // Is it a speach element?
             else if (dialogStructures[_index] is SO_SpeachStructure)
             {
                 activeDialogueElement = Instantiate(canvasedSpeachPrefab,dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, LanguageManager.gameLanguage);
+                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, LanguageManager.GetGameLanguage());             
             }
             // ---------------------------------------------------------------------------------------------------------------------------- //   
         }
@@ -94,7 +92,7 @@ namespace Dialogues
                 ShowDialogueStructure(_objectIndex);
             } else
             {
-                Debug.Log("The target Structure is not set on the managers list" + _targetStructure);
+                Debug.LogWarning("The target Structure is not set on the managers list" + _targetStructure);
             }
 
         }
@@ -156,19 +154,18 @@ namespace Dialogues
             {
                 GoToNextStructure();
             }
-            if (Input.GetKeyUp(previousStrcture_Key))
+            else if (Input.GetKeyUp(previousStrcture_Key))
             {
                 GoToPreviousStructure();
             }
         }
 
 
-
+        [ContextMenu("SetLanguage")]
         private void DebugSetLenguage()
         {
             // El idioma no se seteara desde aqui aunque lo hago asi para hacer pruebas
-            LanguageManager.gameLanguage = selectedLanguage;
-            Debug.Log("lenguage set to " + selectedLanguage);
+            LanguageManager.SetGameLanguage(selectedLanguage);
         }
         #endregion;
     }

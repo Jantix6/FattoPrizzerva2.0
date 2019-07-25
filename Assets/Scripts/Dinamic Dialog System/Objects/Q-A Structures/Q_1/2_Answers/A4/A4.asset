@@ -12,8 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
   m_Name: A4
   m_EditorClassIdentifier: 
-  answers:
-  - {fileID: 11400000, guid: 189cc9c303ef046438a7e6f7e11420d0, type: 2}
-  - {fileID: 11400000, guid: cba33209df44ab843afd3a3b859eb299, type: 2}
-  - {fileID: 11400000, guid: d77e018a8bb7d284e922904c379fec42, type: 2}
   targetStructure: {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
+  answer: {fileID: 11400000, guid: 70ffb50d1cc30424cad9af6e1a5db482, type: 2}
