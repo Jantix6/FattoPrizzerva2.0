@@ -1,27 +1,25 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class Piece : MonoBehaviour
 {
+    public ChessPlayer player;
+    public int teamNumber = 0;
     protected Board board;
 
-    public int healthPoints;
-
-    public bool AI_Controlled;
-    public bool selected;
-    public bool Moved = false;
-
     public Cell boardPosition;
+    public int cost = 0;
+    public Vector2Int direction = Vector2Int.zero;
+
+    public int healthPoints;
+    public bool Moved = false;
     public List<Cell> MovePositions;
     public List<Cell> PortalPassedPositions;
+    public bool selected;
+    public Cell targetCell = null;
 
     [Header("Decision Making ||DO NOT ASSIGN||")]
-
     public Piece targetPiece = null;
-    public Cell targetCell = null;
-    public Vector2Int direction = Vector2Int.zero;
-    public int cost = 0;
 
     public void Selected(bool selected)
     {
@@ -41,8 +39,8 @@ public abstract class Piece : MonoBehaviour
 
     public void GetPushed(Vector2Int direction, int forceAmount)
     {
-        Vector2Int pushedPosition = new Vector2Int(boardPosition.position.x + (direction.x * forceAmount),
-                                                   boardPosition.position.y + (direction.y * forceAmount));
+        var pushedPosition = new Vector2Int(boardPosition.position.x + direction.x * forceAmount,
+                                            boardPosition.position.y + direction.y * forceAmount);
 
         if (!board.ValidIndex(pushedPosition)) return;
 
@@ -51,7 +49,7 @@ public abstract class Piece : MonoBehaviour
 
     public void PushPiece(int cost, Piece pieceToPush, Vector2Int direction)
     {
-        IHealth pieceHealth = pieceToPush.GetComponent<IHealth>();
+        var pieceHealth = pieceToPush.GetComponent<IHealth>();
 
         cost = Mathf.Clamp(cost, 0, 5);
 
@@ -74,7 +72,6 @@ public abstract class Piece : MonoBehaviour
                 pieceHealth.GetDamage(1);
                 break;
         }
-
     }
 
     public abstract void Move(Cell cell);

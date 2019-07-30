@@ -65,7 +65,7 @@ public class Board : MonoBehaviour
             Piece currentPiece = Instantiate(piece.PiecePrefab.gameObject).GetComponent<Piece>();
 
             currentPiece.MoveToCell(cellToPositionate);
-            currentPiece.AI_Controlled = piece.AI_Controlled;
+            currentPiece.teamNumber = piece.playerNumber;
         }
     }
 
@@ -135,5 +135,15 @@ public class Board : MonoBehaviour
     public Cell GetCell(int x, int y)
     {
         return ValidIndex(x, y) ? (board[x, y] ? board[x, y] : null) : null;
+    }
+
+    public static Vector2Int GetDirection(Cell origin, Cell destination)
+    {
+        Vector2Int direction = (destination.position - origin.position);
+
+        if (direction.x != 0) direction.x = Math.Sign(direction.x);
+        if (direction.y != 0) direction.y = Math.Sign(direction.y);
+
+        return direction;
     }
 }

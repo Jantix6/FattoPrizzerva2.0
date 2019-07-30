@@ -9,10 +9,13 @@ public class PieceSelector : MonoBehaviour
 
     public Piece selectedPiece;
 
+    public MovementPreview previewMovement;
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)) SelectPiece();
-        if (Input.GetMouseButtonDown(1)) MovePiece();
+        if (Input.GetMouseButtonDown(0)) Select();
+        // if (Input.GetMouseButtonDown(1)) MovePiece();
+        if (Input.GetMouseButtonDown(1)) previewMovement.Move();
     }
 
     private void MovePiece()
@@ -57,7 +60,7 @@ public class PieceSelector : MonoBehaviour
 
         if (!selectedPiece) return;
 
-        if (selectedPiece.AI_Controlled || selectedPiece.Moved) selectedPiece = null;
+        if (selectedPiece.teamNumber != player.playerNumber || selectedPiece.Moved) selectedPiece = null;
         else selectedPiece.Selected(true);
     }
 
@@ -84,4 +87,16 @@ public class PieceSelector : MonoBehaviour
 
         return default;
     }
+
+    private void Select()
+    {
+        Piece piece = GetFromRay<Piece>("Piece");
+
+        if (!piece) return;
+        if (piece.teamNumber != player.playerNumber) return;
+        if (piece.Moved) return;
+
+        previewMovement.Select(piece);
+    }
+
 }

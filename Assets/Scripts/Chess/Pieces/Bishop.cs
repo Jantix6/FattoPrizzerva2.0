@@ -10,7 +10,15 @@ public class Bishop : Piece, IHealth
 
     public float Health { get => health; set => health = value; }
 
+    public ActionHandler ActionHandler
+    {
+        get { return actionHandler; }
+    }
+
     private PieceNavigation pieceNavigation;
+
+    private MovementPreview preview;
+    private readonly ActionHandler actionHandler = new ActionHandler();
 
     private void Start()
     {
@@ -18,9 +26,9 @@ public class Bishop : Piece, IHealth
         board = Board.instance;
 
         //Testing Purposes
-        transform.position = new Vector3(UnityEngine.Random.Range(0, Board.instance.size),
-                                         1,
-                                         UnityEngine.Random.Range(0, Board.instance.size));
+        if (!boardPosition) transform.position = new Vector3(UnityEngine.Random.Range(0, Board.instance.size),
+                                                             1,
+                                                             UnityEngine.Random.Range(0, Board.instance.size));
         GetBoardPosition();
     }
 
@@ -44,7 +52,7 @@ public class Bishop : Piece, IHealth
 
     public void MovementDone()
     {
-        if (targetPiece && targetPiece.AI_Controlled != AI_Controlled) PushPiece(cost, targetPiece, direction);
+        if (targetPiece && targetPiece.teamNumber != teamNumber) PushPiece(cost, targetPiece, direction);
 
         if (targetCell)
         {
@@ -72,6 +80,8 @@ public class Bishop : Piece, IHealth
 
     public override void GetPossibleMoves()
     {
+        if (!board) board = Board.instance;
+
         MovePositions.Clear();
         PortalPassedPositions.Clear();
         board.ClearValidPositions();
@@ -84,14 +94,14 @@ public class Bishop : Piece, IHealth
 
     public override void ShowPossibleMoves(bool show)
     {
-        for (int i = 0; i < MovePositions.Count; i++)
+        foreach (var position in MovePositions)
         {
-            MovePositions[i].ShowAvailable(show);
+            position.ShowAvailable(show);
         }
 
-        for (int i = 0; i < PortalPassedPositions.Count; i++)
+        foreach (var portalPositions in PortalPassedPositions)
         {
-            PortalPassedPositions[i].ShowAvailable(show);
+            portalPositions.ShowAvailable(show);
         }
     }
 
@@ -147,31 +157,21 @@ public class Bishop : Piece, IHealth
 
             if (!IsValid) break;
 
-            if (CalculateCost(currentCell) <= ChessPlayer.instance.movements)
+            if (CalculateCost(currentCell) > player.movements) break;
+
+            if (currentCell.piecePlaced != null)
             {
-                if (currentCell.piecePlaced != null)
-                {
-                    if (currentCell.piecePlaced.AI_Controlled && CalculateCost(currentCell) >= 2) positions.Add(currentCell);
-                    break;
-                }
-                else if (currentCell.type != Cell.CellType.Normal)
-                {
-                    positions.Add(currentCell);
-
-                    if (currentCell.type == Cell.CellType.Portal)
-                    {
-                        Portal portal = currentCell.GetComponent<Portal>();
-                        List<Cell> portalCells = FindPossibleMoves(portal.connectedPortal, xDirection, yDirection);
-
-                        PortalPassedPositions.AddRange(portalCells);
-                    }
-                    break;
-                }
-                else
-                {
-                    positions.Add(currentCell);
-                }
+                if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2) positions.Add(currentCell);
+                break;
             }
+
+            if (currentCell.type == Cell.CellType.Portal)
+            {
+                positions.Add(currentCell);
+                break;
+            }
+
+            positions.Add(currentCell);
         }
 
         return positions;

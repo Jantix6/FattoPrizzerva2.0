@@ -1,28 +1,103 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using System;
 
-public abstract class PieceAction
+public interface PieceAction
 {
-    public int cost;
-    public abstract IEnumerator DoAction(Action callback);
-
+    int Cost { get; set; }
+    IEnumerator DoAction(Action callback);
 }
 
 public class MovementAction : PieceAction
 {
-    private Cell destination;
+    public int Cost { get; set; }
 
-    public MovementAction(Cell destination, int cost)
+    private Cell cell;
+    private Piece piece;
+    private float speed;
+
+    public MovementAction(Cell cell, int cost, float speed, Piece piece)
     {
-        this.destination = destination;
-        this.cost = cost;
+        this.cell = cell;
+        this.Cost = cost;
+        this.speed = speed;
+        this.piece = piece;
     }
 
-    public override IEnumerator DoAction(Action callback)
+    public IEnumerator DoAction(Action callback)
     {
-        throw new NotImplementedException();
+        piece.direction = Board.GetDirection(piece.boardPosition, cell);
+
+        var destination = new Vector3(cell.position.x, piece.transform.position.y, cell.position.y);
+        var direction = new Vector3(piece.direction.x, 0, piece.direction.y).normalized;
+
+        while ((piece.transform.position - destination).magnitude > 0.1f)
+        {
+            piece.transform.position += direction * speed * Time.deltaTime;
+
+            yield return null;
+        }
+
+        piece.MoveToCell(cell);
+
+        callback();
     }
 }
 
+public class TeleportAction : PieceAction
+{
+    public int Cost { get; set; }
+
+    private Portal cell;
+    private Piece piece;
+    private float speed;
+
+    public TeleportAction(Portal cell, int cost, float speed, Piece piece)
+    {
+        this.cell = cell;
+        this.Cost = cost;
+        this.speed = speed;
+        this.piece = piece;
+    }
+
+    public IEnumerator DoAction(Action callback)
+    {
+        piece.direction = Board.GetDirection(piece.boardPosition, cell);
+
+        var destination = new Vector3(cell.position.x, piece.transform.position.y, cell.position.y);
+        var direction = new Vector3(piece.direction.x, 0, piece.direction.y).normalized;
+
+        while ((piece.transform.position - destination).magnitude > 0.1f)
+        {
+            piece.transform.position += direction * speed * Time.deltaTime;
+
+            yield return null;
+        }
+
+        piece.MoveToCell(cell);
+        piece.MoveToCell(cell.connectedPortal);
+
+        var nextCell = GetNextCell(piece.boardPosition, piece.direction);
+
+        if (nextCell)
+        {
+            destination = new Vector3(nextCell.position.x, piece.transform.position.y, nextCell.position.y);
+
+            while ((piece.transform.position - destination).magnitude > 0.1f)
+            {
+                piece.transform.position += direction * speed * Time.deltaTime;
+
+                yield return null;
+            }
+
+            piece.MoveToCell(nextCell);
+        }
+
+        callback();
+    }
+
+    private Cell GetNextCell(Cell currentCell, Vector2Int direction)
+    {
+        return Board.instance.GetCell(currentCell.position.x + direction.x, currentCell.position.y + direction.y);
+    }
+}

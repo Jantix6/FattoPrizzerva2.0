@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class ChessPlayer : MonoBehaviour
 {
-    public static ChessPlayer instance;
-    public int movements;
+    public int playerNumber = 1;
+    public int movements=50;
 
-    private void Awake()
+    public int turn = 0;
+
+    void Awake()
     {
-        if (instance == null) instance = this;
-        if (instance != this) Destroy(this);
+        var pieces = FindObjectsOfType<Piece>();
+
+        foreach (var piece in pieces)
+        {
+            if (piece.teamNumber == playerNumber) piece.player = this;
+        }
     }
+
+    private void Update()
+    {
+       //if (turn == 0) movements = 1;
+    }
+
 }
