@@ -20,7 +20,7 @@ public class Board : MonoBehaviour
 
     public List<Cell> validPositions;
 
-    private Portal pendingPortal = null;
+    private Cell pendingPortal = null;
 
     private void Awake()
     {
@@ -81,11 +81,11 @@ public class Board : MonoBehaviour
             currentCell.position = cell.position;
             board[cell.position.x, cell.position.y] = currentCell;
 
-            ConnectPortal(currentCell.GetComponent<Portal>());
+            if (currentCell.type == Cell.CellType.Portal) ConnectPortal(currentCell);
         }
     }
 
-    private void ConnectPortal(Portal portal)
+    private void ConnectPortal(Cell portal)
     {
         if (!portal) return;
 

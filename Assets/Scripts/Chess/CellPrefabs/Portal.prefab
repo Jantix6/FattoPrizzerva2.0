@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 7539857890363647548}
   - component: {fileID: 1604561782693372822}
   - component: {fileID: 7098894982855434361}
-  - component: {fileID: 8967925090114538733}
+  - component: {fileID: 424959876919660644}
   m_Layer: 8
   m_Name: Portal
   m_TagString: Untagged
@@ -172,7 +172,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8967925090114538733
+--- !u!114 &424959876919660644
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8626566086895500816}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdd69744175a0eb4eb11327cf3a65cad, type: 3}
+  m_Script: {fileID: 11500000, guid: da766eb9dd1cf80439215630f90c16f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2

@@ -7,68 +7,16 @@ public class PieceSelector : MonoBehaviour
 {
     public ChessPlayer player;
 
-    public Piece selectedPiece;
-
     public MovementPreview previewMovement;
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0)) Select();
-        // if (Input.GetMouseButtonDown(1)) MovePiece();
-        if (Input.GetMouseButtonDown(1)) previewMovement.Move();
+        if (Input.GetMouseButtonDown(1)) previewMovement.SelectPositionToMove();
+
     }
 
-    private void MovePiece()
-    {
-        if (selectedPiece == null) return;
 
-        Cell selectedCell = GetFromRay<Cell>("Cell");
-
-        if (selectedCell == null) return;
-
-        for (int i = 0; i < selectedPiece.MovePositions.Count; i++)
-        {
-            if (selectedCell.position != selectedPiece.MovePositions[i].position) continue;
-
-            Cell cellToGo = selectedPiece.MovePositions[i];
-
-            player.movements -= selectedPiece.CalculateCost(cellToGo);
-            selectedPiece.Move(cellToGo);
-
-
-            //Deselect(); //Testing, Uncomment When done
-            break;
-        }
-
-        for (int i = 0; i < selectedPiece.PortalPassedPositions.Count; i++)
-        {
-            if (selectedCell.position != selectedPiece.PortalPassedPositions[i].position) continue;
-
-            Cell cellToGo = selectedPiece.PortalPassedPositions[i];
-
-            player.movements -= selectedPiece.CalculateCost(cellToGo);
-            selectedPiece.Move(cellToGo);
-
-        }
-    }
-
-    public void SelectPiece()
-    {
-        Deselect();
-
-        selectedPiece = GetFromRay<Piece>("Piece");
-
-        if (!selectedPiece) return;
-
-        if (selectedPiece.teamNumber != player.playerNumber || selectedPiece.Moved) selectedPiece = null;
-        else selectedPiece.Selected(true);
-    }
-
-    private void Deselect()
-    {
-        if (selectedPiece) selectedPiece.Selected(false);
-        selectedPiece = null;
-    }
 
     public static T GetFromRay<T>(string layerMaskName)
     {
@@ -98,5 +46,4 @@ public class PieceSelector : MonoBehaviour
 
         previewMovement.Select(piece);
     }
-
 }

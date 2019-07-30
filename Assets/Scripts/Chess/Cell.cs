@@ -15,13 +15,14 @@ public class Cell : MonoBehaviour
         Storm,
     }
 
-
     public CellType type;
 
     public Vector2Int position;
     public Piece piecePlaced;
 
     public SpriteRenderer availableCell;
+
+    public Cell connectedPortal;
 
     public void SetPosition(Vector2 position)
     {

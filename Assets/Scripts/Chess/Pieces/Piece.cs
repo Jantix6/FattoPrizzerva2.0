@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Chess.Pieces;
 using UnityEngine;
 
 public abstract class Piece : MonoBehaviour
@@ -14,22 +15,12 @@ public abstract class Piece : MonoBehaviour
     public int healthPoints;
     public bool Moved = false;
     public List<Cell> MovePositions;
-    public List<Cell> PortalPassedPositions;
     public bool selected;
-    public Cell targetCell = null;
 
-    [Header("Decision Making ||DO NOT ASSIGN||")]
-    public Piece targetPiece = null;
+    public IActionHandler actionHandler => GetComponent<IActionHandler>();
 
-    public void Selected(bool selected)
-    {
-        GetComponent<MeshRenderer>().material.color = selected ? Color.red : Color.grey;
-
-        this.selected = selected;
-
-        GetPossibleMoves();
-        ShowPossibleMoves(selected);
-    }
+    public bool dummy = false;
+    public bool canChangeDirection = false;
 
     public void GetBoardPosition()
     {
@@ -74,10 +65,8 @@ public abstract class Piece : MonoBehaviour
         }
     }
 
-    public abstract void Move(Cell cell);
     public abstract void MoveToCell(Cell cell);
-    public abstract void ShowPossibleMoves(bool show);
-    public abstract void GetPossibleMoves();
-
+    public abstract void GetPossibleMoves(bool multidirectional);
+    public abstract List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection);
     public abstract int CalculateCost(Cell nextPosition);
 }

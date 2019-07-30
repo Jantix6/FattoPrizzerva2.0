@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: BoardSetingsTest
   m_EditorClassIdentifier: 
   cells:
-  - cellPrefab: {fileID: 8967925090114538733, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
+  - cellPrefab: {fileID: 424959876919660644, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
       type: 3}
     position: {x: 4, y: 4}
-  - cellPrefab: {fileID: 8967925090114538733, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
+  - cellPrefab: {fileID: 424959876919660644, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
       type: 3}
     position: {x: 8, y: 8}
-  - cellPrefab: {fileID: 8967925090114538733, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
+  - cellPrefab: {fileID: 424959876919660644, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
       type: 3}
     position: {x: 13, y: 5}
-  - cellPrefab: {fileID: 8967925090114538733, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
+  - cellPrefab: {fileID: 424959876919660644, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
       type: 3}
     position: {x: 2, y: 15}
+  pieces: []

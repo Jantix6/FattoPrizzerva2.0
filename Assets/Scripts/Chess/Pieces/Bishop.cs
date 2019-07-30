@@ -10,19 +10,8 @@ public class Bishop : Piece, IHealth
 
     public float Health { get => health; set => health = value; }
 
-    public ActionHandler ActionHandler
-    {
-        get { return actionHandler; }
-    }
-
-    private PieceNavigation pieceNavigation;
-
-    private MovementPreview preview;
-    private readonly ActionHandler actionHandler = new ActionHandler();
-
     private void Start()
     {
-        pieceNavigation = GetComponent<PieceNavigation>();
         board = Board.instance;
 
         //Testing Purposes
@@ -32,85 +21,32 @@ public class Bishop : Piece, IHealth
         GetBoardPosition();
     }
 
-    public override void Move(Cell cell)
-    {
-        //Moved = true; //Testing, Uncomment When done
-
-        ShowPossibleMoves(false);
-
-        targetPiece = null;
-        targetCell = null;
-
-        targetPiece = cell.piecePlaced;
-        targetCell = cell.type == Cell.CellType.Normal ? null : cell;
-        direction = pieceNavigation.GetDirection(boardPosition, cell);
-
-        cost = CalculateCost(cell);
-
-        StartCoroutine(pieceNavigation.MoveTo(this, cell, MovementDone));
-    }
-
-    public void MovementDone()
-    {
-        if (targetPiece && targetPiece.teamNumber != teamNumber) PushPiece(cost, targetPiece, direction);
-
-        if (targetCell)
-        {
-            switch (targetCell.type)
-            {
-                case Cell.CellType.Jumper:
-                    targetCell.GetComponent<Jumper>().Jump(this);
-                    break;
-                case Cell.CellType.Portal:
-                    targetCell.GetComponent<Portal>().TeleportPiece(this);
-                    break;
-                case Cell.CellType.DestructibleWall:
-                    break;
-                case Cell.CellType.IndestructibleWall:
-                    break;
-                case Cell.CellType.Storm:
-                    break;
-            }
-        }
-
-        //Testing Purposes, delete when done
-        // GetPossibleMoves();
-        // ShowPossibleMoves(true);
-    }
-
-    public override void GetPossibleMoves()
+    public override void GetPossibleMoves(bool multidirectional)
     {
         if (!board) board = Board.instance;
 
         MovePositions.Clear();
-        PortalPassedPositions.Clear();
         board.ClearValidPositions();
 
-        MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, 1));
-        MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, -1));
-        MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, 1));
-        MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, -1));
-    }
-
-    public override void ShowPossibleMoves(bool show)
-    {
-        foreach (var position in MovePositions)
+        if (multidirectional)
         {
-            position.ShowAvailable(show);
+            MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, 1));
+            MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, -1));
+            MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, 1));
+            MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, -1));
         }
-
-        foreach (var portalPositions in PortalPassedPositions)
+        else
         {
-            portalPositions.ShowAvailable(show);
+            MovePositions.AddRange(FindPossibleMoves(boardPosition, direction.x, direction.y));
         }
     }
 
     public override void MoveToCell(Cell cell)
     {
-        boardPosition.piecePlaced = null;
+        if (!dummy) boardPosition.piecePlaced = null;
         transform.position = new Vector3(cell.position.x, 1, cell.position.y);
         boardPosition = cell;
-        boardPosition.piecePlaced = this;
+        if (!dummy) boardPosition.piecePlaced = this;
     }
 
     public override int CalculateCost(Cell nextPosition)
@@ -134,22 +70,21 @@ public class Bishop : Piece, IHealth
         Destroy(gameObject);
     }
 
-    public List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection)
+    public override List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection)
     {
-        bool IsValid = true;
+        var IsValid = true;
 
-        List<Cell> positions = new List<Cell>();
+        var positions = new List<Cell>();
+        var currentCell = initialCell;
 
-        Cell currentCell = initialCell;
-
-        int iteration = 0;
+        var iteration = 0;
 
         while (IsValid)
         {
             iteration++;
 
-            int x = initialCell.position.x + (xDirection * iteration);
-            int y = initialCell.position.y + (yDirection * iteration);
+            var x = initialCell.position.x + xDirection * iteration;
+            var y = initialCell.position.y + yDirection * iteration;
 
             currentCell = board.GetCell(x, y);
 
@@ -161,7 +96,8 @@ public class Bishop : Piece, IHealth
 
             if (currentCell.piecePlaced != null)
             {
-                if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2) positions.Add(currentCell);
+                if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2)
+                    positions.Add(currentCell);
                 break;
             }
 

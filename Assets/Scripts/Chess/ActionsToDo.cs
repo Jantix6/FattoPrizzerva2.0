@@ -29,11 +29,10 @@ public class MovementAction : PieceAction
         piece.direction = Board.GetDirection(piece.boardPosition, cell);
 
         var destination = new Vector3(cell.position.x, piece.transform.position.y, cell.position.y);
-        var direction = new Vector3(piece.direction.x, 0, piece.direction.y).normalized;
 
         while ((piece.transform.position - destination).magnitude > 0.1f)
         {
-            piece.transform.position += direction * speed * Time.deltaTime;
+            piece.transform.position = Vector3.MoveTowards(piece.transform.position, destination, speed * Time.deltaTime);
 
             yield return null;
         }
@@ -48,11 +47,11 @@ public class TeleportAction : PieceAction
 {
     public int Cost { get; set; }
 
-    private Portal cell;
+    private Cell cell;
     private Piece piece;
     private float speed;
 
-    public TeleportAction(Portal cell, int cost, float speed, Piece piece)
+    public TeleportAction(Cell cell, int cost, float speed, Piece piece)
     {
         this.cell = cell;
         this.Cost = cost;
@@ -65,11 +64,10 @@ public class TeleportAction : PieceAction
         piece.direction = Board.GetDirection(piece.boardPosition, cell);
 
         var destination = new Vector3(cell.position.x, piece.transform.position.y, cell.position.y);
-        var direction = new Vector3(piece.direction.x, 0, piece.direction.y).normalized;
 
         while ((piece.transform.position - destination).magnitude > 0.1f)
         {
-            piece.transform.position += direction * speed * Time.deltaTime;
+            piece.transform.position = Vector3.MoveTowards(piece.transform.position, destination, speed * Time.deltaTime);
 
             yield return null;
         }
@@ -85,7 +83,7 @@ public class TeleportAction : PieceAction
 
             while ((piece.transform.position - destination).magnitude > 0.1f)
             {
-                piece.transform.position += direction * speed * Time.deltaTime;
+                piece.transform.position = Vector3.MoveTowards(piece.transform.position, destination, speed * Time.deltaTime);
 
                 yield return null;
             }
@@ -97,6 +95,54 @@ public class TeleportAction : PieceAction
     }
 
     private Cell GetNextCell(Cell currentCell, Vector2Int direction)
+    {
+        return Board.instance.GetCell(currentCell.position.x + direction.x, currentCell.position.y + direction.y);
+    }
+}
+
+public class PushAction : PieceAction
+{
+    public int Cost { get; set; }
+
+    private Piece pieceToPush;
+    private Piece piece;
+    private float speed;
+
+    public PushAction(Piece pieceToPush, float speed, Piece piece)
+    {
+        this.pieceToPush = pieceToPush;
+        this.speed = speed;
+        this.piece = piece;
+    }
+
+    public IEnumerator DoAction(Action callback)
+    {
+        this.Cost = piece.CalculateCost(pieceToPush.boardPosition);
+
+        piece.direction = Board.GetDirection(piece.boardPosition, pieceToPush.boardPosition);
+
+        var beforeCell = GetCell(pieceToPush.boardPosition, new Vector2Int(-piece.direction.x, -piece.direction.y));
+
+        var destination = new Vector3(beforeCell.position.x, piece.transform.position.y, beforeCell.position.y);
+
+        while ((piece.transform.position - destination).magnitude > 0.1f)
+        {
+            piece.transform.position = Vector3.MoveTowards(piece.transform.position, destination, speed * Time.deltaTime);
+
+            yield return null;
+        }
+
+        piece.MoveToCell(beforeCell);
+        piece.PushPiece(Cost, pieceToPush, piece.direction);
+
+        var enemyCell = GetCell(beforeCell, piece.direction);
+
+        if (!enemyCell.piecePlaced) piece.MoveToCell(enemyCell);
+
+        callback();
+    }
+
+    private Cell GetCell(Cell currentCell, Vector2Int direction)
     {
         return Board.instance.GetCell(currentCell.position.x + direction.x, currentCell.position.y + direction.y);
     }
