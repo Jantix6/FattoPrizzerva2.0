@@ -4,8 +4,11 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+[System.Serializable]
+[CreateAssetMenu(fileName = "DataManagerSO", menuName = "DataManager")]
 public class DataManager : ScriptableObject
 {
+
     private string nameRute = Application.persistentDataPath + "/datos.dat";
     private List<int> globalKarma = new List<int>();
     private List<int> localKarma = new List<int>();
