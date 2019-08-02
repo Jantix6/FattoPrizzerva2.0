@@ -122,20 +122,11 @@ public class Board : MonoBehaviour
         }
     }
 
-    public bool ValidIndex(int x, int y)
-    {
-        return ((x < size && y < size) && (x >= 0 && y >= 0));
-    }
+    public bool ValidIndex(int x, int y) => ((x < size && y < size) && (x >= 0 && y >= 0));
 
-    public bool ValidIndex(Vector2Int index)
-    {
-        return ((index.x < size && index.y < size) && (index.x >= 0 && index.y >= 0));
-    }
+    public bool ValidIndex(Vector2Int index) => ((index.x < size && index.y < size) && (index.x >= 0 && index.y >= 0));
 
-    public Cell GetCell(int x, int y)
-    {
-        return ValidIndex(x, y) ? (board[x, y] ? board[x, y] : null) : null;
-    }
+    public Cell GetCell(int x, int y) => ValidIndex(x, y) ? (board[x, y] ? board[x, y] : null) : null;
 
     public static Vector2Int GetDirection(Cell origin, Cell destination)
     {

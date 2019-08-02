@@ -13,10 +13,7 @@ public class PieceSelector : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0)) Select();
         if (Input.GetMouseButtonDown(1)) previewMovement.SelectPositionToMove();
-
     }
-
-
 
     public static T GetFromRay<T>(string layerMaskName)
     {

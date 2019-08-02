@@ -25,4 +25,22 @@ MonoBehaviour:
   - cellPrefab: {fileID: 424959876919660644, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
       type: 3}
     position: {x: 2, y: 15}
+  - cellPrefab: {fileID: 1957221659156143794, guid: 2eb2ffe45d5e3224883b94c654ccfe86,
+      type: 3}
+    position: {x: 6, y: 6}
+  - cellPrefab: {fileID: 1957221659156143794, guid: 2eb2ffe45d5e3224883b94c654ccfe86,
+      type: 3}
+    position: {x: 10, y: 7}
+  - cellPrefab: {fileID: 1957221659156143794, guid: 2eb2ffe45d5e3224883b94c654ccfe86,
+      type: 3}
+    position: {x: 10, y: 15}
+  - cellPrefab: {fileID: 1957221659156143794, guid: 2eb2ffe45d5e3224883b94c654ccfe86,
+      type: 3}
+    position: {x: 5, y: 12}
+  - cellPrefab: {fileID: 1957221659156143794, guid: 2eb2ffe45d5e3224883b94c654ccfe86,
+      type: 3}
+    position: {x: 10, y: 5}
+  - cellPrefab: {fileID: 1957221659156143794, guid: 2eb2ffe45d5e3224883b94c654ccfe86,
+      type: 3}
+    position: {x: 3, y: 12}
   pieces: []

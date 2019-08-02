@@ -20,7 +20,7 @@ public abstract class Piece : MonoBehaviour
     public IActionHandler actionHandler => GetComponent<IActionHandler>();
 
     public bool dummy = false;
-    public bool canChangeDirection = false;
+    public bool omnidirectional = false;
 
     public void GetBoardPosition()
     {
@@ -65,8 +65,14 @@ public abstract class Piece : MonoBehaviour
         }
     }
 
-    public abstract void MoveToCell(Cell cell);
-    public abstract void GetPossibleMoves(bool multidirectional);
+    public void MoveToCell(Cell cell)
+    {
+        if (!dummy) boardPosition.piecePlaced = null;
+        transform.position = new Vector3(cell.position.x, 1, cell.position.y);
+        boardPosition = cell;
+        if (!dummy) boardPosition.piecePlaced = this;
+    }
+    public abstract void GetPossibleMoves(bool omnidirectional);
     public abstract List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection);
     public abstract int CalculateCost(Cell nextPosition);
 }

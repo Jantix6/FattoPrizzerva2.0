@@ -24,4 +24,14 @@ public class ChessPlayer : MonoBehaviour
        //if (turn == 0) movements = 1;
     }
 
+    private void SetUpPieces()
+    {
+        var pieces = FindObjectsOfType<Piece>();
+
+        foreach (var piece in pieces)
+        {
+            if (piece.teamNumber == playerNumber) piece.player = this;
+        }
+    }
+
 }

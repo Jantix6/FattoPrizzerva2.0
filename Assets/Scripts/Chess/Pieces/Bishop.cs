@@ -21,14 +21,14 @@ public class Bishop : Piece, IHealth
         GetBoardPosition();
     }
 
-    public override void GetPossibleMoves(bool multidirectional)
+    public override void GetPossibleMoves(bool omnidirectional)
     {
         if (!board) board = Board.instance;
 
         MovePositions.Clear();
         board.ClearValidPositions();
 
-        if (multidirectional)
+        if (omnidirectional)
         {
             MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, 1));
             MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, -1));
@@ -39,14 +39,6 @@ public class Bishop : Piece, IHealth
         {
             MovePositions.AddRange(FindPossibleMoves(boardPosition, direction.x, direction.y));
         }
-    }
-
-    public override void MoveToCell(Cell cell)
-    {
-        if (!dummy) boardPosition.piecePlaced = null;
-        transform.position = new Vector3(cell.position.x, 1, cell.position.y);
-        boardPosition = cell;
-        if (!dummy) boardPosition.piecePlaced = this;
     }
 
     public override int CalculateCost(Cell nextPosition)
@@ -96,12 +88,11 @@ public class Bishop : Piece, IHealth
 
             if (currentCell.piecePlaced != null)
             {
-                if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2)
-                    positions.Add(currentCell);
+                if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2) positions.Add(currentCell);
                 break;
             }
 
-            if (currentCell.type == Cell.CellType.Portal)
+            if (currentCell.type == Cell.CellType.Portal || currentCell.type == Cell.CellType.Jumper)
             {
                 positions.Add(currentCell);
                 break;
