@@ -17,14 +17,14 @@ namespace Dialogues
         public SO_langaugeBasedStringContainer body;
 
 
-        internal string GetSpeachTitle(Language _targetLanguage)
+        public string GetSpeachTitle(Language _targetLanguage)
         {
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = title.GetLanguageBasedString(_targetLanguage,this.name);
 
             return desiredLBS.text;
         }
-        internal string GetSpeachBody(Language _targetLanguage)
+        public string GetSpeachBody(Language _targetLanguage)
         {
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = body.GetLanguageBasedString(_targetLanguage, this.name);
