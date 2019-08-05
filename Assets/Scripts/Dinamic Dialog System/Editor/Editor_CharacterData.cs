@@ -6,7 +6,7 @@ using UnityEditor;
 namespace Dialogues 
 {
     [CustomEditor(typeof(CharacterData))]
-public class CharacterDataEditor : Editor
+public class Editor_CharacterData : Editor
 {
 
     CharacterData characterData;

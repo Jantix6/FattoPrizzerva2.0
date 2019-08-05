@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Dialogues
 {
@@ -9,6 +10,7 @@ namespace Dialogues
     {
 
         [SerializeField] private Canvas dialogueCanvas;
+        [SerializeField] private EventSystem dialogueEventSystem;           
         [SerializeField] private CanvasedDialogue canvasedDialoguePrefab;
         [SerializeField] private CanvasedSpeach canvasedSpeachPrefab;
 
@@ -22,12 +24,15 @@ namespace Dialogues
         [SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
         public Language selectedLanguage = Language.CATALAN;
 
+        // Contrlol
+        [SerializeField] public bool IsEnabled { get; private set; }            // are we on a dialogue? 
 
 
         #region (Internal)
         private void StartDialogue(int _index)
         {
             ShowDialogueStructure(_index);
+            IsEnabled = true;
         }
         private void StartDialogue(SO_DialogStructure _dialogStructure)
         {
@@ -53,7 +58,9 @@ namespace Dialogues
                 DestroyDialogueElement(activeDialogueElement);
 
                 // we do set the current index to -1 to make the dialog restart after completing it (just for testing porposes)
-                currentStructureIndex = -1;                     
+                currentStructureIndex = -1;
+
+                IsEnabled = false;
             }
         }
         private void DestroyDialogueElement (CanvasedDialogElement _target)
@@ -83,6 +90,12 @@ namespace Dialogues
                 (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, LanguageManager.GetGameLanguage());             
             }
             // ---------------------------------------------------------------------------------------------------------------------------- //   
+
+            // setup the navigation using the keyboard (default axis)
+            dialogueEventSystem.firstSelectedGameObject = null;
+            (activeDialogueElement as I_DialogElement).InitializeDefaultKeyboardNavigation(dialogueEventSystem);
+
+            Debug.LogWarning("showing as active the object " + dialogueEventSystem.firstSelectedGameObject.GetType());
         }
         public void ShowDialogueStructure(SO_DialogStructure _targetStructure)
         {

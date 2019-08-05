@@ -388,13 +388,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueCanvas: {fileID: 203550322}
+  dialogueEventSystem: {fileID: 1068059381}
   canvasedDialoguePrefab: {fileID: 7372392568412857422, guid: 930d03786bfbe4a448d5d6e0cbfdbbd5,
     type: 3}
   canvasedSpeachPrefab: {fileID: 5260582259950289474, guid: c8c1a21e2112d7e409fe38b60c77931a,
     type: 3}
   dialogStructures:
-  - {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
   - {fileID: 11400000, guid: ac2cfe9b9d751014bbb00d8570cf44db, type: 2}
+  - {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
   currentStructureIndex: 0
   previousStrcture_Key: 282
   nextStrcutre_Key: 283
