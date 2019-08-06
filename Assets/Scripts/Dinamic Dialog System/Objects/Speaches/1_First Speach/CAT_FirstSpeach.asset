@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a387e57d15864488ef86f684c2a885, type: 3}
+  m_Name: CAT_FirstSpeach
+  m_EditorClassIdentifier: 
+  language: 3
+  text: "Mira a qui noo tenim aqu\xED... b\xE9, he he, Com vas, com vens? Be tampoc
+    crec que ho s\xE0pigues No passa res no passa res, \xE9s prou comprensible, ja
+    anir\xE0s veient... o pensant potser... he he. Imagino que t'est\xE0s preguntant
+    les t\xEDpiques coses que un es pregunta quan es troba a un lloc del qual no en
+    sap res oi? \n\nDooncs t\u2019he de dir que crec fermament que el millor per a
+    tu ser\xE0 que no te\u2019n digui res. Ho anir\xE0s entenent... espero. I sin\xF3?
+    Tant \xE9s! L\u2019\xFAnic prop\xF2sit de les meves accions \xE9s que puguis experimentar
+    amb les normes del lloc on misteriosament (tot i que, amb una mica de sort i cervell,
+    d\u2019aqu\xED no massa t\u2019hauries d\u2019adonar que no tant misteri\xF3s)
+    has anat a parar i aix\xED siguis una mica m\xE9s conscient de les teves possibilitats.
+    Parlant clar, no deixar\xE0s de tenir-me al davant fins que no facis amb mi pr\xE0cticament
+    tot el que et puc oferir. Sona estrany oi? Ho s\xE9 i ho vaig pensar bastant abans
+    de saber que t\u2019ho diria. "
