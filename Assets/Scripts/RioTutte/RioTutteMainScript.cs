@@ -61,6 +61,8 @@ public class RioTutteMainScript : EnemieBasic
             if (timeToWait < 0)
                 timeToWait = 0;
         }
+
+        Gravity();
     }
 
     public void ChangePhase(int _newPhase)
@@ -122,5 +124,10 @@ public class RioTutteMainScript : EnemieBasic
     public StateMachine GetStateMachine()
     {
         return stateMachine;
+    }
+
+    private void Gravity()
+    {
+        characterController.Move(Vector3.down * player.GetGravity() * Time.deltaTime);
     }
 }

@@ -22,6 +22,7 @@ public class UltraDashRioTutte : BaseState
     public override void Enter()
     {
         currentTime = 0;
+        dashing = false;
         mainScript.direction = (player.gameObject.transform.position - gameObject.transform.position).normalized;
         mainScript.direction = new Vector3(mainScript.direction.x, 0, mainScript.direction.z);
     }
@@ -42,6 +43,10 @@ public class UltraDashRioTutte : BaseState
                     case 3:
                         mainScript.GetPhase3().currentTimeDash += Time.deltaTime;
                         mainScript.GetPhase3().ChangeState(RioTuttePhase3.State.MOVING);
+                        break;
+                    case 4:
+                        mainScript.GetPhase4().currentTimeDash += Time.deltaTime;
+                        mainScript.GetPhase4().ChangeState(RioTuttePhase4.State.MOVING);
                         break;
                 }
             }
@@ -65,12 +70,28 @@ public class UltraDashRioTutte : BaseState
         {
             if (hit.gameObject == player.gameObject && dashing)
             {
-                mainScript.GetPhase3().currentDash = 0;
-                mainScript.GetPhase3().currentTimeDash = 0;
-                mainScript.GetPhase3().ChangeState(RioTuttePhase3.State.MOVINGINVERSE);
 
-                player.StartKnockBack(0, mainScript.GetPhase3().timeImpact, Vector3.zero, false);
-               player.ChangeLife(-mainScript.GetPhase3().damageImpact);
+                switch (mainScript.phase)
+                {
+                    case 3:
+                        mainScript.GetPhase3().currentDash = 0;
+                        mainScript.GetPhase3().currentTimeDash = 0;
+                        mainScript.GetPhase3().ChangeState(RioTuttePhase3.State.MOVINGINVERSE);
+
+                        player.StartKnockBack(0, mainScript.GetPhase3().timeImpact, Vector3.zero, false);
+                        player.ChangeLife(-mainScript.GetPhase3().damageImpact);
+                        break;
+                    case 4:
+                        mainScript.GetPhase4().currentDash = 0;
+                        mainScript.GetPhase4().currentTimeDash = 0;
+                        mainScript.GetPhase4().ChangeState(RioTuttePhase4.State.MOVINGINVERSE);
+
+                        player.StartKnockBack(0, mainScript.GetPhase4().timeImpact, Vector3.zero, false);
+                        player.ChangeLife(-mainScript.GetPhase4().damageImpact);
+                        break;
+
+
+                }
             }
         }
     }

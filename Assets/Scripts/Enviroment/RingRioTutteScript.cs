@@ -17,7 +17,7 @@ public class RingRioTutteScript : MonoBehaviour
             else if (other.gameObject.tag == "Enemie")
             {
                 mainScript.ChangePhase(mainScript.phase + 1);
-                gameObject.GetComponent<SphereCollider>().enabled = false;
+                gameObject.GetComponent<BoxCollider>().enabled = false;
             }
         }
     }
