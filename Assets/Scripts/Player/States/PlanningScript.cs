@@ -63,8 +63,15 @@ public class PlanningScript : BaseState
 
         if(Input.GetMouseButtonDown(0) && player.stamina.Stamina >= staminaPerPunchAereo)
         {
-            player.stamina.ModifiyStamina(-staminaPerPunchAereo);
-            player.ChangeState(PlayerScript.State.AEREOPUNCH);
+            if (!player.adrenalinaOn)
+            {
+                player.stamina.ModifiyStamina(-staminaPerPunchAereo);
+                player.ChangeState(PlayerScript.State.AEREOPUNCH);
+            }
+            else
+            {
+                player.ChangeState(PlayerScript.State.ADRENALINAAEREOPUNCH);
+            }
         }
 
     }

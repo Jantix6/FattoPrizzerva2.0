@@ -7,10 +7,13 @@ public class RioTutteMainScript : EnemieBasic
     public int phase = 0;
     private RioTuttePhase1 phase1;
     private RioTuttePhase2 phase2;
+    private RioTuttePhase3 phase3;
+    private RioTuttePhase4 phase4;
     private StateMachine stateMachine;
     private CharacterController characterController;
     private PlayerScript player;
     public Vector3 direction = Vector3.back;
+    public float speed = 1;
     private float timeToWait = 0;
     // Start is called before the first frame update
     void Awake()
@@ -19,6 +22,8 @@ public class RioTutteMainScript : EnemieBasic
         characterController = GetComponent<CharacterController>();
         phase1 = GetComponent<RioTuttePhase1>();
         phase2 = GetComponent<RioTuttePhase2>();
+        phase3 = GetComponent<RioTuttePhase3>();
+        phase4 = GetComponent<RioTuttePhase4>();
         stateMachine = GetComponent<StateMachine>();
 
     }
@@ -43,6 +48,10 @@ public class RioTutteMainScript : EnemieBasic
                     phase2.Execute();
                     break;
                 case 3:
+                    phase3.Execute();
+                    break;
+                case 4:
+                    phase4.Execute();
                     break;
             }
         }
@@ -69,8 +78,13 @@ public class RioTutteMainScript : EnemieBasic
                 phase2.StartExecution();
                 break;
             case 3:
+                phase = 3;
+                phase3.StartExecution();
                 break;
             case 4:
+                phase = 4;
+                player.StartAdrenalina(true);
+                phase4.StartExecution();
                 break;
         }
     }
@@ -93,6 +107,16 @@ public class RioTutteMainScript : EnemieBasic
     public RioTuttePhase2 GetPhase2()
     {
         return phase2;
+    }
+
+    public RioTuttePhase3 GetPhase3()
+    {
+        return phase3;
+    }
+
+    public RioTuttePhase4 GetPhase4()
+    {
+        return phase4;
     }
 
     public StateMachine GetStateMachine()

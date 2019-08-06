@@ -11,9 +11,11 @@ public class StunRioTutte : BaseState
     private void Start()
     {
         mainScript = GetComponent<RioTutteMainScript>();
+        player = mainScript.GetPlayer();
     }
     public override void Enter()
     {
+        currentTime = 0;
         switch(mainScript.phase)
         {
             case 1:
@@ -51,6 +53,6 @@ public class StunRioTutte : BaseState
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
+        currentTime = 0;
     }
 }

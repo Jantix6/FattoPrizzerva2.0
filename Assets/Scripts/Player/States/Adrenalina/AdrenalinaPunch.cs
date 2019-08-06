@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PunchScript : BaseState
+public class AdrenalinaPunch : BaseState
 {
-    public float costStaminaPerPunch = 5;
-    [SerializeField] private float speedPunch = 3;
-    [SerializeField] private float damageBase = 2;
+
+    [SerializeField] private float speedPunch = 5;
+    [SerializeField] private float damageBase = 10;
     [SerializeField] private float timerDamage = 0.25f;
 
     private BaseState moving;
@@ -27,7 +27,6 @@ public class PunchScript : BaseState
     public override void Enter()
     {
         player.anim.SetTrigger("Fist");
-        player.stamina.ModifiyStamina(-costStaminaPerPunch);
         player.currentTimeState = 0;
         player.ChangeSpeed(speedPunch);
         moving.Enter();

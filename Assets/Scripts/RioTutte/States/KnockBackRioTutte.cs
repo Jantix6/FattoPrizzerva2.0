@@ -38,6 +38,9 @@ public class KnockBackRioTutte : BaseState
                 case 2:
                     mainScript.GetPhase2().ChangeState(RioTuttePhase2.State.MOVING);
                     break;
+                case 3:
+                    mainScript.GetPhase3().ChangeState(RioTuttePhase3.State.MOVING);
+                    break;
             }
         }
         else

@@ -6,7 +6,7 @@ public class PunchFly : BaseState
 {
     public CharacterController characterController;
     private Vector3 direction;
-    [SerializeField] private float damageBase = 2;
+    [SerializeField] private float damageBase = 22;
     private float speed = 0;
 
     [SerializeField] private SphereCollider colliderPunch;
@@ -41,7 +41,7 @@ public class PunchFly : BaseState
     public override void Execute()
     {
         player.currentTimeState += Time.deltaTime;
-        if (player.currentTimeState >= 0.15f)
+        if (player.currentTimeState >= 0.2f)
             player.ChangeState(PlayerScript.State.MOVING);
         CollisionFlags collisionFlags = characterController.Move(direction * Time.deltaTime * speed);
 
@@ -59,8 +59,10 @@ public class PunchFly : BaseState
         if (other.gameObject.tag == "Enemie")
         {
             if (player.stateMachine.currentState == this) //(player.stateMachine.currentState == this)
-                other.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((direction).normalized, damageBase * player.speed);
-            player.ChangeState(PlayerScript.State.MOVING);
+            {
+                other.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((direction).normalized, damageBase, true);
+                player.ChangeState(PlayerScript.State.MOVING);
+            }
         }
     }
 

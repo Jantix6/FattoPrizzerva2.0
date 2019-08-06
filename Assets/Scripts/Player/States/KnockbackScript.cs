@@ -31,6 +31,13 @@ public class KnockbackScript : BaseState
         if (player.currentTimeState >= timeToExit)
             player.ChangeState(PlayerScript.State.MOVING);
         CollisionFlags collisionFlags = characterController.Move(direction * Time.deltaTime * speed);
+
+        if((collisionFlags & CollisionFlags.Sides) != 0)
+        {
+            float damage = speed / 3;
+            player.ChangeLife(-damage);
+            player.ChangeState(PlayerScript.State.MOVING);
+        }
     }
 
     public override void Exit()

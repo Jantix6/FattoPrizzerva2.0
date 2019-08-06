@@ -2,32 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PunchRunning : BaseState
+public class AdrenalinaPunchRun : BaseState
 {
     CharacterController characterController;
-    public float costStaminaPerPunch = 5f;
     private float speed = 0;
     private float multiply = 2;
 
-    [SerializeField] private RunScript run;
+    [SerializeField] private AdrenalinaRun run;
 
     // Start is called before the first frame update
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        run = GetComponent<RunScript>();
+        run = GetComponent<AdrenalinaRun>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void Enter()
     {
         player.currentTimeState = 0;
-        player.stamina.ModifiyStamina(-costStaminaPerPunch * (player.speed - player.normalSpeed));
         speed = run.speed * multiply;
         player.speed = speed;
     }
@@ -38,7 +36,7 @@ public class PunchRunning : BaseState
 
         if (player.currentTimeState >= 0.15f)
             player.ChangeState(PlayerScript.State.MOVING);
-        
+
         CollisionFlags collisionFlags = characterController.Move(run.toMove * Time.deltaTime * speed);
 
     }
@@ -51,7 +49,7 @@ public class PunchRunning : BaseState
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if(hit.gameObject.tag == "Enemie" && player.stateMachine.currentState == this)
+        if (hit.gameObject.tag == "Enemie" && player.stateMachine.currentState == this)
         {
             hit.gameObject.GetComponent<EnemieBasic>().MoveDirectionHit((run.toMove).normalized, player.damageBase * player.speed / 2);
             player.ChangeState(PlayerScript.State.MOVING);

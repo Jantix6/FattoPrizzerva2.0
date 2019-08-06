@@ -7,7 +7,7 @@ public class PlayerScript : MonoBehaviour
     public enum State
     {
         MOVING, PUNCHING, RUNING, PUNCHRUNNING, KNOCKBACK, FLYINGKICK, HABILITY, INSIDEPLANT,
-        JUMPING, PLANNING, AEREOPUNCH
+        JUMPING, PLANNING, AEREOPUNCH, ADRENALINAPUNCH, ADRENALINARUN, ADRENALINAPUNCHRUN, ADRENALINAAEREOPUNCH
     };
     public State currentState = State.MOVING;
     public KeyCode upKey = KeyCode.W;
@@ -20,6 +20,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
 
     [SerializeField] public IEstaminable stamina;
+    [SerializeField] public IAdrenalinable adrenalina;
 
     #region STATES
     public BaseState punch;
@@ -31,14 +32,20 @@ public class PlayerScript : MonoBehaviour
     public BaseState jumping;
     public BaseState planning;
     public BaseState aereoPunch;
+    public BaseState adrenalinaPunch;
+    public BaseState adrenalinaRun;
+    public BaseState adrenalinaPunchRun;
+    public BaseState adrenalinaAereoPunch;
 
     private PunchScript punchScript;
     private MoveScript moveScript;
     private RunScript runScript;
     private PunchRunning punchRunningScript;
     private PunchFly punchFlyScript;
+    private AdrenalinaRun adrenalinaRunScript;
     #endregion
     public float normalSpeed = 7;
+    public float adrenalinaSpeed = 10f;
     public float speed;
     public float recoverStamina = 0;
     public float damageBase = 2;
@@ -49,6 +56,8 @@ public class PlayerScript : MonoBehaviour
     private Vector3 lastDirection = Vector3.forward;
     private bool running = false;
     private bool onGround = false;
+    public bool adrenalinaOn = false;
+    private bool exhaust = false;
     public float gravity = 60;
     private float distanceWithCamera;
     private int layer = 0;
@@ -58,6 +67,8 @@ public class PlayerScript : MonoBehaviour
 
     private float speedKnockBack = 0;
     private float timeKnockBack = 0;
+
+    private float life = 100;
 
     private float forceJump = 0;
     private PlantaTierra plantaTierra;
@@ -73,16 +84,21 @@ public class PlayerScript : MonoBehaviour
     private Color startColor;
     public GameObject children;
     public StateMachine stateMachine;
+    [SerializeField] private CanvasPlayerScript canvasPlayer;
     // Start is called before the first frame update
     void Awake()
     {
         stamina = GetComponent<IEstaminable>();
+        adrenalina = GetComponent<IAdrenalinable>();
         characterController = GetComponent<CharacterController>();
         startColor = spriteRenderer.color;
         speed = normalSpeed;
 
         punch = children.GetComponent<PunchScript>();
         punchFly = children.GetComponent<PunchFly>();
+        adrenalinaPunch = children.GetComponent<AdrenalinaPunch>();
+        aereoPunch = children.GetComponent<AereoPunchScript>();
+        adrenalinaAereoPunch = children.GetComponent<AdrenalinaAereoPunch>();
 
         punchScript = punch.GetComponent<PunchScript>();
         moveScript = moving.GetComponent<MoveScript>();
@@ -90,18 +106,24 @@ public class PlayerScript : MonoBehaviour
         punchRunningScript = punchRunning.GetComponent<PunchRunning>();
         punchFlyScript = punchFly.GetComponent<PunchFly>();
 
+        adrenalinaRunScript = adrenalinaRun.GetComponent<AdrenalinaRun>();
+
         ChangeState(State.MOVING);
     }
 
     // Update is called once per frame
     void Update()
     {
-        CheckVariablesUntilMoving();
+        if (adrenalinaOn)
+            AdrenalinaCheckVariablesUntilMoving();
+        else CheckVariablesUntilMoving();
+
         stateMachine.ExecuteState();
         switch (currentState)
         {
             case State.MOVING:
-                stamina.RegenStamina();
+                if(!adrenalinaOn)
+                    stamina.RegenStamina();
                 break;
             case State.PUNCHING:
                 break;
@@ -114,6 +136,14 @@ public class PlayerScript : MonoBehaviour
             case State.KNOCKBACK:
                 break;
             case State.HABILITY:
+                break;
+            case State.ADRENALINAPUNCH:
+                break;
+            case State.ADRENALINARUN:
+                break;
+            case State.ADRENALINAPUNCHRUN:
+                break;
+            case State.ADRENALINAAEREOPUNCH:
                 break;
         }
         CheckStats();
@@ -159,6 +189,20 @@ public class PlayerScript : MonoBehaviour
 
             case State.AEREOPUNCH:
                 stateMachine.ChangeState(aereoPunch);
+                break;
+            case State.ADRENALINAPUNCH:
+                stateMachine.ChangeState(adrenalinaPunch);
+                break;
+            case State.ADRENALINARUN:
+                running = true;
+                stateMachine.ChangeState(adrenalinaRun);
+                break;
+            case State.ADRENALINAPUNCHRUN:
+                running = true;
+                stateMachine.ChangeState(adrenalinaPunchRun);
+                break;
+            case State.ADRENALINAAEREOPUNCH:
+                stateMachine.ChangeState(adrenalinaAereoPunch);
                 break;
         }
 
@@ -208,6 +252,59 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+    private void AdrenalinaCheckVariablesUntilMoving()
+    {
+
+        if (Input.GetMouseButton(0) && AdrenalinaCanPunch() && currentState == State.MOVING)
+        {
+            ChangeState(State.ADRENALINAPUNCH);
+            return;
+        }
+        if (Input.GetKey(runKey) && currentState == State.MOVING)
+        {
+            ChangeState(State.ADRENALINARUN);
+            return;
+        }
+        else if (Input.GetKeyUp(runKey) && currentState == State.ADRENALINARUN)
+        {
+            running = false;
+            ChangeState(State.MOVING);
+        }
+
+        if (Input.GetKeyDown(jumpKey) && (currentState == State.MOVING || currentState == State.ADRENALINAPUNCHRUN) && currentTimeColetazo == 0)
+        {
+            currentTimeColetazo = 0.5f;
+            running = false;
+            StartJump();
+        }
+
+        if (Input.GetKey(runKey) && running && AdrenalinaCanPunchRunning() && Input.GetMouseButton(0))
+            ChangeState(State.ADRENALINAPUNCHRUN);
+
+        if (Input.GetMouseButton(1) && currentState == State.MOVING)
+            OnActionButton();
+
+        if (currentTimeColetazo > 0)
+        {
+            currentTimeColetazo -= Time.deltaTime;
+            if (currentTimeColetazo < 0)
+            {
+                currentTimeColetazo = 0;
+            }
+        }
+
+    }
+
+    private bool AdrenalinaCanPunch()
+    {
+        return currentTimePunch == 0 && currentState == State.MOVING;
+    }
+
+    private bool AdrenalinaCanPunchRunning()
+    {
+        return currentTimePunch == 0 && currentState == State.ADRENALINARUN;
+    }
+
     private bool CanPunch()
     {
         return currentTimePunch == 0 && stamina.Stamina >= punchScript.costStaminaPerPunch && currentState == State.MOVING;
@@ -221,21 +318,55 @@ public class PlayerScript : MonoBehaviour
 
     private void CheckStats()
     {
-        if (currentTimePunch > 0 && currentState != State.PUNCHING && currentState != State.PUNCHRUNNING &&
-            currentState != State.FLYINGKICK)
+        if (!adrenalinaOn)
         {
-            currentTimePunch += Time.deltaTime;
-            if (currentTimePunch >= coolDownPunch)
-                currentTimePunch = 0;
-        }
-
-        if (!running)
-        {
-            if (speed > normalSpeed)
+            if (currentTimePunch > 0 && currentState != State.PUNCHING && currentState != State.PUNCHRUNNING &&
+                currentState != State.FLYINGKICK && currentState != State.AEREOPUNCH)
             {
-                speed -= Time.deltaTime * runScript.decreseSpeedSecond;
-                if (speed < normalSpeed)
-                    speed = normalSpeed;
+                currentTimePunch += Time.deltaTime;
+                if (currentTimePunch >= coolDownPunch)
+                    currentTimePunch = 0;
+            }
+
+            if (!running)
+            {
+                if (speed > normalSpeed)
+                {
+                    speed -= Time.deltaTime * runScript.decreseSpeedSecond;
+                    if (speed < normalSpeed)
+                        speed = normalSpeed;
+                }
+            }
+        }
+        else
+        {
+            adrenalina.ReduceAdrenalina();
+            canvasPlayer.ChangeAdrenalina();
+
+            if(adrenalina.Adrenalina <= 0)
+            {
+                exhaust = true;
+                //te quedas en la mierda
+            }
+            else
+            {
+                if (currentTimePunch > 0 && currentState != State.ADRENALINAPUNCH && currentState != State.ADRENALINAPUNCHRUN &&
+    currentState != State.FLYINGKICK && currentState != State.ADRENALINAAEREOPUNCH)
+                {
+                    currentTimePunch += Time.deltaTime;
+                    if (currentTimePunch >= coolDownPunch)
+                        currentTimePunch = 0;
+                }
+
+                if (!running)
+                {
+                    if (speed > adrenalinaSpeed)
+                    {
+                        speed -= Time.deltaTime * adrenalinaRunScript.decreseSpeedSecond;
+                        if (speed < adrenalinaSpeed)
+                            speed = adrenalinaSpeed;
+                    }
+                }
             }
         }
     }
@@ -260,18 +391,43 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void StartAdrenalina(bool _active)
+    {
+        adrenalinaOn = _active;
+        exhaust = false;
+        if(adrenalinaOn)
+        {
+            adrenalina.Adrenalina = adrenalina.MaxAdrenalina;
+        }
+
+        canvasPlayer.ShowAdrenalina(_active);
+
+    }
+
     public float ChangeSpeed(float _speed)
     {
-        _speed = Mathf.Clamp(_speed, normalSpeed, runScript.maxSpeed);
+        if(!adrenalinaOn)
+            _speed = Mathf.Clamp(_speed, normalSpeed, runScript.maxSpeed);
+        else
+            _speed = Mathf.Clamp(_speed, adrenalinaSpeed, adrenalinaRunScript.maxSpeed);
         speed = _speed;
         return speed;
     }
 
-    public void StartKnockBack(float _damage, float _time, Vector3 _direction)
+    public void StartKnockBack(float _damage, float _time, Vector3 _direction, bool _movement = true)
     {
-        speedKnockBack = _damage;
+        if (_movement)
+        {
+            speedKnockBack = _damage;
+            directionKnockBack = _direction;
+        }
+        else
+        {
+            speedKnockBack = 0;
+            directionKnockBack = Vector3.zero;
+        }
+
         timeKnockBack = _time;
-        directionKnockBack = _direction;
         ChangeState(State.KNOCKBACK);
     }
 
@@ -284,7 +440,9 @@ public class PlayerScript : MonoBehaviour
 
     public void ResetSpeed()
     {
-        speed = normalSpeed;
+        if (adrenalinaOn)
+            speed = adrenalinaSpeed;
+        else speed = normalSpeed;
     }
 
     public float GetSpeed()
@@ -300,6 +458,17 @@ public class PlayerScript : MonoBehaviour
     public int GetLayerPlayer()
     {
         return layer;
+    }
+
+    public float ChangeLife(float _life)
+    {
+        life += _life;
+        if (life > 100)
+            life = 100;
+        else if (life < 0)
+            life = 0;
+        print(life + "  " + _life);
+        return life;
     }
 
     #region PlantaFunctions

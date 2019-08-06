@@ -23,6 +23,7 @@ public class DashSimpleRioTutte : BaseState
     {
         currentTime = 0;
         mainScript.direction = (player.gameObject.transform.position - gameObject.transform.position).normalized;
+        mainScript.direction = new Vector3(mainScript.direction.x, 0, mainScript.direction.z);
     }
 
     public override void Execute()

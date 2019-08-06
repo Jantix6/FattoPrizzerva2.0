@@ -13,10 +13,14 @@ GameObject:
   - component: {fileID: 5971155505212697210}
   - component: {fileID: 5971155505212697209}
   - component: {fileID: 1337925805842572045}
+  - component: {fileID: 2940018736146248213}
+  - component: {fileID: 3711986757945743631}
   - component: {fileID: 5971155505212697208}
   - component: {fileID: 5971155505212697158}
   - component: {fileID: 5971155505212697212}
   - component: {fileID: 280633563}
+  - component: {fileID: 1998550574269637818}
+  - component: {fileID: 4857383162439417979}
   m_Layer: 0
   m_Name: RioTutte
   m_TagString: Enemie
@@ -50,10 +54,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.5
+  m_Height: 1.2
   m_Radius: 0.4
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_SlopeLimit: 0
+  m_StepOffset: 0
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -71,6 +75,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phase: 0
   direction: {x: 0, y: 0, z: -1}
+  speed: 0
 --- !u!114 &5971155505212697209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,12 +110,68 @@ MonoBehaviour:
   moving: {fileID: 5971155505212697212}
   knockback: {fileID: 280633563}
   dash: {fileID: 5971155505212697158}
+  stun: {fileID: 1998550574269637818}
   damageImpact: 10
   timeImpact: 0.2
   damageMinToMove: 15
   numOfDashes: 2
+  currentDash: 0
   timeBetweenDash: 0.5
   currentTimeDash: 0
+  timesStunedToChangePhase: 5
+  knockbackPlant: 0
+--- !u!114 &2940018736146248213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3893163e13592e64f98116066ece4421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  moving: {fileID: 5971155505212697212}
+  knockback: {fileID: 280633563}
+  ultraDash: {fileID: 4857383162439417979}
+  stun: {fileID: 1998550574269637818}
+  damageImpact: 15
+  timeImpact: 1.5
+  damageMinToMove: 40
+  numOfDashes: 3
+  currentDash: 0
+  timeBetweenDash: 2
+  currentTimeDash: 0
+  timesStunedToChangePhase: 5
+  knockbackPlant: 0
+--- !u!114 &3711986757945743631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb8ecef0e5d67f41b16153da8afcba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  moving: {fileID: 5971155505212697212}
+  knockback: {fileID: 280633563}
+  ultraDash: {fileID: 4857383162439417979}
+  stun: {fileID: 1998550574269637818}
+  damageImpact: 15
+  timeImpact: 1.5
+  damageMinToMove: 40
+  numOfDashes: 3
+  currentDash: 0
+  timeBetweenDash: 2
+  currentTimeDash: 0
+  timesStunedToChangePhase: 5
+  knockbackPlant: 0
 --- !u!114 &5971155505212697208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +231,35 @@ MonoBehaviour:
   speed: 5
   timeKnockback: 0.3
   direction: {x: 0, y: 0, z: 0}
+--- !u!114 &1998550574269637818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0dabdb381cf3ec4e8e4a90ce9a63a22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+--- !u!114 &4857383162439417979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47904271d893773499fda21cf73e182d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  speedDash: 45
+  timeDelay: 0.2
+  timeDash: 0.7
 --- !u!1 &5971155505687106188
 GameObject:
   m_ObjectHideFlags: 0

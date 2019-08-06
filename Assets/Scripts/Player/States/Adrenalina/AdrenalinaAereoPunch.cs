@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AereoPunchScript : BaseState
+public class AdrenalinaAereoPunch : BaseState
 {
     public float speedPunch = 60;
     public float damageBase = 100f;

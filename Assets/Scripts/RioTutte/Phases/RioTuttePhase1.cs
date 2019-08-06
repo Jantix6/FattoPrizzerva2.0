@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RioTuttePhase1 : MonoBehaviour
 {
-    public enum State { MOVING, KNOCKBACK }; //dash provisional
+    public enum State { MOVING, KNOCKBACK };
     public State currentState = State.MOVING;
     private RioTutteMainScript mainScript;
     private StateMachine stateMachine;
@@ -17,6 +17,7 @@ public class RioTuttePhase1 : MonoBehaviour
     public void StartExecution()
     {
         mainScript = GetComponent<RioTutteMainScript>();
+        mainScript.speed = 0.75f;
         stateMachine = mainScript.GetStateMachine();
         ChangeState(State.MOVING);
 

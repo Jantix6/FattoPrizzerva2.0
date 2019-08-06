@@ -8,6 +8,11 @@ public class AdrenalinaScript : MonoBehaviour, IAdrenalinable
     [SerializeField] private float currentAdrenalina;
     [SerializeField] private float maxAdrenalina = 100;
 
+    private void Start()
+    {
+        currentAdrenalina = maxAdrenalina;
+    }
+
     public float decreseAdrenalinaPerSecond = 5f;
 
     public float Adrenalina { get => currentAdrenalina; set => currentAdrenalina = value; }

@@ -8,6 +8,7 @@ public class MovingRioTuttePhase1 : BaseState
     private Vector3 direction;
     private RioTutteMainScript mainScript;
     private CharacterController characterController;
+    private bool inverse = false;
 
     private void Start()
     {
@@ -18,12 +19,18 @@ public class MovingRioTuttePhase1 : BaseState
 
     public override void Enter()
     {
+        speed = mainScript.speed;
+        if (mainScript.phase == 3 && mainScript.GetPhase3().currentState == RioTuttePhase3.State.MOVINGINVERSE)
+            inverse = true;
+        else inverse = false;
     }
 
     public override void Execute()
     {
         direction = player.gameObject.transform.position - gameObject.transform.position;
         direction = new Vector3(direction.x, 0, direction.z).normalized;
+        if (inverse)
+            direction = -direction;
 
         characterController.Move(direction * speed * Time.deltaTime);
     }
@@ -49,6 +56,10 @@ public class MovingRioTuttePhase1 : BaseState
                     case 2:
                         mainScript.GetPlayer().StartKnockBack(mainScript.GetPhase2().damageImpact, mainScript.GetPhase2().timeImpact, direction);
                         break;
+                    case 3:
+                        mainScript.GetPlayer().StartKnockBack(mainScript.GetPhase3().damageImpact, mainScript.GetPhase2().timeImpact / 2, direction);
+                        break;
+
 
                 }
 

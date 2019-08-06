@@ -7,7 +7,7 @@ public class EnemieBasic : MonoBehaviour
     protected float damage = 6;
     protected float speedEmpuje = 0;
     protected float maxTime = 0;
-    public enum TypeOfDamage {NADA, EMPUJAENEMIGO, EMPUJAAMBOS, PLAYERREBOTA, PLAYEREMPUJADO };
+    public enum TypeOfDamage { NADA, EMPUJAENEMIGO, EMPUJAAMBOS, PLAYERREBOTA, PLAYEREMPUJADO, EMPUJADOCONCONDICIÓN };
     protected TypeOfDamage currentDamage = 0;
     protected Vector3 directionKnockback;
     // Start is called before the first frame update
@@ -16,17 +16,27 @@ public class EnemieBasic : MonoBehaviour
     }
 
 
-    public void MoveDirectionHit(Vector3 _direction, float _damage)
+    public void MoveDirectionHit(Vector3 _direction, float _damage, bool _condición = false)
     {
+        print(_damage);
         if (_damage <= damage)
             currentDamage = TypeOfDamage.PLAYERREBOTA;
         else
         {
-            currentDamage = TypeOfDamage.EMPUJAENEMIGO;
+            if (_condición)
+                currentDamage = TypeOfDamage.EMPUJADOCONCONDICIÓN;
+            else
+                currentDamage = TypeOfDamage.EMPUJAENEMIGO;
+
+            if (_damage - damage / 1.5f > 25)
+                _damage = 25 + damage / 1.5f;
+
             directionKnockback = new Vector3(_direction.x, 0, _direction.z).normalized;
             maxTime = _damage / damage;
-            maxTime = Mathf.Lerp(0, 0.25f, maxTime);
             speedEmpuje = _damage - damage / 1.5f;
+
+
+            maxTime = Mathf.Lerp(0, 0.25f, maxTime);
         }
 
     }
