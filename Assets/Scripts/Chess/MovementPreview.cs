@@ -1,208 +1,207 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using Assets.Scripts.Chess.PieceActions;
 using Assets.Scripts.Chess.Pieces;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
-public class MovementPreview : MonoBehaviour
+namespace Assets.Scripts.Chess
 {
-    [SerializeField] private Piece movementExecutor;
-    [SerializeField] private Piece selectedPiece;
-
-    [SerializeField] private GameObject UI_Panel;
-
-    [SerializeField] private Material dummyMaterial;
-
-    private bool moving;
-    private int accumulatedCost;
-
-    public bool previewing;
-
-    private Cell OnMouseCell;
-
-    private void Update()
+    public class MovementPreview : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.A)) ExitPreview();
-    }
+        [SerializeField] private Piece movementExecutor;
+        [SerializeField] private Piece selectedPiece;
 
-    private void FixedUpdate()
-    {
-        if (previewing && !moving) ShowCells();
-    }
+        [SerializeField] private GameObject UI_Panel;
 
-    private void ShowCells()
-    {
-        if (Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0) return;
+        [SerializeField] private Material dummyMaterial;
 
-        var temp = PieceSelector.GetFromRay<Cell>("Cell");
+        private bool moving;
+        private int accumulatedCost;
 
-        if (temp && temp != selectedPiece.boardPosition)
+        public bool previewing;
+
+        private Cell OnMouseCell;
+
+        private void Update()
         {
-            if (OnMouseCell)
+            if (Input.GetKeyDown(KeyCode.A)) ExitPreview();
+        }
+
+        private void FixedUpdate()
+        {
+            if (previewing && !moving) ShowCells();
+        }
+
+        private void ShowCells()
+        {
+            if (Input.GetAxis("Mouse X") == 0 && Input.GetAxis("Mouse Y") == 0) return;
+
+            var temp = PieceSelector.GetFromRay<Cell>("Cell");
+
+            if (temp && temp != selectedPiece.boardPosition)
             {
-                OnMouseCell.availableCell.color = Color.white;
+                if (OnMouseCell)
+                {
+                    OnMouseCell.availableCell.color = Color.white;
+                    OnMouseCell.availableCell.enabled = false;
+                }
+
+                OnMouseCell = temp;
+
+                Color colorToChange = movementExecutor.MovePositions.Contains(OnMouseCell) ? Color.green : Color.red;
+
+                OnMouseCell.availableCell.enabled = true;
+                OnMouseCell.availableCell.color = colorToChange;
+            }
+            else if (OnMouseCell)
+            {
                 OnMouseCell.availableCell.enabled = false;
+                OnMouseCell.availableCell.color = Color.white;
             }
-
-            OnMouseCell = temp;
-
-            Color colorToChange = movementExecutor.MovePositions.Contains(OnMouseCell) ? Color.green : Color.red;
-
-            OnMouseCell.availableCell.enabled = true;
-            OnMouseCell.availableCell.color = colorToChange;
         }
-        else if (OnMouseCell)
+
+        private void StartPreview()
         {
-            OnMouseCell.availableCell.enabled = false;
-            OnMouseCell.availableCell.color = Color.white;
+            selectedPiece.ActionHandler.Actions.Clear();
+            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
+
+            movementExecutor.GetPossibleMoves(true);
+
+            previewing = true;
+            UI_Panel.SetActive(true);
         }
-    }
 
-    private void StartPreview()
-    {
-        selectedPiece.ActionHandler.Actions.Clear();
-        selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
-
-        movementExecutor.GetPossibleMoves(true);
-
-        previewing = true;
-        UI_Panel.SetActive(true);
-    }
-
-    private void ExecutePreview()
-    {
-        moving = false;
-
-        if (movementExecutor.boardPosition.type == Cell.CellType.Void) ExitPreview();
-        else movementExecutor.GetPossibleMoves(movementExecutor.omnidirectional);
-    }
-
-    public void ExitPreview()
-    {
-        Destroy(movementExecutor.gameObject);
-
-        selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
-        selectedPiece.ActionHandler.ExecuteActions();
-        selectedPiece.Moved = true;
-
-        selectedPiece = null;
-        movementExecutor = null;
-
-        moving = false;
-        previewing = false;
-
-        if (OnMouseCell) OnMouseCell.availableCell.enabled = false;
-
-        UI_Panel.SetActive(false);
-    }
-
-    public void CancelPreview()
-    {
-        Destroy(movementExecutor.gameObject);
-        movementExecutor = null;
-
-        selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
-        selectedPiece.player.movements += accumulatedCost;
-        selectedPiece = null;
-
-        moving = false;
-        previewing = false;
-    }
-
-    private void MoveDummy(Cell cell)
-    {
-        if (!selectedPiece || moving) return;
-
-        PieceAction actionToDo = null;
-
-        bool lastAction = false;
-
-        if (cell.piecePlaced)
+        private void ExecutePreview()
         {
-            actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-            selectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, selectedPiece));
-            lastAction = true;
+            moving = false;
+
+            if (movementExecutor.boardPosition.type == Cell.CellType.Void) ExitPreview();
+            else movementExecutor.GetPossibleMoves(movementExecutor.omnidirectional);
         }
-        else
+
+        public void ExitPreview()
         {
-            switch (cell.type)
+            Destroy(movementExecutor.gameObject);
+
+            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+            selectedPiece.ActionHandler.ExecuteActions();
+            selectedPiece.Moved = true;
+
+            selectedPiece = null;
+            movementExecutor = null;
+
+            moving = false;
+            previewing = false;
+
+            if (OnMouseCell) OnMouseCell.availableCell.enabled = false;
+
+            UI_Panel.SetActive(false);
+        }
+
+        public void CancelPreview()
+        {
+            Destroy(movementExecutor.gameObject);
+            movementExecutor = null;
+
+            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+            selectedPiece.player.movements += accumulatedCost;
+            selectedPiece = null;
+
+            moving = false;
+            previewing = false;
+        }
+
+        private void MoveDummy(Cell cell)
+        {
+            if (!selectedPiece || moving) return;
+
+            IPieceAction actionToDo = null;
+
+            bool lastAction = false;
+
+            if (cell.piecePlaced)
             {
-                case Cell.CellType.Normal:
-                    actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
+                actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
+                selectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, selectedPiece));
+                lastAction = true;
+            }
+            else
+            {
+                switch (cell.type)
+                {
+                    case Cell.CellType.Normal:
+                        actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
+                        selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
 
-                    lastAction = true;
+                        lastAction = true;
 
-                    break;
+                        break;
 
-                case Cell.CellType.Portal:
-                    actionToDo = new TeleportAction(cell, 0, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, selectedPiece));
+                    case Cell.CellType.Portal:
+                        actionToDo = new TeleportAction(cell, 0, Mathf.Infinity, movementExecutor);
+                        selectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, selectedPiece));
 
-                    break;
+                        break;
 
-                case Cell.CellType.Jumper:
-                    actionToDo = new JumpAction(cell, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, selectedPiece));
+                    case Cell.CellType.Jumper:
+                        actionToDo = new JumpAction(cell, Mathf.Infinity, movementExecutor);
+                        selectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, selectedPiece));
 
-                    break;
+                        break;
 
-                case Cell.CellType.DestructibleWall:
-                    int cost = movementExecutor.CalculateCost(cell);
+                    case Cell.CellType.DestructibleWall:
+                        int cost = movementExecutor.CalculateCost(cell);
 
-                    actionToDo = new DestroyAction(cell, cost, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, selectedPiece));
-                    lastAction = true;
+                        actionToDo = new DestroyAction(cell, cost, Mathf.Infinity, movementExecutor);
+                        selectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, selectedPiece));
+                        lastAction = true;
 
 
-                    break;
+                        break;
+                }
+            }
+
+            if (actionToDo == null) return;
+
+            StartCoroutine(lastAction ? actionToDo.DoAction(ExitPreview) : actionToDo.DoAction(ExecutePreview));
+
+            moving = true;
+        }
+
+        public void SelectPositionToMove()
+        {
+            if (!movementExecutor) return;
+
+            var selectedCell = PieceSelector.GetFromRay<Cell>("Cell");
+
+            if (selectedCell == null) return;
+
+            if (movementExecutor.MovePositions.Contains(selectedCell))
+            {
+                accumulatedCost += movementExecutor.CalculateCost(selectedCell);
+                movementExecutor.player.movements -= movementExecutor.CalculateCost(selectedCell);
+
+                MoveDummy(selectedCell);
             }
         }
 
-        if (actionToDo == null) return;
-
-        StartCoroutine(lastAction ? actionToDo.DoAction(ExitPreview) : actionToDo.DoAction(ExecutePreview));
-
-        moving = true;
-    }
-
-    public void SelectPositionToMove()
-    {
-        if (!movementExecutor) return;
-
-        var selectedCell = PieceSelector.GetFromRay<Cell>("Cell");
-
-        if (selectedCell == null) return;
-
-        if (movementExecutor.MovePositions.Contains(selectedCell))
+        public void Select(Piece piece)
         {
-            accumulatedCost += movementExecutor.CalculateCost(selectedCell);
-            movementExecutor.player.movements -= movementExecutor.CalculateCost(selectedCell);
+            if (movementExecutor) return;
 
-            MoveDummy(selectedCell);
+            selectedPiece = piece ? piece : null;
+            movementExecutor = piece ? CreateDummy(piece) : null;
+
+            if (movementExecutor && selectedPiece) StartPreview();
         }
-    }
 
-    public void Select(Piece piece)
-    {
-        if (movementExecutor) return;
+        public Piece CreateDummy(Piece original)
+        {
+            var clone = Instantiate(original.gameObject).GetComponent<Piece>();
 
-        selectedPiece = piece ? piece : null;
-        movementExecutor = piece ? CreateDummy(piece) : null;
+            clone.dummy = true;
+            clone.MoveToCell(original.boardPosition);
+            clone.GetComponentInChildren<Renderer>().material = dummyMaterial;
 
-        if (movementExecutor && selectedPiece) StartPreview();
-    }
-
-    public Piece CreateDummy(Piece original)
-    {
-        var clone = Instantiate(original.gameObject).GetComponent<Piece>();
-
-        clone.dummy = true;
-        clone.MoveToCell(original.boardPosition);
-        clone.GetComponentInChildren<Renderer>().material = dummyMaterial;
-
-        return clone;
+            return clone;
+        }
     }
 }

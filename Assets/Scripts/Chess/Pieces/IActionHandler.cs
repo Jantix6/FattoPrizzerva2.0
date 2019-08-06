@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Chess.PieceActions;
 
 namespace Assets.Scripts.Chess.Pieces
 {
     public interface IActionHandler
     {
-        List<PieceAction> Actions { get; set; }
+        List<IPieceAction> Actions { get; set; }
 
-        void AddAction(PieceAction action);
+        void AddAction(IPieceAction action);
         void ExecuteActions();
     }
 }

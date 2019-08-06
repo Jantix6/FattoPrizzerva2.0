@@ -1,82 +1,84 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Chess.Pieces;
 using UnityEngine;
 
-public abstract class Piece : MonoBehaviour
+namespace Assets.Scripts.Chess.Pieces
 {
-    public ChessPlayer player;
-    public int teamNumber = 0;
-    protected Board board;
-
-    public Cell boardPosition;
-    public int cost = 0;
-    public Vector2Int direction = Vector2Int.zero;
-
-    public int healthPoints;
-    public bool Moved = false;
-    public List<Cell> MovePositions;
-    public bool selected;
-
-    public IActionHandler ActionHandler => GetComponent<IActionHandler>();
-
-    public bool dummy = false;
-    public bool omnidirectional = false;
-
-    public void GetBoardPosition()
+    public abstract class Piece : MonoBehaviour
     {
-        boardPosition = Board.instance.GetCell((int)transform.position.x, (int)transform.position.z);
-        if (boardPosition) boardPosition.piecePlaced = this;
-    }
+        public ChessPlayer player;
+        public int teamNumber = 0;
+        protected Board board;
 
-    public void GetPushed(Vector2Int direction, int forceAmount)
-    {
-        var pushedPosition = new Vector2Int(boardPosition.position.x + direction.x * forceAmount,
-                                            boardPosition.position.y + direction.y * forceAmount);
+        public Cell boardPosition;
+        public int cost = 0;
+        public Vector2Int direction = Vector2Int.zero;
 
-        if (!board.ValidIndex(pushedPosition))
+        public int healthPoints;
+        public bool Moved = false;
+        public List<Cell> MovePositions;
+        public bool selected;
+
+        public IActionHandler ActionHandler => GetComponent<IActionHandler>();
+
+        public bool dummy = false;
+        public bool omnidirectional = false;
+
+        public void GetBoardPosition()
         {
-            return;
+            boardPosition = Board.instance.GetCell((int)transform.position.x, (int)transform.position.z);
+            if (boardPosition) boardPosition.piecePlaced = this;
         }
 
-        MoveToCell(board.GetCell(pushedPosition.x, pushedPosition.y));
-    }
-
-    public void PushPiece(int cost, Piece pieceToPush, Vector2Int direction)
-    {
-        var pieceHealth = pieceToPush.GetComponent<IHealth>();
-
-        cost = Mathf.Clamp(cost, 0, 5);
-
-        switch (cost)
+        public void GetPushed(Vector2Int direction, int forceAmount)
         {
-            case 2:
-                pieceToPush.GetPushed(direction, 1);
-                break;
-            case 3:
-                pieceToPush.GetPushed(direction, 1);
-                pieceHealth.GetDamage(0.5f);
-                break;
+            var pushedPosition = new Vector2Int(boardPosition.position.x + direction.x * forceAmount,
+                boardPosition.position.y + direction.y * forceAmount);
 
-            case 4:
-                pieceToPush.GetPushed(direction, 2);
-                pieceHealth.GetDamage(0.5f);
-                break;
+            if (!board.ValidIndex(pushedPosition))
+            {
+                return;
+            }
 
-            case 5:
-                pieceHealth.GetDamage(1);
-                break;
+            MoveToCell(board.GetCell(pushedPosition.x, pushedPosition.y));
         }
-    }
 
-    public void MoveToCell(Cell cell)
-    {
-        if (!dummy) boardPosition.piecePlaced = null;
-        transform.position = new Vector3(cell.position.x, 0.5f, cell.position.y);
-        boardPosition = cell;
-        if (!dummy) boardPosition.piecePlaced = this;
-    }
+        public void PushPiece(int cost, Piece pieceToPush, Vector2Int direction)
+        {
+            var pieceHealth = pieceToPush.GetComponent<IHealth>();
 
-    public abstract void GetPossibleMoves(bool omnidirectional);
-    public abstract List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection);
-    public abstract int CalculateCost(Cell nextPosition);
+            cost = Mathf.Clamp(cost, 0, 5);
+
+            switch (cost)
+            {
+                case 2:
+                    pieceToPush.GetPushed(direction, 1);
+                    break;
+                case 3:
+                    pieceToPush.GetPushed(direction, 1);
+                    pieceHealth.GetDamage(0.5f);
+                    break;
+
+                case 4:
+                    pieceToPush.GetPushed(direction, 2);
+                    pieceHealth.GetDamage(0.5f);
+                    break;
+
+                case 5:
+                    pieceHealth.GetDamage(1);
+                    break;
+            }
+        }
+
+        public void MoveToCell(Cell cell)
+        {
+            if (!dummy) boardPosition.piecePlaced = null;
+            transform.position = new Vector3(cell.position.x, 0.5f, cell.position.y);
+            boardPosition = cell;
+            if (!dummy) boardPosition.piecePlaced = this;
+        }
+
+        public abstract void GetPossibleMoves(bool omnidirectional);
+        public abstract List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection);
+        public abstract int CalculateCost(Cell nextPosition);
+    }
 }
