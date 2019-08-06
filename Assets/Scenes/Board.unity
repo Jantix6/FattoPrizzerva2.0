@@ -2634,6 +2634,8 @@ MonoBehaviour:
   movements: 0
   maxMovements: 15
   turn: 0
+  LockedPortals: []
+  locked: 1
 --- !u!4 &278751652
 Transform:
   m_ObjectHideFlags: 0
@@ -17936,6 +17938,8 @@ MonoBehaviour:
   movements: 0
   maxMovements: 15
   turn: 0
+  LockedPortals: []
+  locked: 1
 --- !u!4 &1763889352
 Transform:
   m_ObjectHideFlags: 0
@@ -19412,6 +19416,7 @@ GameObject:
   - component: {fileID: 1933488865}
   - component: {fileID: 1933488868}
   - component: {fileID: 1933488870}
+  - component: {fileID: 1933488869}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -19502,6 +19507,19 @@ MonoBehaviour:
   playerText: {fileID: 565473160}
   movementText: {fileID: 996413649}
   turnText: {fileID: 1314508700}
+--- !u!114 &1933488869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933488864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1da0f5f61bac8b4cba137d96eb2afbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 1
 --- !u!114 &1933488870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19517,6 +19535,7 @@ MonoBehaviour:
   movementExecutor: {fileID: 0}
   selectedPiece: {fileID: 0}
   UI_Panel: {fileID: 2074287547}
+  mainCamera: {fileID: 1933488869}
   dummyMaterial: {fileID: 2100000, guid: 92bf7f7dc9f09e849b71fc04276a3c05, type: 2}
   previewing: 0
 --- !u!1 &1936101247
