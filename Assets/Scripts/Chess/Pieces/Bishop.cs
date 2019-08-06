@@ -105,9 +105,9 @@ public class Bishop : Piece, IHealth
                 break;
             }
 
-            if (currentCell.type == Cell.CellType.Portal ||
-                currentCell.type == Cell.CellType.Jumper ||
-                currentCell.type == Cell.CellType.DestructibleWall)
+            if ((currentCell.type == Cell.CellType.Portal && currentCell.unlocked) ||
+                 currentCell.type == Cell.CellType.Jumper ||
+                (currentCell.type == Cell.CellType.DestructibleWall && CalculateCost(currentCell) >= 2))
             {
                 positions.Add(currentCell);
                 break;

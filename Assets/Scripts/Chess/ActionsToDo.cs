@@ -17,6 +17,8 @@ public class MovementAction : PieceAction
     private Piece piece;
     private float speed;
 
+    private float acceleration = 1.5f;
+
     public MovementAction(Cell cell, int cost, float speed, Piece piece)
     {
         this.cell = cell;
@@ -34,7 +36,7 @@ public class MovementAction : PieceAction
         while ((piece.transform.position - destination).magnitude > 0.1f)
         {
             piece.transform.position = Vector3.MoveTowards(piece.transform.position, destination, speed * Time.deltaTime);
-
+            speed += acceleration * Time.deltaTime; //Test pending
             yield return null;
         }
 
@@ -75,7 +77,8 @@ public class TeleportAction : PieceAction
 
         piece.MoveToCell(cell);
         piece.MoveToCell(cell.connectedPortal);
-        piece.direction = cell.connectedPortal.portalDirection;
+
+        if (cell.connectedPortal.portalDirection != Vector2Int.zero) piece.direction = cell.connectedPortal.portalDirection;
 
         var nextCell = GetNextCell(cell.connectedPortal, piece.direction);
 

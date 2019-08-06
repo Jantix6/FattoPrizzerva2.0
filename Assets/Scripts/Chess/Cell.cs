@@ -22,9 +22,11 @@ public class Cell : MonoBehaviour
 
     public SpriteRenderer availableCell;
 
+    [Header("Portal")]
     public Cell connectedPortal;
     public Vector2Int portalDirection;
     public float health = 1;
+    public bool unlocked = false;
 
     public void SetBoard()
     {
