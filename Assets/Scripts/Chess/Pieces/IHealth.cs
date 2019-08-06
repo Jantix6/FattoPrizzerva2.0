@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public interface IHealth
+﻿namespace Assets.Scripts.Chess.Pieces
 {
-    float Health { get; set; }
+    public interface IHealth
+    {
+        float Health { get; set; }
 
-    void GetDamage(float damage);
-    void Die();
+        void GetDamage(float damage);
+        void Die();
+    }
 }

@@ -1,43 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Chess.Pieces;
 
-public class Jumper : Cell
+namespace Assets.Scripts.Chess
 {
-
-    public void Jump(Piece piece)
+    public class Jumper : Cell
     {
-        int jumpRange = piece.cost <= 4 ? piece.cost / 2 : (piece.cost / 4) + 2;
 
-        Cell destination = FindJumpDestination(piece, piece.direction.x, piece.direction.y, jumpRange);
-
-
-    }
-
-    private Cell FindJumpDestination(Piece piece, int xDirection, int yDirection, int range)
-    {
-        bool IsValid = true;
-
-        List<Cell> positions = new List<Cell>();
-
-        Cell currentCell = this;
-
-        int iteration = 0;
-
-        while (iteration <= range && IsValid)
+        public void Jump(Piece piece)
         {
-            iteration++;
+            int jumpRange = piece.cost <= 4 ? piece.cost / 2 : (piece.cost / 4) + 2;
 
-            int x = position.x + (xDirection * iteration);
-            int y = position.y + (yDirection * iteration);
+            Cell destination = FindJumpDestination(piece, piece.direction.x, piece.direction.y, jumpRange);
 
-            currentCell = Board.instance.GetCell(x, y);
 
-            IsValid = currentCell;
-
-            if (currentCell.type == CellType.IndestructibleWall) break;
         }
 
-        return currentCell;
+        private Cell FindJumpDestination(Piece piece, int xDirection, int yDirection, int range)
+        {
+            bool IsValid = true;
+
+            List<Cell> positions = new List<Cell>();
+
+            Cell currentCell = this;
+
+            int iteration = 0;
+
+            while (iteration <= range && IsValid)
+            {
+                iteration++;
+
+                int x = position.x + (xDirection * iteration);
+                int y = position.y + (yDirection * iteration);
+
+                currentCell = Board.instance.GetCell(x, y);
+
+                IsValid = currentCell;
+
+                if (currentCell.type == CellType.IndestructibleWall) break;
+            }
+
+            return currentCell;
+        }
     }
 }

@@ -14882,6 +14882,11 @@ PrefabInstance:
       propertyPath: connectedPortal
       value: 
       objectReference: {fileID: 1274495820}
+    - target: {fileID: 424959876919660644, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
+        type: 3}
+      propertyPath: unlocked
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8626566086895500818, guid: b4ea1cbf70dd6ba41b8203fdfeb30e0a,
         type: 3}
       propertyPath: m_LocalPosition.x

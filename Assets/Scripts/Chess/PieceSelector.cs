@@ -1,96 +1,97 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Chess.Pieces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PieceSelector : MonoBehaviour
+namespace Assets.Scripts.Chess
 {
-    public ChessPlayer player;
-
-    public MovementPreview previewMovement;
-
-    [SerializeField] private ChessPlayer playerOne;
-    [SerializeField] private ChessPlayer playerTwo;
-
-    private Piece[] pieces;
-
-    [SerializeField] private Text playerText;
-    [SerializeField] private Text movementText;
-    [SerializeField] private Text turnText;
-
-    private void Start()
+    public class PieceSelector : MonoBehaviour
     {
-        SetUpPieces();
-        player.StartTurn();
-    }
+        public ChessPlayer player;
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0)) Select();
-        if (Input.GetMouseButtonDown(1)) previewMovement.SelectPositionToMove();
+        public MovementPreview previewMovement;
 
-        UpdateUI();
-    }
+        [SerializeField] private ChessPlayer playerOne;
+        [SerializeField] private ChessPlayer playerTwo;
 
-    public static T GetFromRay<T>(string layerMaskName)
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        private Piece[] pieces;
 
-        int layer_mask = LayerMask.GetMask(layerMaskName);
+        [SerializeField] private Text playerText;
+        [SerializeField] private Text movementText;
+        [SerializeField] private Text turnText;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer_mask))
+        private void Start()
         {
-            if (hit.transform.GetComponent<T>() != null)
+            SetUpPieces();
+            player.StartTurn();
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0)) Select();
+            if (Input.GetMouseButtonDown(1)) previewMovement.SelectPositionToMove();
+
+            UpdateUI();
+        }
+
+        public static T GetFromRay<T>(string layerMaskName)
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            int layer_mask = LayerMask.GetMask(layerMaskName);
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer_mask))
             {
-                return hit.transform.GetComponent<T>();
+                if (hit.transform.GetComponent<T>() != null)
+                {
+                    return hit.transform.GetComponent<T>();
+                }
+            }
+
+            return default;
+        }
+
+        private void UpdateUI()
+        {
+            playerText.text = "Player: " + (player.playerNumber + 1);
+            movementText.text = "Moves: " + player.movements;
+            turnText.text = "Turn: " + player.turn;
+        }
+
+        private void Select()
+        {
+            Piece piece = GetFromRay<Piece>("Piece");
+
+            if (!piece) return;
+            if (piece.teamNumber != player.playerNumber) return;
+            if (piece.Moved) return;
+
+            previewMovement.Select(piece);
+        }
+
+        private void SetUpPieces()
+        {
+            pieces = FindObjectsOfType<Piece>();
+
+            foreach (var piece in pieces)
+            {
+                if (piece.teamNumber == playerOne.playerNumber) piece.player = playerOne;
+                if (piece.teamNumber == playerTwo.playerNumber) piece.player = playerTwo;
             }
         }
 
-        return default;
-    }
-
-    private void UpdateUI()
-    {
-        playerText.text = "Player: " + (player.playerNumber + 1);
-        movementText.text = "Moves: " + player.movements;
-        turnText.text = "Turn: " + player.turn;
-    }
-
-    private void Select()
-    {
-        Piece piece = GetFromRay<Piece>("Piece");
-
-        if (!piece) return;
-        if (piece.teamNumber != player.playerNumber) return;
-        if (piece.Moved) return;
-
-        previewMovement.Select(piece);
-    }
-
-    private void SetUpPieces()
-    {
-        pieces = FindObjectsOfType<Piece>();
-
-        foreach (var piece in pieces)
+        public void EndTurn()
         {
-            if (piece.teamNumber == playerOne.playerNumber) piece.player = playerOne;
-            if (piece.teamNumber == playerTwo.playerNumber) piece.player = playerTwo;
+            if (previewMovement.previewing) previewMovement.CancelPreview();
+
+            foreach (var piece in pieces)
+            {
+                if (piece != null) piece.Moved = false;
+            }
+
+            if (player.movements == player.maxMovements) player.maxMovements--;
+            player = player == playerOne ? playerTwo : playerOne;
+            player.StartTurn();
         }
-    }
-
-    public void EndTurn()
-    {
-        if (previewMovement.previewing) previewMovement.CancelPreview();
-
-        foreach (var piece in pieces)
-        {
-            if (piece != null) piece.Moved = false;
-        }
-
-        if (player.movements == player.maxMovements) player.maxMovements--;
-        player = player == playerOne ? playerTwo : playerOne;
-        player.StartTurn();
     }
 }

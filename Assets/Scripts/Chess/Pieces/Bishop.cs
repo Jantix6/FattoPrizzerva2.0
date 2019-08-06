@@ -1,121 +1,123 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bishop : Piece, IHealth
+namespace Assets.Scripts.Chess.Pieces
 {
-    [SerializeField] private float health;
-    [SerializeField] private float maxHealth;
-
-    public float Health { get => health; set => health = value; }
-
-    private void Start()
+    public class Bishop : Piece, IHealth
     {
-        board = Board.instance;
+        [SerializeField] private float health;
+        [SerializeField] private float maxHealth;
 
-        GetBoardPosition();
-    }
+        public float Health { get => health; set => health = value; }
 
-    public override void GetPossibleMoves(bool omnidirectional)
-    {
-        if (!board) board = Board.instance;
-
-        MovePositions.Clear();
-        board.ClearValidPositions();
-
-        if (omnidirectional)
+        private void Start()
         {
-            MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, 1));
-            MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, -1));
-            MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, 1));
-            MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, -1));
+            board = Board.instance;
+
+            GetBoardPosition();
         }
-        else
+
+        public override void GetPossibleMoves(bool omnidirectional)
         {
-            MovePositions.AddRange(FindPossibleMoves(boardPosition, direction.x, direction.y));
-        }
-    }
+            if (!board) board = Board.instance;
 
-    public override int CalculateCost(Cell nextPosition)
-    {
-        return Math.Abs(nextPosition.position.x - boardPosition.position.x);
-    }
+            MovePositions.Clear();
+            board.ClearValidPositions();
 
-    public void GetDamage(float damage)
-    {
-        if (Health <= 0) return;
-
-        Health -= damage;
-        Health = Mathf.Clamp(Health, 0, maxHealth);
-
-        if (Health == 0) Die();
-    }
-
-    public void Die()
-    {
-        boardPosition.piecePlaced = null;
-
-        int amount = 0;
-        Piece lastPiece = null;
-
-        var pieces = FindObjectsOfType<Piece>();
-
-        foreach (var piece in pieces)
-        {
-            if (piece.player == player && piece != this)
+            if (omnidirectional)
             {
-                lastPiece = piece;
-                amount++;
+                MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, 1));
+                MovePositions.AddRange(FindPossibleMoves(boardPosition, 1, -1));
+                MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, 1));
+                MovePositions.AddRange(FindPossibleMoves(boardPosition, -1, -1));
+            }
+            else
+            {
+                MovePositions.AddRange(FindPossibleMoves(boardPosition, direction.x, direction.y));
             }
         }
 
-        if (amount == 1 && lastPiece) lastPiece.omnidirectional = false;
-
-        Destroy(gameObject);
-    }
-
-    public override List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection)
-    {
-        var IsValid = true;
-
-        var positions = new List<Cell>();
-        var currentCell = initialCell;
-
-        var iteration = 0;
-
-        while (IsValid)
+        public override int CalculateCost(Cell nextPosition)
         {
-            iteration++;
+            return Math.Abs(nextPosition.position.x - boardPosition.position.x);
+        }
 
-            var x = initialCell.position.x + xDirection * iteration;
-            var y = initialCell.position.y + yDirection * iteration;
+        public void GetDamage(float damage)
+        {
+            if (Health <= 0) return;
 
-            currentCell = board.GetCell(x, y);
+            Health -= damage;
+            Health = Mathf.Clamp(Health, 0, maxHealth);
 
-            IsValid = currentCell;
+            if (Health == 0) Die();
+        }
 
-            if (!IsValid) break;
+        public void Die()
+        {
+            boardPosition.piecePlaced = null;
 
-            if (CalculateCost(currentCell) > player.movements) break;
+            int amount = 0;
+            Piece lastPiece = null;
 
-            if (currentCell.piecePlaced != null)
+            var pieces = FindObjectsOfType<Piece>();
+
+            foreach (var piece in pieces)
             {
-                if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2) positions.Add(currentCell);
-                break;
+                if (piece.player == player && piece != this)
+                {
+                    lastPiece = piece;
+                    amount++;
+                }
             }
 
-            if ((currentCell.type == Cell.CellType.Portal && currentCell.unlocked) ||
-                 currentCell.type == Cell.CellType.Jumper ||
-                (currentCell.type == Cell.CellType.DestructibleWall && CalculateCost(currentCell) >= 2))
+            if (amount == 1 && lastPiece) lastPiece.omnidirectional = false;
+
+            Destroy(gameObject);
+        }
+
+        public override List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection)
+        {
+            var IsValid = true;
+
+            var positions = new List<Cell>();
+            var currentCell = initialCell;
+
+            var iteration = 0;
+
+            while (IsValid)
             {
+                iteration++;
+
+                var x = initialCell.position.x + xDirection * iteration;
+                var y = initialCell.position.y + yDirection * iteration;
+
+                currentCell = board.GetCell(x, y);
+
+                IsValid = currentCell;
+
+                if (!IsValid) break;
+
+                if (CalculateCost(currentCell) > player.movements) break;
+
+                if (currentCell.piecePlaced != null)
+                {
+                    if (currentCell.piecePlaced.teamNumber != teamNumber && CalculateCost(currentCell) >= 2) positions.Add(currentCell);
+                    break;
+                }
+
+                if ((currentCell.type == Cell.CellType.Portal && currentCell.unlocked) ||
+                    currentCell.type == Cell.CellType.Jumper ||
+                    (currentCell.type == Cell.CellType.DestructibleWall && CalculateCost(currentCell) >= 2))
+                {
+                    positions.Add(currentCell);
+                    break;
+                }
+
                 positions.Add(currentCell);
-                break;
             }
 
-            positions.Add(currentCell);
+            return positions;
         }
-
-        return positions;
     }
 }
