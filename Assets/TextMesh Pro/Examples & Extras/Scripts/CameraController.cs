@@ -232,7 +232,7 @@ namespace TMPro.Examples
                     }
                     else if (dummyTarget != CameraTarget)
                     {
-                        // SelectPositionToMove DummyTarget to CameraTarget
+                        // Move DummyTarget to CameraTarget
                         dummyTarget.position = CameraTarget.position;
                         dummyTarget.rotation = CameraTarget.rotation;
                         CameraTarget = dummyTarget;
