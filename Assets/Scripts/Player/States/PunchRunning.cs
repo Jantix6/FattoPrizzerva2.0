@@ -28,6 +28,7 @@ public class PunchRunning : BaseState
     {
         player.currentTimeState = 0;
         player.stamina.ModifiyStamina(-costStaminaPerPunch * (player.speed - player.normalSpeed));
+        player.anim.SetTrigger("Fist");
         speed = run.speed * multiply;
         player.speed = speed;
     }

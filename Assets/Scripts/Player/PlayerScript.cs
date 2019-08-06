@@ -53,7 +53,7 @@ public class PlayerScript : MonoBehaviour
     private float coolDownPunch = 0.75f;
     public float currentTimeState = 0;
     public Vector3 toMove = Vector3.zero;
-    private Vector3 lastDirection = Vector3.forward;
+    private Vector3 lastDirection = Vector3.right;
     private bool running = false;
     private bool onGround = false;
     public bool adrenalinaOn = false;
@@ -124,26 +124,33 @@ public class PlayerScript : MonoBehaviour
             case State.MOVING:
                 if(!adrenalinaOn)
                     stamina.RegenStamina();
+
                 break;
             case State.PUNCHING:
+
                 break;
             case State.RUNING:
                 break;
             case State.PUNCHRUNNING:
                 break;
             case State.FLYINGKICK:
+
                 break;
             case State.KNOCKBACK:
+
                 break;
             case State.HABILITY:
+
                 break;
             case State.ADRENALINAPUNCH:
+
                 break;
             case State.ADRENALINARUN:
                 break;
             case State.ADRENALINAPUNCHRUN:
                 break;
             case State.ADRENALINAAEREOPUNCH:
+
                 break;
         }
         CheckStats();
@@ -156,9 +163,14 @@ public class PlayerScript : MonoBehaviour
         {
             case State.MOVING:
                 stateMachine.ChangeState(moving);
+                running = false;
+                anim.SetBool("Running", running);
+
                 break;
             case State.PUNCHING:
                 stateMachine.ChangeState(punch);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
             case State.RUNING:
                 running = true;
@@ -171,9 +183,13 @@ public class PlayerScript : MonoBehaviour
                 break;
             case State.KNOCKBACK:
                 stateMachine.ChangeState(knockBack);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
             case State.FLYINGKICK:
                 stateMachine.ChangeState(punchFly);
+                running = false;
+                anim.SetBool("Running", running);
 
                 break;
             case State.HABILITY:
@@ -181,28 +197,40 @@ public class PlayerScript : MonoBehaviour
 
             case State.JUMPING:
                 stateMachine.ChangeState(jumping);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
 
             case State.PLANNING:
                 stateMachine.ChangeState(planning);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
 
             case State.AEREOPUNCH:
                 stateMachine.ChangeState(aereoPunch);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
             case State.ADRENALINAPUNCH:
                 stateMachine.ChangeState(adrenalinaPunch);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
             case State.ADRENALINARUN:
                 running = true;
                 stateMachine.ChangeState(adrenalinaRun);
+
                 break;
             case State.ADRENALINAPUNCHRUN:
                 running = true;
                 stateMachine.ChangeState(adrenalinaPunchRun);
+
                 break;
             case State.ADRENALINAAEREOPUNCH:
                 stateMachine.ChangeState(adrenalinaAereoPunch);
+                running = false;
+                anim.SetBool("Running", running);
                 break;
         }
 

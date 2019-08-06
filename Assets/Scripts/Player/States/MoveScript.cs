@@ -15,6 +15,8 @@ public class MoveScript : BaseState
     public Vector3 toMove = Vector3.zero;
     public Vector3 lastDirection = Vector3.forward;
 
+    private SpriteRenderer spriteRenderer;
+
 
     private CharacterController characterController;
 
@@ -29,6 +31,11 @@ public class MoveScript : BaseState
         myCamera = Camera.main.gameObject;
         distanceWithCamera = myCamera.transform.position.y - player.gameObject.transform.position.y;
         gravity = player.gravity;
+    }
+
+    private void Start()
+    {
+        spriteRenderer = player.children.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -80,16 +87,23 @@ public class MoveScript : BaseState
         if (Input.GetKey(player.downKey))
             toMove -= myCamera.transform.up;
         if (Input.GetKey(player.rightKey))
+        {
             toMove += myCamera.transform.right;
+            spriteRenderer.flipX = false;
+        }
         if (Input.GetKey(player.leftKey))
+        {
             toMove -= myCamera.transform.right;
+            spriteRenderer.flipX = true;
+
+        }
 
         toMove = new Vector3(toMove.x, 0, toMove.z);
         toMove.Normalize();
         if (toMove.magnitude > 0)
         {
             lastDirection = toMove;
-            gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward, toMove);
+            //gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward, toMove);
 
         }
         speed = player.ChangeSpeed(speed);
