@@ -144,7 +144,6 @@ public class RunScript : BaseState
     public override void Exit()
     {
         moving.lastDirection = lastDirection;
-        anim.SetBool("Running", false);
         player.ChangeSpeed(player.normalSpeed);
     }
 }

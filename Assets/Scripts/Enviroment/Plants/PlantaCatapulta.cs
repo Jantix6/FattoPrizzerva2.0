@@ -24,12 +24,14 @@ public class PlantaCatapulta : MonoBehaviour
     [SerializeField] private KeyCode rightKey = KeyCode.D;
     [SerializeField] private KeyCode leftKey = KeyCode.A;
     private GameObject myCamera;
+    private Animation animation;
     // Start is called before the first frame update
     void Start()
     {
         rotationSpeed = minSpeed;
         direction = gameObject.transform.forward;
         myCamera = Camera.main.gameObject;
+        animation = GetComponent<Animation>();
     }
 
     // Update is called once per frame
@@ -148,7 +150,10 @@ public class PlantaCatapulta : MonoBehaviour
             }
 
             if (numPulsed > 5)
+            {
                 autoMove = true;
+                animation.Play();
+            }
         }
     }
 
