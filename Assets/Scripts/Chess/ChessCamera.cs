@@ -83,7 +83,7 @@ public class ChessCamera : MonoBehaviour
 
     private void FollowingPiece()
     {
-        transform.position = pieceToFollow.transform.position + offset/3.0f;
+        transform.position = pieceToFollow.transform.position + offset/2.0f;
     }
     public void ChangeState(State _newState)
     {
