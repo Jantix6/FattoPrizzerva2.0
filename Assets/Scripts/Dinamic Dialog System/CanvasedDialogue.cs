@@ -3,48 +3,74 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Dialogues
 {
-    public class CanvasedDialogue : MonoBehaviour
+    public class CanvasedDialogue : CanvasedDialogElement , I_DialogElement
     {
-        [SerializeField] private DialogueManager dialogueManager;
-        [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] private QuestionAnswerStructure dialogueData;
+        [Header("Dialogue References")]
+        [SerializeField] private SO_QuestionAnswerStructure dialogueData;
 
+        [Header("Canvas dialoge references")]
         [SerializeField] private TMPro.TMP_Text question;
         [SerializeField] private Image spekerImage;
         [SerializeField] private CanvasedAnswer answerPrefab;
 
         [SerializeField] private Transform answersContainer;
+        [SerializeField] private List<CanvasedAnswer> canvasedAnswers;
 
-        public void Initialize(QuestionAnswerStructure _questionAnswerData, DialogueManager _dialoguemanager)
+        public Button GetButton(int _desiredIndex)
         {
-            dialogueManager = _dialoguemanager;
-            dialogueData = _questionAnswerData;
+            Button buttonToReturn = null;
 
-            question.text = dialogueData.GetQuestion();
-            spekerImage.sprite = _questionAnswerData.GetSpeakerSprite();
+            buttonToReturn = canvasedAnswers[_desiredIndex].GetComponentInChildren<Button>();
 
-            foreach (Answer answer in dialogueData.GetAnswers())
+            if (buttonToReturn == null)
+                Debug.LogError("No button found on index " + _desiredIndex + " or no button object is on the object ");
+
+            return buttonToReturn;
+        }
+
+        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Language _targetlanguage)
+        {
+            dialogueManager = _manager;
+            dialogueData = _inputData as SO_QuestionAnswerStructure;
+
+            question.text = dialogueData.GetQuestion(_targetlanguage);
+            spekerImage.sprite = _inputData.GetSpeakerSprite();
+
+            foreach (SO_Answer answer in dialogueData.GetAnswers())
             {
                 CanvasedAnswer canvasedAnswer = Instantiate(answerPrefab, answersContainer);
-                canvasedAnswer.Initialize(answer ,dialogueManager);
+                canvasedAnswer.Initialize(answer, dialogueManager, _targetlanguage);
+
+                if (canvasedAnswers == null)
+                    canvasedAnswers = new List<CanvasedAnswer>();
+
+                canvasedAnswers.Add(canvasedAnswer);
             }
 
             EnableVisibility();
         }
 
-        private void EnableVisibility()
+        // Dani busca un modo de no tener este codigo en dos lugares distitnos al mismo tiempo 
+        public void InitializeDefaultKeyboardNavigation(EventSystem _inputEventSystem, int _preselectedButtonIndex = 0)
         {
-            canvasGroup.alpha = 1f;
-        }
+            if (!_inputEventSystem)
+            {
+                Debug.LogError("No Input event system to modify, ABORTING");
+                return;
+            }
 
-        public void DisableVisibilty()
-        {
-            canvasGroup.alpha = 0f;
-        }
+            _inputEventSystem.firstSelectedGameObject = GetButton(_preselectedButtonIndex).gameObject;
+            _inputEventSystem.SetSelectedGameObject(GetButton(_preselectedButtonIndex).gameObject);
 
+            if (!_inputEventSystem.firstSelectedGameObject)
+            {
+                Debug.LogError("No button found, ABORTING");
+            }
+        }
     }
 }
 
