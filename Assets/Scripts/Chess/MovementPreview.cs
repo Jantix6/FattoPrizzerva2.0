@@ -39,35 +39,32 @@ namespace Assets.Scripts.Chess
 
             var temp = PieceSelector.GetFromRay<Cell>("Cell");
 
-            if (temp && temp != SelectedPiece.boardPosition)
+            if (temp && temp != selectedPiece.boardPosition)
             {
                 if (OnMouseCell)
                 {
-                    if (OnMouseCell)
-                    {
-                        OnMouseCell.availableCell.color = Color.white;
-                        OnMouseCell.availableCell.enabled = false;
-                    }
-
-                    OnMouseCell = temp;
-
-                    Color colorToChange = movementExecutor.MovePositions.Contains(OnMouseCell) ? Color.green : Color.red;
-
-                    OnMouseCell.availableCell.enabled = true;
-                    OnMouseCell.availableCell.color = colorToChange;
-                }
-                else if (OnMouseCell)
-                {
-                    OnMouseCell.availableCell.enabled = false;
                     OnMouseCell.availableCell.color = Color.white;
+                    OnMouseCell.availableCell.enabled = false;
                 }
+
+                OnMouseCell = temp;
+
+                Color colorToChange = movementExecutor.MovePositions.Contains(OnMouseCell) ? Color.green : Color.red;
+
+                OnMouseCell.availableCell.enabled = true;
+                OnMouseCell.availableCell.color = colorToChange;
+            }
+            else if (OnMouseCell)
+            {
+                OnMouseCell.availableCell.enabled = false;
+                OnMouseCell.availableCell.color = Color.white;
             }
         }
 
         private void StartPreview()
         {
-            SelectedPiece.ActionHandler.Actions.Clear();
-            SelectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
+            selectedPiece.ActionHandler.Actions.Clear();
+            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
 
             mainCamera.ChangeState(ChessCamera.State.FOLLOWING);
 
@@ -89,13 +86,13 @@ namespace Assets.Scripts.Chess
         {
             Destroy(movementExecutor.gameObject);
 
-            SelectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
-            SelectedPiece.ActionHandler.ExecuteActions();
-            SelectedPiece.Moved = true;
+            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+            selectedPiece.ActionHandler.ExecuteActions();
+            selectedPiece.Moved = true;
 
             mainCamera.ChangeState(ChessCamera.State.LOCKED);
 
-            SelectedPiece = null;
+            selectedPiece = null;
             movementExecutor = null;
             moving = false;
             previewing = false;
@@ -120,7 +117,7 @@ namespace Assets.Scripts.Chess
 
         private void MoveDummy(Cell cell)
         {
-            if (!SelectedPiece || moving) return;
+            if (!selectedPiece || moving) return;
             IPieceAction actionToDo = null;
 
             bool lastAction = false;
@@ -128,7 +125,7 @@ namespace Assets.Scripts.Chess
             if (cell.piecePlaced)
             {
                 actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-                SelectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, SelectedPiece));
+                selectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, selectedPiece));
                 lastAction = true;
             }
             else
@@ -137,26 +134,26 @@ namespace Assets.Scripts.Chess
                 {
                     case Cell.CellType.Normal:
                         actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-                        SelectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, SelectedPiece));
+                        selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
                         lastAction = true;
 
                         break;
 
                     case Cell.CellType.Portal:
                         actionToDo = new TeleportAction(cell, 0, Mathf.Infinity, movementExecutor);
-                        SelectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, SelectedPiece));
+                        selectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, selectedPiece));
                         break;
 
                     case Cell.CellType.Jumper:
                         actionToDo = new JumpAction(cell, Mathf.Infinity, movementExecutor);
-                        SelectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, SelectedPiece));
+                        selectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, selectedPiece));
                         break;
 
                     case Cell.CellType.DestructibleWall:
                         int cost = movementExecutor.CalculateCost(cell);
 
                         actionToDo = new DestroyAction(cell, cost, Mathf.Infinity, movementExecutor);
-                        SelectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, SelectedPiece));
+                        selectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, selectedPiece));
                         lastAction = true;
                         break;
                 }
@@ -190,10 +187,10 @@ namespace Assets.Scripts.Chess
         {
             if (movementExecutor) return;
 
-            SelectedPiece = piece ? piece : null;
+            selectedPiece = piece ? piece : null;
             movementExecutor = piece ? CreateDummy(piece) : null;
 
-            if (movementExecutor && SelectedPiece) StartPreview();
+            if (movementExecutor && selectedPiece) StartPreview();
         }
 
         public Piece CreateDummy(Piece original)
