@@ -48,7 +48,7 @@ namespace Tasks
 
         public void SetParentingColor(Color _desiredColor)
         {
-            Debug.LogError("set parenting color " + this.name);
+            Debug.Log("set parenting color " + this.name);
             parentingReferenceColor = _desiredColor;
         }
         public bool GetIsChildOfComplexTask()
