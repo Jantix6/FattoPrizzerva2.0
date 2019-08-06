@@ -5,33 +5,26 @@ using UnityEngine;
 public class ChessPlayer : MonoBehaviour
 {
     public int playerNumber = 1;
-    public int movements=50;
+    public int movements = 1;
+    public int maxMovements = 15;
 
     public int turn = 0;
 
-    void Awake()
-    {
-        var pieces = FindObjectsOfType<Piece>();
-
-        foreach (var piece in pieces)
-        {
-            if (piece.teamNumber == playerNumber) piece.player = this;
-        }
-    }
-
     private void Update()
     {
-       //if (turn == 0) movements = 1;
+        if (turn == 1 || turn == 2) movements = 1;
     }
 
-    private void SetUpPieces()
+    public void StartTurn()
     {
-        var pieces = FindObjectsOfType<Piece>();
+        turn++;
 
-        foreach (var piece in pieces)
-        {
-            if (piece.teamNumber == playerNumber) piece.player = this;
-        }
+        if (turn == 3 || turn == 4) movements += 3;
+        if (turn == 5 || turn == 6) movements += 5;
+        if (turn == 7 || turn == 8 || turn == 9) movements += 7;
+        if (turn == 10 || turn == 11 || turn == 12) movements += 9;
+        if (turn >= 13) movements += 11;
+
+        movements = Mathf.Clamp(movements, 0, maxMovements);
     }
-
 }

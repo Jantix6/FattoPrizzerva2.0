@@ -14,10 +14,6 @@ public class Bishop : Piece, IHealth
     {
         board = Board.instance;
 
-        //Testing Purposes
-        if (!boardPosition) transform.position = new Vector3(UnityEngine.Random.Range(0, Board.instance.size),
-                                                             1,
-                                                             UnityEngine.Random.Range(0, Board.instance.size));
         GetBoardPosition();
     }
 
@@ -59,6 +55,23 @@ public class Bishop : Piece, IHealth
     public void Die()
     {
         boardPosition.piecePlaced = null;
+
+        int amount = 0;
+        Piece lastPiece = null;
+
+        var pieces = FindObjectsOfType<Piece>();
+
+        foreach (var piece in pieces)
+        {
+            if (piece.player == player && piece != this)
+            {
+                lastPiece = piece;
+                amount++;
+            }
+        }
+
+        if (amount == 1 && lastPiece) lastPiece.omnidirectional = false;
+
         Destroy(gameObject);
     }
 
@@ -92,7 +105,9 @@ public class Bishop : Piece, IHealth
                 break;
             }
 
-            if (currentCell.type == Cell.CellType.Portal || currentCell.type == Cell.CellType.Jumper)
+            if (currentCell.type == Cell.CellType.Portal ||
+                currentCell.type == Cell.CellType.Jumper ||
+                currentCell.type == Cell.CellType.DestructibleWall)
             {
                 positions.Add(currentCell);
                 break;

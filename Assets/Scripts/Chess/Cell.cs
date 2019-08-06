@@ -12,7 +12,7 @@ public class Cell : MonoBehaviour
         Portal,
         DestructibleWall,
         IndestructibleWall,
-        Storm,
+        Void,
     }
 
     public CellType type;
@@ -23,10 +23,18 @@ public class Cell : MonoBehaviour
     public SpriteRenderer availableCell;
 
     public Cell connectedPortal;
+    public Vector2Int portalDirection;
+    public float health = 1;
+
+    public void SetBoard()
+    {
+        SetPosition(new Vector2(transform.position.x, transform.position.z));
+        Board.instance.board[position.x, position.y] = this;
+    }
 
     public void SetPosition(Vector2 position)
     {
-        this.position = new Vector2Int((int)position.x, (int)position.y);
+        this.position = new Vector2Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y));
         transform.position = new Vector3(position.x, 0, position.y);
     }
 

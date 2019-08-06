@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PieceSelector : MonoBehaviour
 {
@@ -9,10 +10,27 @@ public class PieceSelector : MonoBehaviour
 
     public MovementPreview previewMovement;
 
+    [SerializeField] private ChessPlayer playerOne;
+    [SerializeField] private ChessPlayer playerTwo;
+
+    private Piece[] pieces;
+
+    [SerializeField] private Text playerText;
+    [SerializeField] private Text movementText;
+    [SerializeField] private Text turnText;
+
+    private void Start()
+    {
+        SetUpPieces();
+        player.StartTurn();
+    }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0)) Select();
         if (Input.GetMouseButtonDown(1)) previewMovement.SelectPositionToMove();
+
+        UpdateUI();
     }
 
     public static T GetFromRay<T>(string layerMaskName)
@@ -33,6 +51,13 @@ public class PieceSelector : MonoBehaviour
         return default;
     }
 
+    private void UpdateUI()
+    {
+        playerText.text = "Player: " + (player.playerNumber + 1);
+        movementText.text = "Moves: " + player.movements;
+        turnText.text = "Turn: " + player.turn;
+    }
+
     private void Select()
     {
         Piece piece = GetFromRay<Piece>("Piece");
@@ -42,5 +67,30 @@ public class PieceSelector : MonoBehaviour
         if (piece.Moved) return;
 
         previewMovement.Select(piece);
+    }
+
+    private void SetUpPieces()
+    {
+        pieces = FindObjectsOfType<Piece>();
+
+        foreach (var piece in pieces)
+        {
+            if (piece.teamNumber == playerOne.playerNumber) piece.player = playerOne;
+            if (piece.teamNumber == playerTwo.playerNumber) piece.player = playerTwo;
+        }
+    }
+
+    public void EndTurn()
+    {
+        if (previewMovement.previewing) previewMovement.CancelPreview();
+
+        foreach (var piece in pieces)
+        {
+            if (piece != null) piece.Moved = false;
+        }
+
+        if (player.movements == player.maxMovements) player.maxMovements--;
+        player = player == playerOne ? playerTwo : playerOne;
+        player.StartTurn();
     }
 }

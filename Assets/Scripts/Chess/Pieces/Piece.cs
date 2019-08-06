@@ -17,7 +17,7 @@ public abstract class Piece : MonoBehaviour
     public List<Cell> MovePositions;
     public bool selected;
 
-    public IActionHandler actionHandler => GetComponent<IActionHandler>();
+    public IActionHandler ActionHandler => GetComponent<IActionHandler>();
 
     public bool dummy = false;
     public bool omnidirectional = false;
@@ -33,7 +33,10 @@ public abstract class Piece : MonoBehaviour
         var pushedPosition = new Vector2Int(boardPosition.position.x + direction.x * forceAmount,
                                             boardPosition.position.y + direction.y * forceAmount);
 
-        if (!board.ValidIndex(pushedPosition)) return;
+        if (!board.ValidIndex(pushedPosition))
+        {
+            return;
+        }
 
         MoveToCell(board.GetCell(pushedPosition.x, pushedPosition.y));
     }
@@ -68,10 +71,11 @@ public abstract class Piece : MonoBehaviour
     public void MoveToCell(Cell cell)
     {
         if (!dummy) boardPosition.piecePlaced = null;
-        transform.position = new Vector3(cell.position.x, 1, cell.position.y);
+        transform.position = new Vector3(cell.position.x, 0.5f, cell.position.y);
         boardPosition = cell;
         if (!dummy) boardPosition.piecePlaced = this;
     }
+
     public abstract void GetPossibleMoves(bool omnidirectional);
     public abstract List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection);
     public abstract int CalculateCost(Cell nextPosition);

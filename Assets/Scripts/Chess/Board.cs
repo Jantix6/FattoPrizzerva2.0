@@ -28,12 +28,28 @@ public class Board : MonoBehaviour
         if (instance != this) Destroy(gameObject);
 
         SetUp();
-        CreateBoard();
+        //CreateBoard();
     }
 
     public void SetUp()
     {
         board = new Cell[size, size];
+
+        var cells = FindObjectsOfType<Cell>();
+
+        foreach (var cell in cells)
+        {
+            cell.SetBoard();
+        }
+
+        var pieces = FindObjectsOfType<Piece>();
+
+        foreach (var piece in pieces)
+        {
+            piece.GetBoardPosition();
+        }
+
+        if (boardSettings) SpawnPieces();
     }
 
     public void CreateBoard()
@@ -136,5 +152,29 @@ public class Board : MonoBehaviour
         if (direction.y != 0) direction.y = Math.Sign(direction.y);
 
         return direction;
+    }
+
+
+    //Test
+
+    public void GetBoard()
+    {
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                var Cells = Physics.OverlapSphere(new Vector3(x, 0, y), 0.3f);
+
+                foreach (var cell in Cells)
+                {
+                    if (cell.GetComponent<Cell>() != null)
+                    {
+                        board[x, y] = cell.GetComponent<Cell>();
+
+                        continue;
+                    }
+                }
+            }
+        }
     }
 }

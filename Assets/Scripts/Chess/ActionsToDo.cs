@@ -75,8 +75,9 @@ public class TeleportAction : PieceAction
 
         piece.MoveToCell(cell);
         piece.MoveToCell(cell.connectedPortal);
+        piece.direction = cell.connectedPortal.portalDirection;
 
-        var nextCell = GetNextCell(piece.boardPosition, piece.direction);
+        var nextCell = GetNextCell(cell.connectedPortal, piece.direction);
 
         if (nextCell)
         {
@@ -189,6 +190,11 @@ public class JumpAction : PieceAction
 
     private void End()
     {
+        if (piece.boardPosition.type == Cell.CellType.Void && !piece.dummy)
+        {
+            piece.ActionHandler.Actions.Add(new DieAction(piece));
+        }
+
         piece.transform.GetChild(0).transform.localPosition = Vector3.zero;
         callBack();
     }
@@ -242,9 +248,106 @@ public class JumpAction : PieceAction
                 case Cell.CellType.Portal:
                     actionToDo = new TeleportAction(cell, 0, speed, piece);
                     break;
+                case Cell.CellType.DestructibleWall:
+
+                    actionToDo = new DestroyAction(cell, Cost, speed, piece);
+                    break;
             }
         }
 
         return actionToDo;
+    }
+}
+
+public class DestroyAction : PieceAction
+{
+    public int Cost { get; set; }
+
+    private Action callBack;
+    private Cell wall;
+    private Piece piece;
+    private float speed;
+
+    public DestroyAction(Cell wall, int cost, float speed, Piece piece)
+    {
+        this.Cost = cost;
+        this.wall = wall;
+        this.piece = piece;
+        this.speed = speed;
+    }
+
+    public IEnumerator DoAction(Action callback)
+    {
+        this.callBack = callback;
+
+        ApproachWall();
+
+        yield break;
+    }
+
+    public void ApproachWall()
+    {
+        piece.direction = Board.GetDirection(piece.boardPosition, wall);
+        piece.StartCoroutine(new MovementAction(wall, 0, speed, piece).DoAction(AttackWall));
+    }
+
+    private void AttackWall()
+    {
+
+        float damage = CalculateDamage();
+        float wallHealth = wall.health;
+
+        wallHealth -= damage;
+        wallHealth = Mathf.Clamp(wallHealth, 0, 1);
+
+        if (!piece.dummy)
+        {
+            wall.health = wallHealth;
+
+            if (wall.health == 0)
+            {
+                wall.type = Cell.CellType.Normal;
+                wall.GetComponent<Material>().color = Color.white;
+            }
+            else piece.MoveToCell(GetCell(wall, new Vector2Int(-piece.direction.x, -piece.direction.y)));
+        }
+        else
+        {
+            if (wallHealth != 0) piece.MoveToCell(GetCell(wall, new Vector2Int(-piece.direction.x, -piece.direction.y)));
+        }
+
+        callBack();
+    }
+
+    public float CalculateDamage()
+    {
+        if (Cost == 3) return 0.5f;
+        if (Cost == 4) return 0.5f;
+        if (Cost == 5) return 1;
+
+        return 0;
+    }
+
+    private Cell GetCell(Cell currentCell, Vector2Int direction)
+    {
+        return Board.instance.GetCell(currentCell.position.x + direction.x, currentCell.position.y + direction.y);
+    }
+}
+
+public class DieAction : PieceAction
+{
+    public int Cost { get; set; }
+    public Piece piece;
+
+    public DieAction(Piece piece)
+    {
+        this.piece = piece;
+    }
+
+    public IEnumerator DoAction(Action callback)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        piece.GetComponent<IHealth>().Die();
     }
 }

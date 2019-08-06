@@ -14,7 +14,10 @@ public class ActionHandler : MonoBehaviour, IActionHandler
 
     public void ExecuteActions()
     {
-        if (Actions.Count == 0) return;
+        if (Actions.Count == 0)
+        {
+            return;
+        }
 
         PieceAction actionToDo = Actions[0];
 

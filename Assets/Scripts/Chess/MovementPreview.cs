@@ -40,22 +40,29 @@ public class MovementPreview : MonoBehaviour
 
         if (temp && temp != selectedPiece.boardPosition)
         {
-            if (OnMouseCell) OnMouseCell.GetComponent<Renderer>().material.color = Color.white;
+            if (OnMouseCell)
+            {
+                OnMouseCell.availableCell.color = Color.white;
+                OnMouseCell.availableCell.enabled = false;
+            }
+
             OnMouseCell = temp;
 
             Color colorToChange = movementExecutor.MovePositions.Contains(OnMouseCell) ? Color.green : Color.red;
 
-            OnMouseCell.GetComponent<Renderer>().material.color = colorToChange;
+            OnMouseCell.availableCell.enabled = true;
+            OnMouseCell.availableCell.color = colorToChange;
         }
         else if (OnMouseCell)
         {
-            OnMouseCell.GetComponent<Renderer>().material.color = Color.white;
+            OnMouseCell.availableCell.enabled = false;
+            OnMouseCell.availableCell.color = Color.white;
         }
     }
 
     private void StartPreview()
     {
-        selectedPiece.actionHandler.Actions.Clear();
+        selectedPiece.ActionHandler.Actions.Clear();
         selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
 
         movementExecutor.GetPossibleMoves(true);
@@ -68,7 +75,8 @@ public class MovementPreview : MonoBehaviour
     {
         moving = false;
 
-        movementExecutor.GetPossibleMoves(movementExecutor.omnidirectional);
+        if (movementExecutor.boardPosition.type == Cell.CellType.Void) ExitPreview();
+        else movementExecutor.GetPossibleMoves(movementExecutor.omnidirectional);
     }
 
     public void ExitPreview()
@@ -76,7 +84,7 @@ public class MovementPreview : MonoBehaviour
         Destroy(movementExecutor.gameObject);
 
         selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
-        selectedPiece.actionHandler.ExecuteActions();
+        selectedPiece.ActionHandler.ExecuteActions();
         selectedPiece.Moved = true;
 
         selectedPiece = null;
@@ -84,6 +92,10 @@ public class MovementPreview : MonoBehaviour
 
         moving = false;
         previewing = false;
+
+        if (OnMouseCell) OnMouseCell.availableCell.enabled = false;
+
+        UI_Panel.SetActive(false);
     }
 
     public void CancelPreview()
@@ -110,7 +122,7 @@ public class MovementPreview : MonoBehaviour
         if (cell.piecePlaced)
         {
             actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-            selectedPiece.actionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, selectedPiece));
+            selectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, selectedPiece));
             lastAction = true;
         }
         else
@@ -119,18 +131,31 @@ public class MovementPreview : MonoBehaviour
             {
                 case Cell.CellType.Normal:
                     actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-                    selectedPiece.actionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
+                    selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
+
+                    lastAction = true;
+
                     break;
 
                 case Cell.CellType.Portal:
                     actionToDo = new TeleportAction(cell, 0, Mathf.Infinity, movementExecutor);
-                    selectedPiece.actionHandler.Actions.Add(new TeleportAction(cell, 0, 5, selectedPiece));
+                    selectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, selectedPiece));
 
                     break;
 
                 case Cell.CellType.Jumper:
                     actionToDo = new JumpAction(cell, Mathf.Infinity, movementExecutor);
-                    selectedPiece.actionHandler.Actions.Add(new JumpAction(cell, 5, selectedPiece));
+                    selectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, selectedPiece));
+
+                    break;
+
+                case Cell.CellType.DestructibleWall:
+                    int cost = movementExecutor.CalculateCost(cell);
+
+                    actionToDo = new DestroyAction(cell, cost, Mathf.Infinity, movementExecutor);
+                    selectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, selectedPiece));
+                    lastAction = true;
+
 
                     break;
             }
