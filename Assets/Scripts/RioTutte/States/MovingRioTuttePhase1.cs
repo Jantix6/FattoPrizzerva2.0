@@ -10,7 +10,7 @@ public class MovingRioTuttePhase1 : BaseState
     private CharacterController characterController;
     private bool inverse = false;
 
-    private void Start()
+    void Awake()
     {
         mainScript = GetComponent<RioTutteMainScript>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
