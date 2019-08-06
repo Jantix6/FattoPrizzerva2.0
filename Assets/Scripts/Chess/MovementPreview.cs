@@ -12,6 +12,7 @@ public class MovementPreview : MonoBehaviour
     [SerializeField] private Piece selectedPiece;
 
     [SerializeField] private GameObject UI_Panel;
+    [SerializeField] private ChessCamera mainCamera;
 
     [SerializeField] private Material dummyMaterial;
 
@@ -21,6 +22,8 @@ public class MovementPreview : MonoBehaviour
     public bool previewing;
 
     private Cell OnMouseCell;
+
+    public Piece SelectedPiece { get => selectedPiece; set => selectedPiece = value; }
 
     private void Update()
     {
@@ -38,7 +41,7 @@ public class MovementPreview : MonoBehaviour
 
         var temp = PieceSelector.GetFromRay<Cell>("Cell");
 
-        if (temp && temp != selectedPiece.boardPosition)
+        if (temp && temp != SelectedPiece.boardPosition)
         {
             if (OnMouseCell)
             {
@@ -62,8 +65,10 @@ public class MovementPreview : MonoBehaviour
 
     private void StartPreview()
     {
-        selectedPiece.ActionHandler.Actions.Clear();
-        selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
+        SelectedPiece.ActionHandler.Actions.Clear();
+        SelectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
+
+        mainCamera.ChangeState(ChessCamera.State.FOLLOWING);
 
         movementExecutor.GetPossibleMoves(true);
 
@@ -83,11 +88,13 @@ public class MovementPreview : MonoBehaviour
     {
         Destroy(movementExecutor.gameObject);
 
-        selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
-        selectedPiece.ActionHandler.ExecuteActions();
-        selectedPiece.Moved = true;
+        SelectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+        SelectedPiece.ActionHandler.ExecuteActions();
+        SelectedPiece.Moved = true;
 
-        selectedPiece = null;
+        mainCamera.ChangeState(ChessCamera.State.LOCKED);
+
+        SelectedPiece = null;
         movementExecutor = null;
 
         moving = false;
@@ -103,9 +110,9 @@ public class MovementPreview : MonoBehaviour
         Destroy(movementExecutor.gameObject);
         movementExecutor = null;
 
-        selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
-        selectedPiece.player.movements += accumulatedCost;
-        selectedPiece = null;
+        SelectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+        SelectedPiece.player.movements += accumulatedCost;
+        SelectedPiece = null;
 
         moving = false;
         previewing = false;
@@ -113,7 +120,7 @@ public class MovementPreview : MonoBehaviour
 
     private void MoveDummy(Cell cell)
     {
-        if (!selectedPiece || moving) return;
+        if (!SelectedPiece || moving) return;
 
         PieceAction actionToDo = null;
 
@@ -122,7 +129,7 @@ public class MovementPreview : MonoBehaviour
         if (cell.piecePlaced)
         {
             actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-            selectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, selectedPiece));
+            SelectedPiece.ActionHandler.Actions.Add(new PushAction(cell.piecePlaced, 5, SelectedPiece));
             lastAction = true;
         }
         else
@@ -131,7 +138,7 @@ public class MovementPreview : MonoBehaviour
             {
                 case Cell.CellType.Normal:
                     actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
+                    SelectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, SelectedPiece));
 
                     lastAction = true;
 
@@ -139,13 +146,13 @@ public class MovementPreview : MonoBehaviour
 
                 case Cell.CellType.Portal:
                     actionToDo = new TeleportAction(cell, 0, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, selectedPiece));
+                    SelectedPiece.ActionHandler.Actions.Add(new TeleportAction(cell, 0, 5, SelectedPiece));
 
                     break;
 
                 case Cell.CellType.Jumper:
                     actionToDo = new JumpAction(cell, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, selectedPiece));
+                    SelectedPiece.ActionHandler.Actions.Add(new JumpAction(cell, 5, SelectedPiece));
 
                     break;
 
@@ -153,7 +160,7 @@ public class MovementPreview : MonoBehaviour
                     int cost = movementExecutor.CalculateCost(cell);
 
                     actionToDo = new DestroyAction(cell, cost, Mathf.Infinity, movementExecutor);
-                    selectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, selectedPiece));
+                    SelectedPiece.ActionHandler.Actions.Add(new DestroyAction(cell, cost, 5, SelectedPiece));
                     lastAction = true;
 
 
@@ -189,10 +196,10 @@ public class MovementPreview : MonoBehaviour
     {
         if (movementExecutor) return;
 
-        selectedPiece = piece ? piece : null;
+        SelectedPiece = piece ? piece : null;
         movementExecutor = piece ? CreateDummy(piece) : null;
 
-        if (movementExecutor && selectedPiece) StartPreview();
+        if (movementExecutor && SelectedPiece) StartPreview();
     }
 
     public Piece CreateDummy(Piece original)

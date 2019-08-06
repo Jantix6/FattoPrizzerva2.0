@@ -9,16 +9,20 @@ public class ChessCamera : MonoBehaviour
     public State currentState = State.LOCKED;
 
     MovementPreview pieceInMovement;
-    Transform lockedPos;
-    Transform followingPosition;
+    Vector3 initPos;
+    Quaternion initRotation;
+
+    GameObject pieceToFollow;
+    private Vector3 offset;
 
     float movementSpeed = 10f;
     float freeLookSensitivity = 3f;
 
     public void Awake()
     {
+        initPos = gameObject.transform.position;
+        initRotation = gameObject.transform.rotation;
         pieceInMovement = GetComponent<MovementPreview>();
-        lockedPos = gameObject.transform;
     }
 
     void Start()
@@ -43,6 +47,7 @@ public class ChessCamera : MonoBehaviour
             case State.LOCKED:
                 break;
             case State.FOLLOWING:
+                FollowingPiece();
                 break;
         }
     }
@@ -75,17 +80,34 @@ public class ChessCamera : MonoBehaviour
         transform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);        
     }
 
+    private void FollowingPiece()
+    {
+        transform.position = pieceToFollow.transform.position + offset/3.0f;
+    }
     public void ChangeState(State _newState)
     {
+        switch (currentState)
+        {
+            case State.FREE:
+                break;
+            case State.LOCKED:
+                break;
+            case State.FOLLOWING:
+                pieceToFollow = null;
+                break;
+        }
+
         switch (_newState)
         {
             case State.FREE:
                 break;
             case State.LOCKED:
-                gameObject.transform.position = lockedPos.position;
-                gameObject.transform.rotation = lockedPos.rotation;
+                gameObject.transform.position = initPos;
+                gameObject.transform.rotation = initRotation;
                 break;
             case State.FOLLOWING:
+                pieceToFollow = pieceInMovement.SelectedPiece.gameObject;
+                offset = transform.position - pieceToFollow.transform.position;
                 break;
         }
         currentState = _newState;
