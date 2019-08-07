@@ -9,24 +9,28 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "Answer", menuName = "Answers/New Answer")]
     public class SO_Answer : ScriptableObject 
     {
+        private DialogEventsManager eventsManager;
+
         //[SerializeField] private List<LanguageBasedString> answers;
+        [SerializeField] private DialogEventType eventOnClick;
         [SerializeField] private SO_DialogStructure targetStructure;
 
         [SerializeField] private SO_langaugeBasedStringContainer answer;
         
+        public void SetEventsManager (DialogEventsManager _manager)
+        {
+            eventsManager = _manager;
+            Debug.Log(eventsManager.name + " is now setup and ready to rock!");
+
+        }
+
+        public UnityEngine.Events.UnityAction GetEventActionToPerform()
+        {
+            return eventsManager.ExcecuteEvent(eventOnClick);
+        }
+
         public string GetAnswerBody(Language _targetLanguage)
         {
-            /*
-            if (LanguageBasedString.CheckListIntegrity(answers,_targetLanguage,this.name))
-            {
-                for (int i = 0; i < answers.Count; i++)
-                {
-                    if (answers[i].language == _targetLanguage)
-                        return answers[i].text;
-                }
-            }
-            return null;
-            */
 
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
@@ -41,6 +45,7 @@ namespace Dialogues
             else
             {
                 Debug.LogError("Target strucuture is not set on " + this.name);
+                
                 return null;
             }
                 

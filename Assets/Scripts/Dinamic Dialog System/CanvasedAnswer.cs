@@ -9,7 +9,7 @@ namespace Dialogues
 {
     public class CanvasedAnswer : MonoBehaviour 
     {
-        [SerializeField] private DialogueManager dialogueManager;
+        [SerializeField] protected DialogueManager dialogueManager;
         [SerializeField] private TMP_Text answerText;
         [SerializeField] private SO_DialogStructure nextDialogStructure;
         [SerializeField] private Button answerButton;
@@ -21,6 +21,8 @@ namespace Dialogues
             dialogueManager = _dialogueManager;
             nextDialogStructure = _answer.GetTargetStructure();
 
+            // button click listeners
+            answerButton.onClick.AddListener(_answer.GetEventActionToPerform());
             answerButton.onClick.AddListener(ShowStructure);
         }
 
@@ -29,8 +31,11 @@ namespace Dialogues
         {
             if (nextDialogStructure)
                 dialogueManager.ShowDialogueStructure(nextDialogStructure);
-            else 
-                Debug.LogWarning("The target Structure is not set ");
+            else
+            {
+                Debug.LogWarning("The target Structure is not set , EXITING DIALOG");
+                dialogueManager.EndDialogue();
+            }
         }
     }
 }

@@ -6,11 +6,13 @@ using UnityEngine.EventSystems;
 
 namespace Dialogues
 {
+    [RequireComponent(typeof(DialogEventsManager))]
     public class DialogueManager : MonoBehaviour
     {
+        private DialogEventsManager dialogEventManager;
 
         [SerializeField] private Canvas dialogueCanvas;
-        [SerializeField] private EventSystem dialogueEventSystem;           
+        [SerializeField] private EventSystem dialogueNavitagionEventSystem;           
         [SerializeField] private CanvasedDialogue canvasedDialoguePrefab;
         [SerializeField] private CanvasedSpeach canvasedSpeachPrefab;
 
@@ -34,7 +36,7 @@ namespace Dialogues
             ShowDialogueStructure(_index);
             IsEnabled = true;
         }
-        private void StartDialogue(SO_DialogStructure _dialogStructure)
+        public void StartDialogue(SO_DialogStructure _dialogStructure)
         {
             if (dialogStructures.Contains(_dialogStructure))
             {
@@ -51,7 +53,7 @@ namespace Dialogues
             }
         }
 
-        private void EndDialogue()
+        public void EndDialogue()
         {
             if (activeDialogueElement != null)
             {
@@ -81,21 +83,21 @@ namespace Dialogues
             if (dialogStructures[_index] is SO_QuestionAnswerStructure)
             {
                 activeDialogueElement = Instantiate(canvasedDialoguePrefab, dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, LanguageManager.GetGameLanguage());               
+                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, dialogEventManager, LanguageManager.GetGameLanguage());               
             }
             // Is it a speach element?
             else if (dialogStructures[_index] is SO_SpeachStructure)
             {
                 activeDialogueElement = Instantiate(canvasedSpeachPrefab,dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, LanguageManager.GetGameLanguage());             
+                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, dialogEventManager, LanguageManager.GetGameLanguage());             
             }
             // ---------------------------------------------------------------------------------------------------------------------------- //   
 
             // setup the navigation using the keyboard (default axis)
-            dialogueEventSystem.firstSelectedGameObject = null;
-            (activeDialogueElement as I_DialogElement).InitializeDefaultKeyboardNavigation(dialogueEventSystem);
+            dialogueNavitagionEventSystem.firstSelectedGameObject = null;
+            (activeDialogueElement as I_DialogElement).InitializeDefaultKeyboardNavigation(dialogueNavitagionEventSystem);
 
-            Debug.LogWarning("showing as active the object " + dialogueEventSystem.firstSelectedGameObject.GetType());
+            Debug.LogWarning("showing as active the object " + dialogueNavitagionEventSystem.firstSelectedGameObject.GetType());
         }
         public void ShowDialogueStructure(SO_DialogStructure _targetStructure)
         {
@@ -150,6 +152,8 @@ namespace Dialogues
 
         private void Awake()
         {
+            dialogEventManager = GetComponent<DialogEventsManager>();
+
             DebugSetLenguage();
 
             if (dialogStructures is null || dialogStructures.Count == 0)
@@ -159,8 +163,9 @@ namespace Dialogues
 
         private void Start()
         {
-            StartDialogue(currentStructureIndex);
+            // StartDialogue(currentStructureIndex);
         }
+        /*
         private void Update()
         {
             if (Input.GetKeyUp(nextStrcutre_Key))
@@ -172,7 +177,7 @@ namespace Dialogues
                 GoToPreviousStructure();
             }
         }
-
+        */
 
         [ContextMenu("SetLanguage")]
         private void DebugSetLenguage()
