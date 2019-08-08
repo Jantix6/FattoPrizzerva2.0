@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
-  m_Name: A1
+  m_Script: {fileID: 11500000, guid: e5de257f9d96c204589750f84cc8935c, type: 3}
+  m_Name: Take Damage Event
   m_EditorClassIdentifier: 
-  eventOnClick: {fileID: 11400000, guid: 57b399f4bc1dadd4f849ab7dd1bba0a9, type: 2}
-  targetStructure: {fileID: 0}
-  answer: {fileID: 11400000, guid: 5cdc4a54a7a00f440815d731f369fc34, type: 2}
+  targetOfTheDamage_Tag: Player
+  damageOnBaseOne: 0.1

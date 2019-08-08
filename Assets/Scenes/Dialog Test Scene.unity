@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 139748447}
   m_Layer: 0
   m_Name: Test Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad3828dd25e0334c912848b7c293dba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueManager: {fileID: 1853820470}
+  dialogueEventsManager: {fileID: 1853820472}
+  startingDialogStructure: {fileID: 11400000, guid: ac2cfe9b9d751014bbb00d8570cf44db,
+    type: 2}
 --- !u!114 &139748448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,4 +488,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59d0abfe0c39754b91640a0b98893db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogManager: {fileID: 0}

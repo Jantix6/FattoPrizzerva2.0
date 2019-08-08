@@ -22,7 +22,10 @@ namespace Dialogues
             nextDialogStructure = _answer.GetTargetStructure();
 
             // button click listeners
-            answerButton.onClick.AddListener(_answer.GetEventActionToPerform());
+            UnityAction dEvent = _answer.GetEventActionToPerform();
+            if (dEvent != null)
+                answerButton.onClick.AddListener(_answer.GetEventActionToPerform());
+
             answerButton.onClick.AddListener(ShowStructure);
         }
 

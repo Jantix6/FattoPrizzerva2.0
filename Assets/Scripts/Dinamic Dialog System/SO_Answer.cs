@@ -12,7 +12,7 @@ namespace Dialogues
         private DialogEventsManager eventsManager;
 
         //[SerializeField] private List<LanguageBasedString> answers;
-        [SerializeField] private DialogEventType eventOnClick;
+        [SerializeField] private DialogEvent eventOnClick;
         [SerializeField] private SO_DialogStructure targetStructure;
 
         [SerializeField] private SO_langaugeBasedStringContainer answer;
@@ -23,19 +23,28 @@ namespace Dialogues
             Debug.Log(eventsManager.name + " is now setup and ready to rock!");
 
         }
-
-        public UnityEngine.Events.UnityAction GetEventActionToPerform()
+        
+        // getting action to call on the button itself
+        public UnityAction GetEventActionToPerform()
         {
-            return eventsManager.ExcecuteEvent(eventOnClick);
-        }
+            if (eventOnClick)
+            {
+                eventOnClick.Initialize(eventsManager);
 
+                return eventOnClick.Execute;
+            } else
+            {
+                return null;
+            }
+
+    
+        }
+        
         public string GetAnswerBody(Language _targetLanguage)
         {
-
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
             return desiredLBS.text;
-
         }
 
         public SO_DialogStructure GetTargetStructure()

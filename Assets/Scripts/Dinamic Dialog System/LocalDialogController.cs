@@ -7,10 +7,15 @@ namespace Dialogues
 {
     public class LocalDialogController : MonoBehaviour
     {
-        DialogueManager dialogueManager;
-        DialogEventsManager dialogueEventsManager;
+        [SerializeField] DialogueManager dialogueManager;
+        [SerializeField] DialogEventsManager dialogueEventsManager;
 
+        [SerializeField] private SO_DialogStructure startingDialogStructure;
 
+        private void Start()
+        {
+            StartDialog(startingDialogStructure);
+        }
 
         public void StartDialog(SO_DialogStructure _dialogToInvoke)
         {
@@ -32,7 +37,7 @@ namespace Dialogues
         public void UnFrezeGame()
         {
             if (dialogueEventsManager)
-                dialogueEventsManager.UnFrezeGame();
+                dialogueEventsManager.UnFreezeGame();
             else
                 throw new MissingReferenceException(dialogueEventsManager.ToString());
         }
