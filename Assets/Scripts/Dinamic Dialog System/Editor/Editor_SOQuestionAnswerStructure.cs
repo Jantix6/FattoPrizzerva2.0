@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 // I know it is ugly and not very "performance friendly" but it will do the trick (at least for now)
@@ -88,7 +89,26 @@ namespace Dialogues
                         style.normal.textColor = Color.red;
                     }
                     GUILayout.Label(labelText, style);
-                    style.normal.textColor = Color.grey;
+                    style.normal.textColor = Color.black;
+
+                    // event to invoke
+                    string eventText;
+                    eventText = "CALLING EVENT -->";
+
+                    UnityAction onPressAction;
+                    onPressAction = answers[index].GetEventActionToPerform();
+                    if (onPressAction != null)
+                    {
+                        eventText += "\t" +  onPressAction.Target.ToString();
+                        style.normal.textColor = Color.blue;
+
+                    }
+                    else
+                    {
+                        eventText += "NO EVENT TO INVOKE";
+                        style.normal.textColor = Color.grey;
+                    }
+                    GUILayout.Label(eventText, style);
 
                     GUILayout.EndVertical();
 
