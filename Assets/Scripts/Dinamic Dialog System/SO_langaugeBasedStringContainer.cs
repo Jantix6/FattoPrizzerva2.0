@@ -10,6 +10,12 @@ namespace Dialogues
     {
         [SerializeField] private List<SO_LanguageBasedString> languageBasedStrings_Lst;         // LBSs
 
+
+        public List<SO_LanguageBasedString> GetLanguageBasedStrings()
+        {
+            return languageBasedStrings_Lst;
+        }
+
         public SO_LanguageBasedString GetLanguageBasedString(Language _desiredLanguage, string _callerName)
         {
             SO_LanguageBasedString returnLBS = null;

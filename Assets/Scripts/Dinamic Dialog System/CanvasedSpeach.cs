@@ -34,7 +34,7 @@ namespace Dialogues
 
         }
 
-        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, DialogEventsManager _eventsManager,  Language _targetLanguage)
+        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Dialogs_GameController _gameController,  Language _targetLanguage)
         {
             dialogueManager = _manager;
             speachData = _inputData as SO_SpeachStructure;

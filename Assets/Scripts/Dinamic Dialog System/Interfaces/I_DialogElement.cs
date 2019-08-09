@@ -8,7 +8,7 @@ namespace Dialogues
 {
     public interface I_DialogElement 
     {
-        void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, DialogEventsManager _eventsManager , Language _targetLanguage);
+        void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Dialogs_GameController _gameController , Language _targetLanguage);
         Button GetButton(int _desiredIndex);
         void InitializeDefaultKeyboardNavigation(EventSystem _inputEventSystem , int _preselectedButtonIndex = 0);
 

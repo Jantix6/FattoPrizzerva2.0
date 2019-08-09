@@ -5,12 +5,12 @@ using UnityEngine;
 namespace Dialogues
 {
     [CreateAssetMenu(fileName = "UNFreeze game Event", menuName = "Dialog events/UNFreeze Game")]
-    public class SO_UnFreezeGame_Event : DialogEvent
+    public class SO_UnFreezeGame_Event : SO_DialogEvent
     {
         public override void Execute()
         {
             base.Execute();
-            eventsManager.UnFreezeGame();
+            dialogsGameController.UnFreezeGame();
         }
 
     }

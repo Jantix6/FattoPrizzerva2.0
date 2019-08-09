@@ -9,18 +9,22 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "Answer", menuName = "Answers/New Answer")]
     public class SO_Answer : ScriptableObject 
     {
-        private DialogEventsManager eventsManager;
+        private Dialogs_GameController gameController;
 
         //[SerializeField] private List<LanguageBasedString> answers;
-        [SerializeField] private DialogEvent eventOnClick;
+        [SerializeField] private SO_DialogEvent eventOnClick;
+        [SerializeField] private SO_DialogEventsContainer eventsOnClickContainer;
         [SerializeField] private SO_DialogStructure targetStructure;
 
         [SerializeField] private SO_langaugeBasedStringContainer answer;
-        
-        public void SetEventsManager (DialogEventsManager _manager)
+
+
+        public void Initialize (Dialogs_GameController _gameController)
         {
-            eventsManager = _manager;
-            Debug.Log(eventsManager.name + " is now setup and ready to rock!");
+            gameController = _gameController;
+            Debug.Log(gameController.name + " is now setup and ready to rock!");
+
+  
 
         }
         
@@ -29,15 +33,26 @@ namespace Dialogues
         {
             if (eventOnClick)
             {
-                eventOnClick.Initialize(eventsManager);
 
+                eventOnClick.Initialize(gameController);
                 return eventOnClick.Execute;
+
             } else
             {
                 return null;
             }
+        }
 
-    
+        public UnityAction GetEventActionsToPerform()
+        {
+            if (eventsOnClickContainer)
+            {
+                eventsOnClickContainer.Initialize(gameController);
+                return eventsOnClickContainer.Excecute;
+            }
+
+            return null;
+
         }
         
         public string GetAnswerBody(Language _targetLanguage)
@@ -45,6 +60,10 @@ namespace Dialogues
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
             return desiredLBS.text;
+        }
+        public SO_langaugeBasedStringContainer GetLanguageBasedStringContainer()
+        {
+            return answer;
         }
 
         public SO_DialogStructure GetTargetStructure()
@@ -54,11 +73,10 @@ namespace Dialogues
             else
             {
                 Debug.LogError("Target strucuture is not set on " + this.name);
-                
                 return null;
-            }
-                
+            }          
         }
+
 
 
     }

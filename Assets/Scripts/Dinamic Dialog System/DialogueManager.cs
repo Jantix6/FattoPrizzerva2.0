@@ -6,10 +6,9 @@ using UnityEngine.EventSystems;
 
 namespace Dialogues
 {
-    [RequireComponent(typeof(DialogEventsManager))]
     public class DialogueManager : MonoBehaviour
     {
-        private DialogEventsManager dialogEventManager;
+        [SerializeField] private Dialogs_GameController gameController;
 
         [SerializeField] private Canvas dialogueCanvas;
         [SerializeField] private EventSystem dialogueNavitagionEventSystem;           
@@ -46,7 +45,10 @@ namespace Dialogues
                 int index = dialogStructures.FindIndex(a => a == _dialogStructure);
                  
                 if (index != -1)
+                {
                     ShowDialogueStructure(index);
+                    gameController.FreezeGame();
+                }
                 else
                     Debug.LogError("The dialog you want to make active was not found on the dialogs list");
 
@@ -63,6 +65,7 @@ namespace Dialogues
                 currentStructureIndex = -1;
 
                 IsEnabled = false;
+                gameController.UnFreezeGame();
             }
         }
         private void DestroyDialogueElement (CanvasedDialogElement _target)
@@ -83,13 +86,13 @@ namespace Dialogues
             if (dialogStructures[_index] is SO_QuestionAnswerStructure)
             {
                 activeDialogueElement = Instantiate(canvasedDialoguePrefab, dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, dialogEventManager, LanguageManager.GetGameLanguage());               
+                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, gameController, LanguageManager.GetGameLanguage());               
             }
             // Is it a speach element?
             else if (dialogStructures[_index] is SO_SpeachStructure)
             {
                 activeDialogueElement = Instantiate(canvasedSpeachPrefab,dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, dialogEventManager, LanguageManager.GetGameLanguage());             
+                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, gameController, LanguageManager.GetGameLanguage());             
             }
             // ---------------------------------------------------------------------------------------------------------------------------- //   
 
@@ -152,7 +155,7 @@ namespace Dialogues
 
         private void Awake()
         {
-            dialogEventManager = GetComponent<DialogEventsManager>();
+            // gameController = GetComponent<Dialogs_GameController>();
 
             DebugSetLenguage();
 
@@ -165,19 +168,7 @@ namespace Dialogues
         {
             // StartDialogue(currentStructureIndex);
         }
-        /*
-        private void Update()
-        {
-            if (Input.GetKeyUp(nextStrcutre_Key))
-            {
-                GoToNextStructure();
-            }
-            else if (Input.GetKeyUp(previousStrcture_Key))
-            {
-                GoToPreviousStructure();
-            }
-        }
-        */
+
 
         [ContextMenu("SetLanguage")]
         private void DebugSetLenguage()

@@ -30,7 +30,7 @@ namespace Dialogues
         public void StartObjectGeneration()
         {
             // load the data
-            List<string> dataLoaded = CSVReader.ReadData(_dataBasePath);
+            List<string> dataLoaded = CSVProcesser.ReadData(_dataBasePath);
 
 
             // parse the data and separate it on words
@@ -56,7 +56,7 @@ namespace Dialogues
         // MINIMIZA EL USO DE LOS IFS
         private void GenerateObject(List<string> _words)
         {
-            Type objectType;
+            Type objectType = null;
             string objectType_Str = "";
             int objectID = 0;
             Language language = Language.NONE;
@@ -69,15 +69,12 @@ namespace Dialogues
                     if (_words[index] == "Q")
                     {
                         objectType = typeof(SO_QuestionAnswerStructure);
-                        objectType_Str = objectType.ToString();
-
                     }
                     else if (_words[index] == "A")
                     {
                         objectType = typeof(SO_Answer);
-                        objectType_Str = objectType.ToString();
-
                     }
+                    objectType_Str = objectType.ToString();
 
                 }
                 else if (index == (int)Fields.ID)

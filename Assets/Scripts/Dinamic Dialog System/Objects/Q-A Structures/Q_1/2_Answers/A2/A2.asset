@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
   m_Name: A2
   m_EditorClassIdentifier: 
-  eventOnClick: 3
+  eventOnClick: {fileID: 11400000, guid: c7912f7494a8d694c868b866e147755e, type: 2}
   targetStructure: {fileID: 0}
   answer: {fileID: 11400000, guid: e9497c165afe96249b28aa50a72b8185, type: 2}

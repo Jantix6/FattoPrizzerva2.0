@@ -4,9 +4,10 @@ using UnityEngine;
 using Tasks;
 using Dialogues;
 
-public class TestPlayer : MonoBehaviour
+public class TestPlayer : MonoBehaviour , I_Freazable
 {
-    
+    public Dialogs_GameController gameController;
+
     TasksManager tasksManager;
     public LocalDialogController dialogController;
     public int health;
@@ -17,13 +18,15 @@ public class TestPlayer : MonoBehaviour
     {
         tasksManager = TasksManager.GetInstance();
 
-        maxHealth = health = 100;
-
-
-        
+        maxHealth = health = 100;    
     }
 
+    private void Awake()
+    {
+        gameController.AddToFreazablesList(this);
+    }
 
+    
 
     public void TakeDamage(int _damage)
     {
@@ -47,8 +50,17 @@ public class TestPlayer : MonoBehaviour
         TakeDamage(pureDamage);
 
     }
-    
 
+    public void Freaze()
+    {
+        // Do whatever you need to do to be frozen
+        Debug.Log(this.gameObject.name + " is now frozen ");
+    }
 
+    public void Unfreaze()
+    {
+        // Do whatever you need to do to UNFREEZE
+        Debug.Log(this.gameObject.name + " is now unfrozen ");
 
+    }
 }

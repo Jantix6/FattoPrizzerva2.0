@@ -6,16 +6,16 @@ namespace Dialogues
 {
 
     [CreateAssetMenu(fileName = "Take Damage Event", menuName = "Dialog events/Take Damage")]
-    public class SO_TakeDamage_Event : DialogEvent
+    public class SO_TakeDamage_Event : SO_DialogEvent
     {
         [SerializeField] string targetOfTheDamage_Tag;
         private TestPlayer target;
         [SerializeField] float damageOnBaseOne;
 
 
-        public override void Initialize(DialogEventsManager _eventsManager)
+        public override void Initialize(Dialogs_GameController _gameController)
         {
-            base.Initialize(_eventsManager);
+            base.Initialize(_gameController);
 
             target = GameObject.FindGameObjectWithTag(targetOfTheDamage_Tag).GetComponent<TestPlayer>();
 
@@ -27,7 +27,8 @@ namespace Dialogues
         public override void Execute()
         {
             base.Execute();
-            eventsManager.TakeDamage(target, damageOnBaseOne);
+            if (target)
+                target.TakeDamage(damageOnBaseOne);
         }
 
     }
