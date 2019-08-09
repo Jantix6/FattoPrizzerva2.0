@@ -10,6 +10,7 @@ public class PlanningScript : BaseState
     public float dividendoSpeed = 2f;
     private CharacterController characterController;
     private Vector3 toMove;
+    private SpriteRenderer spriteRenderer;
 
     public float staminaPerPunchAereo = 25f;
 
@@ -20,6 +21,7 @@ public class PlanningScript : BaseState
     void Start()
     {
         myCamera = Camera.main.gameObject;
+        spriteRenderer = player.spriteRenderer;
         characterController = player.GetComponent<CharacterController>();
     }
 
@@ -44,17 +46,20 @@ public class PlanningScript : BaseState
         if (Input.GetKey(player.downKey))
             toMove -= myCamera.transform.up;
         if (Input.GetKey(player.rightKey))
+        {
             toMove += myCamera.transform.right;
+            spriteRenderer.flipX = false;
+        }
         if (Input.GetKey(player.leftKey))
+        {
             toMove -= myCamera.transform.right;
+            spriteRenderer.flipX = true;
+
+        }
 
         toMove = new Vector3(toMove.x, 0, toMove.z);
         toMove.Normalize();
 
-        if (toMove.magnitude > 0)
-        {
-            gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward, toMove);
-        }
 
         CollisionFlags collisionFlags = characterController.Move(toMove * Time.deltaTime * speed + Vector3.down * gravity * Time.deltaTime);
 

@@ -180,7 +180,19 @@ public class RioTuttePhase3 : MonoBehaviour
         {
             if (mainScript.phase == 3)
             {
-                //añadir elemento del escenario
+                {
+                    if (currentState == State.KNOCKBACK)
+                    {
+                        if (hit.gameObject.tag == "ObstacleRioTutte" && hit.gameObject.GetComponent<ObstacleInstaKillRioTutte>() != null)
+                        {
+
+                            ChangeState(State.STUNED);
+                            print("Muerto");
+                            CheckLifes(-1);
+
+                        }
+                    }
+                }
             }
         }
     }
