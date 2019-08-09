@@ -7,7 +7,9 @@ public class AdrenalinaPunch : BaseState
 
     [SerializeField] private float speedPunch = 5;
     [SerializeField] private float damageBase = 10;
+    private float normalDamage;
     [SerializeField] private float timerDamage = 0.25f;
+    private float currentTime = 0;
 
     private BaseState moving;
 
@@ -16,6 +18,7 @@ public class AdrenalinaPunch : BaseState
     void Start()
     {
         moving = player.moving;
+        normalDamage = damageBase;
     }
 
     // Update is called once per frame
@@ -26,21 +29,32 @@ public class AdrenalinaPunch : BaseState
 
     public override void Enter()
     {
-        player.anim.SetTrigger("Fist");
         player.currentTimeState = 0;
         player.ChangeSpeed(speedPunch);
         moving.Enter();
+        currentTime = 0;
+        damageBase = normalDamage;
     }
 
     public override void Execute()
     {
-        player.currentTimeState += Time.deltaTime;
-        if (player.currentTimeState >= timerDamage && player.currentTimeState < 0.3f)
-            colliderPunch.enabled = true;
-        if (player.currentTimeState >= 0.3f)
-            player.ChangeState(PlayerScript.State.MOVING); //player.stateMachine.ChangeState(player.moving);
-        moving.Execute();
+        if (Input.GetMouseButton(0))
+        {
+            currentTime += Time.deltaTime;
+        }
+        else {
+            if(player.currentTimeState == 0)
+                player.anim.SetTrigger("Fist");
 
+            currentTime = Mathf.Lerp(1, 2.5f, currentTime);
+            damageBase *= currentTime;
+            player.currentTimeState += Time.deltaTime;
+            if (player.currentTimeState >= timerDamage && player.currentTimeState < 0.3f)
+                colliderPunch.enabled = true;
+            if (player.currentTimeState >= 0.3f)
+                player.ChangeState(PlayerScript.State.MOVING); //player.stateMachine.ChangeState(player.moving);
+            moving.Execute();
+        }
     }
 
     public override void Exit()

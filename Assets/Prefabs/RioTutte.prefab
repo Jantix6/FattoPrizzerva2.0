@@ -145,7 +145,7 @@ MonoBehaviour:
   currentDash: 0
   timeBetweenDash: 2
   currentTimeDash: 0
-  timesStunedToChangePhase: 5
+  timesStunedToChangePhase: 1
   knockbackPlant: 0
 --- !u!114 &3711986757945743631
 MonoBehaviour:
@@ -165,12 +165,12 @@ MonoBehaviour:
   teleport: {fileID: 9012563261808981696}
   stun: {fileID: 1998550574269637818}
   damageImpact: 15
-  timeImpact: 1.5
+  timeImpact: 0.5
   damageMinToMove: 40
   currentTimeState: 0
   numOfDashes: 3
   currentDash: 0
-  timeBetweenDash: 2
+  timeBetweenDash: 0.75
   currentTimeDash: 0
   timesStunedToChangePhase: 5
   knockbackPlant: 0

@@ -19,7 +19,7 @@ public class RioTuttePhase4 : MonoBehaviour
     public float currentTimeState = 0;
     public int numOfDashes = 3;
     public int currentDash = 0;
-    public float timeBetweenDash = 2f;
+    public float timeBetweenDash = 0.75f;
     public float currentTimeDash = 0;
     private float currentTimeMovingToDash = 0;
     public float timesStunedToChangePhase = 5;
@@ -108,7 +108,7 @@ public class RioTuttePhase4 : MonoBehaviour
         if(currentState == State.MOVING )
         {
             currentTimeState += Time.deltaTime;
-            if(currentTimeState >= 0.75f)
+            if(currentTimeState >= timeBetweenDash)
             {
                 ChangeState(State.TELEPORT);
             }
@@ -175,7 +175,7 @@ public class RioTuttePhase4 : MonoBehaviour
                         {
 
                             ChangeState(State.STUNED);
-                            print("Muerto");
+                            gameObject.SetActive(false);
                             CheckLifes(-1);
 
                         }

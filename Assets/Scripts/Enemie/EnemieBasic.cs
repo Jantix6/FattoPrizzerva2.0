@@ -18,7 +18,6 @@ public class EnemieBasic : MonoBehaviour
 
     public void MoveDirectionHit(Vector3 _direction, float _damage, bool _condición = false)
     {
-        print(_damage);
         if (_damage <= damage)
             currentDamage = TypeOfDamage.PLAYERREBOTA;
         else

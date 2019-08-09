@@ -186,10 +186,19 @@ public class RioTuttePhase3 : MonoBehaviour
                         if (hit.gameObject.tag == "ObstacleRioTutte" && hit.gameObject.GetComponent<ObstacleInstaKillRioTutte>() != null)
                         {
 
-                            ChangeState(State.STUNED);
+                            gameObject.SetActive(false);
                             print("Muerto");
                             CheckLifes(-1);
 
+                        }
+                        else if (hit.gameObject.tag == "ObstacleRioTutte" && hit.gameObject.GetComponent<ObstaclePhase2>() != null)
+                        {
+                            if (!hit.gameObject.GetComponent<ObstaclePhase2>().GetRoto())
+                            {
+                                hit.gameObject.GetComponent<ObstaclePhase2>().Chocado();
+                                ChangeState(State.STUNED);
+                                CheckLifes(-1);
+                            }
                         }
                     }
                 }

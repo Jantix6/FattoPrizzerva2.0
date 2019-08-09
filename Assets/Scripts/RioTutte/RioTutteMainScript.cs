@@ -30,8 +30,8 @@ public class RioTutteMainScript : EnemieBasic
 
     private void Start()
     {
-        phase = 4;
-        ChangePhase(4);
+        phase = 1;
+        ChangePhase(1);
     }
 
     // Update is called once per frame
@@ -85,7 +85,6 @@ public class RioTutteMainScript : EnemieBasic
                 break;
             case 4:
                 phase = 4;
-                player.StartAdrenalina(true);
                 phase4.StartExecution();
                 break;
         }
