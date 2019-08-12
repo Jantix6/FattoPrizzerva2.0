@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -26,13 +27,26 @@ namespace Dialogues
             GUILayout.Space(40);
             GUILayout.Label("Debug view");
 
+            int enumLenght = Enum.GetNames(typeof(Language)).Length - 1;            // - NONE
+            foreach (Language language in Enum.GetValues(typeof(Language)))
+            {
+                previewLanguage = language;
+
+                if (previewLanguage != Language.NONE)
+                {
+                    
+                }
+
+
+            }
+
             // Draw question
             DrawQuestion(previewLanguage);
-
             GUILayout.Space(5);
-
             // Draw Answers
             DrawAnswers(previewLanguage);
+            GUILayout.Space(5);
+
 
         }
 
@@ -44,7 +58,10 @@ namespace Dialogues
             GUILayout.Label("QUESTION: ");
 
             if (question != default)
-                GUILayout.TextArea(question);
+            {
+                question = GUILayout.TextArea(question);
+                structure.SetQuestion(_desiredLanguage, question);
+            }
             else
                 GUILayout.Label(" NOT FOUND ");
         }

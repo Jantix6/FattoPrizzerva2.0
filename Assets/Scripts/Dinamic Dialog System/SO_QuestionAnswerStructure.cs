@@ -7,10 +7,7 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "QAStructure", menuName = "QAStructure/New QA Structure")]
     public class SO_QuestionAnswerStructure : SO_DialogStructure
     {
-        //[SerializeField] [TextArea] private string question;
-        // [SerializeField] private List<LanguageBasedString> questions;
         [SerializeField] private List<SO_Answer> answers_Lst;
-
         [SerializeField] private SO_langaugeBasedStringContainer question;
 
         public string GetQuestion(Language _targetLanguage)
@@ -18,6 +15,12 @@ namespace Dialogues
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = question.GetLanguageBasedString(_targetLanguage, this.name);
             return desiredLBS.text;
+        }
+        public void SetQuestion(Language _targetLanguage, string _text)
+        {
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = question.GetLanguageBasedString(_targetLanguage, this.name);
+            desiredLBS.text = _text;
         }
 
         public List<SO_Answer> GetAnswers()
