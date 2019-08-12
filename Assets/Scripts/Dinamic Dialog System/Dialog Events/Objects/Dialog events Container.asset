@@ -15,4 +15,5 @@ MonoBehaviour:
   listOfObjectEvents:
   - {fileID: 11400000, guid: c7912f7494a8d694c868b866e147755e, type: 2}
   - {fileID: 11400000, guid: ab5b6116767700f4881deb002d2474b9, type: 2}
+  - {fileID: 11400000, guid: 662191100353c434bbf5ce515ed75a60, type: 2}
   - {fileID: 11400000, guid: 57b399f4bc1dadd4f849ab7dd1bba0a9, type: 2}

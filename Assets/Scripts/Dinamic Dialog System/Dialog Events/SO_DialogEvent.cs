@@ -9,26 +9,29 @@ namespace Dialogues
         ON_HOLD,
         IN_PROGRESS,
         PERFORMED,
-        NONE,       // used by the events that are instantaneous
+        NONE,       
+    }
+    public enum DialogType
+    {
+        UPDATE_DEPENDANT,
+        INSTANT,
     }
 
     public abstract class SO_DialogEvent : ScriptableObject
     {
         protected Dialogs_GameController dialogsGameController;
         protected DialogEventStatus eventStatus = DialogEventStatus.NONE;
+        protected DialogType dialogExcecutionType = DialogType.INSTANT;
 
-        protected bool isInstantEvent;                                          // does de event play just once (no update)
-        bool isEventFinished;
 
-        private void OnEnable()
+        public DialogType GetDialogExcecutionType()
         {
-            isEventFinished = false;
+            return dialogExcecutionType;
         }
 
         public virtual void Initialize(Dialogs_GameController _dialogGameController)
         {
-            dialogsGameController = _dialogGameController;
-                 
+            dialogsGameController = _dialogGameController;          
         }
 
         // what the button calls ONCE
@@ -36,8 +39,14 @@ namespace Dialogues
         {
             // override
             Debug.Log("Calling excecute of " + this.name);
-
         }
+        
+        public virtual bool Tick(float deltaTime)
+        {
+            // override
+            return true;
+        }
+
         
     }
 }

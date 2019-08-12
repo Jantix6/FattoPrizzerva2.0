@@ -32,7 +32,10 @@ namespace Dialogues
 
             UnityAction dEvent2 = answer.GetEventActionsToPerform();
             if (dEvent2 != null)
+            {
                 answerButton.onClick.AddListener(dEvent2);
+                answerButton.onClick.AddListener(StartUpdateCorrutine);
+            }
 
             answerButton.onClick.AddListener(ShowStructure);
         }
@@ -60,6 +63,12 @@ namespace Dialogues
                 Debug.LogWarning("The target Structure is not set , EXITING DIALOG");
                 dialogueManager.EndDialogue();
             }
+        }
+
+        private void StartUpdateCorrutine()
+        {
+            Debug.LogWarning("Starting Corrutine");
+            StartCoroutine(answer.GetEventsContainerUpdate());
         }
 
     }

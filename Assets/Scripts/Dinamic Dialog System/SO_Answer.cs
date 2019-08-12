@@ -33,10 +33,8 @@ namespace Dialogues
         {
             if (eventOnClick)
             {
-
                 eventOnClick.Initialize(gameController);
                 return eventOnClick.Execute;
-
             } else
             {
                 return null;
@@ -76,6 +74,13 @@ namespace Dialogues
                 return null;
             }          
         }
+
+        public IEnumerator GetEventsContainerUpdate()
+        {
+            return eventsOnClickContainer.UpdateCorrutine();
+        }
+
+
 
 
 
