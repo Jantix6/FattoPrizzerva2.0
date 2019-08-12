@@ -24,10 +24,23 @@ namespace Dialogues
             GUILayout.Space(40);
             GUILayout.Label("Debug view");
 
-            DrawTitle(previewLanguage);
-            GUILayout.Space(5);
-            DrawBody(previewLanguage);
-            GUILayout.Space(5);
+            int enumLenght = Enum.GetNames(typeof(Language)).Length - 1;            // - NONE
+            foreach (Language language in Enum.GetValues(typeof(Language)))
+            {
+                previewLanguage = language;
+
+                if (previewLanguage != Language.NONE)
+                {
+                    DrawTitle(previewLanguage);
+                    GUILayout.Space(5);
+                    DrawBody(previewLanguage);
+                    GUILayout.Space(5);
+                }
+
+                
+            }
+
+            
 
         }
 
@@ -41,7 +54,11 @@ namespace Dialogues
             GUILayout.Label("Body: ");
 
             if (text != default)
-                GUILayout.TextArea(text);
+            {
+                text = GUILayout.TextArea(text);
+                structure.SetSpeachBody(previewLanguage, text);         // it allows you to modofy the text from the editor preview
+            }
+                
             else
                 GUILayout.Label(" NOT FOUND ");
         }
@@ -54,7 +71,10 @@ namespace Dialogues
             GUILayout.Label("Title: ");
 
             if (text != default)
-                GUILayout.TextArea(text);
+            {
+                text = GUILayout.TextArea(text);
+                structure.SetTitleBody(previewLanguage, text);
+            }
             else
                 GUILayout.Label(" NOT FOUND ");
         }

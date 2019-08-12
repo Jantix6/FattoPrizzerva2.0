@@ -30,13 +30,26 @@ namespace Dialogues
 
             return desiredLBS.text;
         }
+        public void SetSpeachBody(Language _targetLanguage, string _newText)
+        {
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = body.GetLanguageBasedString(_targetLanguage, this.name);
+
+            desiredLBS.text = _newText;
+
+        }
         public SO_DialogStructure GetTargetStructure()
         {
             return nextDialogStructure;
         }
 
+        public void SetTitleBody(Language _targetLanguage, string text)
+        {
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = title.GetLanguageBasedString(_targetLanguage, this.name);
 
-
+            desiredLBS.text = text;
+        }
     }
 
 }
