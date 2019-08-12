@@ -25,9 +25,9 @@ public class CanvasPlayerScript : MonoBehaviour
 
     public void ShowAdrenalina(bool _show)
     {
-        progresBarAdrenalina.enabled = _show;
         progresBarStamina.enabled = !_show;
         progresBarStaminaToRecover.enabled = !_show;
+        progresBarAdrenalina.enabled = _show;
     }
 
 }

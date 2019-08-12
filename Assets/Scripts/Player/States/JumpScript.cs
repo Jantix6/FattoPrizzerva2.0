@@ -24,7 +24,6 @@ public class JumpScript : BaseState
         player.currentTimeState = 0;
         planning = player.GetPlanningPlant();
         direction = player.toMove;
-        player.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward, direction);
     }
 
     public override void Execute()

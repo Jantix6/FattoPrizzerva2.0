@@ -85,7 +85,6 @@ public class RioTutteMainScript : EnemieBasic
                 break;
             case 4:
                 phase = 4;
-                player.StartAdrenalina(true);
                 phase4.StartExecution();
                 break;
         }

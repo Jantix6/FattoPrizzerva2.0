@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class RioTuttePhase4 : MonoBehaviour
 {
-    public enum State { MOVING, KNOCKBACK, ULTRADASH, STUNED, MOVINGINVERSE }; //dash provisional
+    public enum State { MOVING, KNOCKBACK, TELEPORT, STUNED, MOVINGINVERSE }; //dash provisional
     public State currentState = State.MOVING;
     private RioTutteMainScript mainScript;
     private StateMachine stateMachine;
     public BaseState moving;
     public BaseState knockback;
-    public BaseState ultraDash;
+    public BaseState teleport;
     public BaseState stun;
     public float damageImpact = 15;
-    public float timeImpact = 1.5f;
+    public float timeImpact = 0.5f;
     public float damageMinToMove = 40;
     private float timeStun = 3f;
-    private float currentTimeState = 0;
+    public float currentTimeState = 0;
     public int numOfDashes = 3;
     public int currentDash = 0;
-    public float timeBetweenDash = 2f;
+    public float timeBetweenDash = 0.75f;
     public float currentTimeDash = 0;
     private float currentTimeMovingToDash = 0;
     public float timesStunedToChangePhase = 5;
@@ -60,7 +60,7 @@ public class RioTuttePhase4 : MonoBehaviour
             case EnemieBasic.TypeOfDamage.EMPUJAAMBOS:
                 break;
             case EnemieBasic.TypeOfDamage.EMPUJAENEMIGO:
-                if (currentState != State.ULTRADASH && currentState != State.STUNED)
+                if (currentState != State.TELEPORT && currentState != State.STUNED)
                 {
                     CheckLifes(-1);
                     ChangeState(State.KNOCKBACK);
@@ -92,34 +92,11 @@ public class RioTuttePhase4 : MonoBehaviour
     {
         stateMachine.ExecuteState();
 
-        if (currentDash >= numOfDashes)
-        {
-            currentDash = 0;
-            currentTimeDash = 0;
-        }
-        else if (currentDash != 0 && timeBetweenDash != 0 && currentState == State.MOVING &&
-            mainScript.GetPlayer().currentState != PlayerScript.State.PLANNING)
-        {
-
-            currentTimeDash += Time.deltaTime;
-            if (currentTimeDash >= timeBetweenDash)
-            {
-                currentTimeDash = 0;
-                ChangeState(State.ULTRADASH);
-            }
-        }
-        else if (currentState == State.MOVING && mainScript.GetPlayer().currentState != PlayerScript.State.PLANNING)
-        {
-            currentTimeMovingToDash += Time.deltaTime;
-            if (currentTimeMovingToDash >= 3.5f)
-                ChangeState(State.ULTRADASH);
-
-        }
 
         if (currentState == State.MOVINGINVERSE)
         {
             currentTimeState += Time.deltaTime;
-            if (currentTimeState > 1.5f)
+            if (currentTimeState > 0.2f)
             {
                 currentTimeState = 0;
                 ChangeState(State.MOVING);
@@ -127,6 +104,17 @@ public class RioTuttePhase4 : MonoBehaviour
         }
         else if (mainScript.GetPlayer().currentState == PlayerScript.State.PLANNING && currentState != State.MOVINGINVERSE)
             ChangeState(State.MOVINGINVERSE);
+        
+        if(currentState == State.MOVING )
+        {
+            currentTimeState += Time.deltaTime;
+            if(currentTimeState >= timeBetweenDash)
+            {
+                ChangeState(State.TELEPORT);
+            }
+        }
+
+
     }
 
     public void ChangeState(State _newState)
@@ -147,9 +135,9 @@ public class RioTuttePhase4 : MonoBehaviour
                 currentTimeMovingToDash = 0;
                 stateMachine.ChangeState(knockback);
                 break;
-            case State.ULTRADASH:
+            case State.TELEPORT:
                 currentDash++;
-                stateMachine.ChangeState(ultraDash);
+                stateMachine.ChangeState(teleport);
 
                 break;
             case State.STUNED:
@@ -178,9 +166,21 @@ public class RioTuttePhase4 : MonoBehaviour
     {
         if (mainScript != null)
         {
-            if (mainScript.phase == 3)
+            if (mainScript.phase == 4)
             {
-                //añadir elemento del escenario
+                {
+                    if (currentState == State.KNOCKBACK)
+                    {
+                        if (hit.gameObject.tag == "ObstacleRioTutte" && hit.gameObject.GetComponent<ObstacleInstaKillRioTutte>() != null)
+                        {
+
+                            ChangeState(State.STUNED);
+                            gameObject.SetActive(false);
+                            CheckLifes(-1);
+
+                        }
+                    }
+                }
             }
         }
     }
