@@ -10,12 +10,11 @@ namespace Dialogues
     public class SO_SpeachStructure : SO_DialogStructure 
     {
         [Header("Object data by langauge")]
-       // public List<LanguageBasedString> titles;
-      //  public List<LanguageBasedString> bodies;           // contienen idioma y texto pero es necesario tambien poder ver en que idioma esta desde el inspector
-
         public SO_langaugeBasedStringContainer title;
         public SO_langaugeBasedStringContainer body;
 
+        [Header("Target structure")]
+        [SerializeField] private SO_DialogStructure nextDialogStructure;
 
         public string GetSpeachTitle(Language _targetLanguage)
         {
@@ -31,7 +30,10 @@ namespace Dialogues
 
             return desiredLBS.text;
         }
-
+        public SO_DialogStructure GetTargetStructure()
+        {
+            return nextDialogStructure;
+        }
 
 
 

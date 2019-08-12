@@ -92,6 +92,7 @@ namespace Dialogues
                     style.normal.textColor = Color.black;
 
                     // event to invoke
+                    /*
                     string eventText;
                     eventText = "CALLING EVENT -->";
 
@@ -109,6 +110,30 @@ namespace Dialogues
                         style.normal.textColor = Color.grey;
                     }
                     GUILayout.Label(eventText, style);
+                    */
+
+                    // events to invoke
+                    string eventText;
+
+                    List<SO_DialogEvent> dialogEvents = new List<SO_DialogEvent>();
+
+                    List<SO_DialogEvent> answerEvents = answers[index].GetListOfEvents();
+                    if (answerEvents != null)
+                        dialogEvents.AddRange(answerEvents);
+
+                    if (dialogEvents.Count != 0 && dialogEvents != null)
+                    {
+                        foreach (SO_DialogEvent dialogEvent in dialogEvents)
+                        {
+                            eventText = "CALLING EVENT -->";
+                            eventText += dialogEvent.name;
+                            style.normal.textColor = Color.blue;
+                            GUILayout.Label(eventText, style);
+                            eventText = "";
+                        }
+                    }
+
+                    
 
                     GUILayout.EndVertical();
 

@@ -144,8 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueManager: {fileID: 1853820470}
   gameController: {fileID: 1092647051}
-  startingDialogStructure: {fileID: 11400000, guid: ac2cfe9b9d751014bbb00d8570cf44db,
-    type: 2}
+  dialogsConfig: {fileID: 11400000, guid: d91f33f83615b9f41a589c3caa3e4fba, type: 2}
 --- !u!114 &139748448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,7 +436,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!114 &1092647051
 MonoBehaviour:
@@ -459,7 +458,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092647050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.75883, y: -4.725591, z: 11.071066}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

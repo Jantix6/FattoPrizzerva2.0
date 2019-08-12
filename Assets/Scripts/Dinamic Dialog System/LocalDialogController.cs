@@ -5,47 +5,36 @@ using UnityEngine;
 
 namespace Dialogues
 {
-    public enum DialogTrigger
-    {
-        PRESENTATION,
-        FIRST_BOSS,
-    }
-
 
     public class LocalDialogController : MonoBehaviour
     {
         [SerializeField] DialogueManager dialogueManager;
         [SerializeField] Dialogs_GameController gameController;
 
-        [SerializeField] private SO_DialogStructure startingDialogStructure;
+        [SerializeField] private SO_DialogConfig dialogsConfig;
 
-        [SerializeField] private Dictionary<DialogTrigger, SO_DialogStructure> dialogs;
 
         private void Start()
         {
-            StartDialog(startingDialogStructure);
+            if (!dialogsConfig)
+                throw new MissingReferenceException("Dialogs config not set");
 
-            dialogs = new Dictionary<DialogTrigger, SO_DialogStructure>();
-            dialogs.Add(DialogTrigger.PRESENTATION, startingDialogStructure);
+
+            // for testing porposes
+            StartDialog(DialogTrigger.PRESENTATION);
         }
 
-        public void StartDialog(SO_DialogStructure _dialogToInvoke)
-        {
-            if (_dialogToInvoke)
-            {
-                FrezeGame();
-                dialogueManager.StartDialogue(_dialogToInvoke);
-            }
-        }
-
-        // Utilizamos una key del diccionario para llamar a una estructura concreta
+        // Utilizamos una "key"  para llamar a una estructura concreta
         public void StartDialog(DialogTrigger _dialogTrigger)
         {
             SO_DialogStructure dialogStructure;
+            dialogStructure = dialogsConfig.GetDialogStructure(_dialogTrigger);
 
-            dialogs.TryGetValue(_dialogTrigger, out dialogStructure);
-
-            StartDialog(dialogStructure);
+            if (dialogStructure)
+            {
+                FrezeGame();
+                dialogueManager.StartDialogue(dialogStructure);
+            }          
         }
 
         private void FrezeGame()

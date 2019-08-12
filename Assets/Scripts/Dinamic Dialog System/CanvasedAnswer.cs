@@ -26,16 +26,15 @@ namespace Dialogues
             nextDialogStructure = answer.GetTargetStructure();
 
             // button click listeners
+            /*
             UnityAction dEvent = answer.GetEventActionToPerform();
             if (dEvent != null)
                 answerButton.onClick.AddListener(dEvent);
+            */
 
             UnityAction dEvent2 = answer.GetEventActionsToPerform();
             if (dEvent2 != null)
-            {
                 answerButton.onClick.AddListener(dEvent2);
-                answerButton.onClick.AddListener(StartUpdateCorrutine);
-            }
 
             answerButton.onClick.AddListener(ShowStructure);
         }
@@ -65,11 +64,7 @@ namespace Dialogues
             }
         }
 
-        private void StartUpdateCorrutine()
-        {
-            Debug.LogWarning("Starting Corrutine");
-            StartCoroutine(answer.GetEventsContainerUpdate());
-        }
+
 
     }
 }

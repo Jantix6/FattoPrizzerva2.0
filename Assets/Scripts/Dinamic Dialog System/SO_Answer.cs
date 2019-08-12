@@ -27,8 +27,9 @@ namespace Dialogues
   
 
         }
-        
-        // getting action to call on the button itself
+
+        // getting action to call on the button itself (obsolete, now we use a list in order to allow the excecution of more than one event pero button call)
+        /*
         public UnityAction GetEventActionToPerform()
         {
             if (eventOnClick)
@@ -40,6 +41,7 @@ namespace Dialogues
                 return null;
             }
         }
+        */
 
         public UnityAction GetEventActionsToPerform()
         {
@@ -48,11 +50,19 @@ namespace Dialogues
                 eventsOnClickContainer.Initialize(gameController);
                 return eventsOnClickContainer.Excecute;
             }
-
             return null;
 
         }
-        
+        public List<SO_DialogEvent> GetListOfEvents()
+        {
+            if (eventsOnClickContainer)
+            {
+                return eventsOnClickContainer.GetEventsList();
+            }
+
+            return null;
+        }
+         
         public string GetAnswerBody(Language _targetLanguage)
         {
             SO_LanguageBasedString desiredLBS = null;
@@ -75,10 +85,6 @@ namespace Dialogues
             }          
         }
 
-        public IEnumerator GetEventsContainerUpdate()
-        {
-            return eventsOnClickContainer.UpdateCorrutine();
-        }
 
 
 

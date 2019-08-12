@@ -67,7 +67,18 @@ namespace Dialogues
         private void DrawEvent()
         {
             string eventOnClickName;
-            UnityAction actionToPerform = answer.GetEventActionToPerform();
+            List<SO_DialogEvent> answerEvents = new List<SO_DialogEvent>();
+            answerEvents = answer.GetListOfEvents();
+
+            foreach (SO_DialogEvent dialogEvent in answerEvents)
+            {
+                eventOnClickName = dialogEvent.name;
+                EditorGUILayout.LabelField("Event to perform: ");
+                EditorGUILayout.LabelField(eventOnClickName, linkedStyle);
+            }
+
+            /*
+            UnityAction actionToPerform = answer.GetEventActionsToPerform();
             if (actionToPerform != null)
             {
                 eventOnClickName = actionToPerform.Target.ToString();
@@ -78,6 +89,7 @@ namespace Dialogues
             {
                 // EditorGUILayout.LabelField("\t Event not set");
             }
+            */
         }
 
         private void DrawAnswers()
