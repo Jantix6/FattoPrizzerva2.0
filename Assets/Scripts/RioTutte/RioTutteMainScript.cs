@@ -30,8 +30,8 @@ public class RioTutteMainScript : EnemieBasic
 
     private void Start()
     {
-        phase = 1;
-        ChangePhase(1);
+        phase = 4;
+        ChangePhase(4);
     }
 
     // Update is called once per frame

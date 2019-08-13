@@ -32,7 +32,7 @@ public class RioTuttePhase3 : MonoBehaviour
         mainScript.speed = 3f;
         stateMachine = mainScript.GetStateMachine();
         ChangeState(State.MOVING);
-
+        lifes = timesStunedToChangePhase;
 
         mainScript.SetDamageMin(damageMinToMove);
 

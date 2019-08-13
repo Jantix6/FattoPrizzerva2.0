@@ -459,6 +459,11 @@ public class PlayerScript : MonoBehaviour
         ChangeState(State.KNOCKBACK);
     }
 
+    public void StopKnockBack()
+    {
+        ChangeState(State.MOVING);
+    }
+
     public void GetStatsKnockBack(out float _speed, out float _time, out Vector3 _direction)
     {
         _speed = speedKnockBack;

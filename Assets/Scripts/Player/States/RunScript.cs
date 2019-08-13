@@ -127,7 +127,7 @@ public class RunScript : BaseState
             }
 
         }
-
+        player.toMove = toMove;
         CollisionFlags collisionFlags = characterController.Move(toMove * Time.deltaTime * speed);
 
         if((collisionFlags & CollisionFlags.Sides) != 0)
