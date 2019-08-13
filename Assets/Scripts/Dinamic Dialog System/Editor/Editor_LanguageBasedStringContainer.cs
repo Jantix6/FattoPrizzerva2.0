@@ -64,7 +64,11 @@ namespace Dialogues
                 EditorGUILayout.HelpBox("You need to assigne the LBSs in order to this object to work as it is intended", MessageType.Warning);
             }
 
-
+            if (GUILayout.Button("Create LBS"))
+            {
+                LBSContainer.CreateLanguageBasedStrings();
+            }
+            
         }
     }
 }

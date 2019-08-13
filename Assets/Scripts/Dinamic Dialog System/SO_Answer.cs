@@ -69,6 +69,12 @@ namespace Dialogues
             desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
             return desiredLBS.text;
         }
+        public void SetAnswerBody(Language _targetLanguage, string _newText)
+        {
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
+            desiredLBS.text = _newText;
+        }
         public SO_langaugeBasedStringContainer GetLanguageBasedStringContainer()
         {
             return answer;

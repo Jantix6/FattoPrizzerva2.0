@@ -14,8 +14,8 @@ namespace Dialogues
     public class Editor_SOQuestionAnswerStructure : Editor
     {
         SO_QuestionAnswerStructure structure;
-        Language previewLanguage = Language.ENGLISH;
-
+        public Language previewLanguage = Language.ENGLISH;
+        private Language previousLanguage;
 
         public override void OnInspectorGUI()
         {
@@ -27,6 +27,29 @@ namespace Dialogues
             GUILayout.Space(40);
             GUILayout.Label("Debug view");
 
+            // Preview language selection
+            previewLanguage = (Language)EditorGUILayout.EnumPopup("Language to preview: ", previewLanguage);
+            if (previewLanguage != previousLanguage)
+                SaveProject();
+            previousLanguage = previewLanguage;
+
+            if (previewLanguage != Language.NONE)
+            {
+                // Draw question
+                GUILayout.Space(5);
+                DrawQuestion(previewLanguage);
+                // Draw Answers
+                DrawAnswers(previewLanguage);
+                GUILayout.Space(5);
+            }
+
+            // save changes button
+            if (GUILayout.Button("Save changes"))
+            {
+                SaveProject();
+            }
+            
+            /*
             int enumLenght = Enum.GetNames(typeof(Language)).Length - 1;            // - NONE
             foreach (Language language in Enum.GetValues(typeof(Language)))
             {
@@ -34,20 +57,24 @@ namespace Dialogues
 
                 if (previewLanguage != Language.NONE)
                 {
-                    
+                    // Draw question
+                    GUILayout.Space(5);
+                    DrawQuestion(previewLanguage);
+                    // Draw Answers
+                    DrawAnswers(previewLanguage);
+                    GUILayout.Space(5);
                 }
-
-
             }
-
-            // Draw question
-            DrawQuestion(previewLanguage);
-            GUILayout.Space(5);
-            // Draw Answers
-            DrawAnswers(previewLanguage);
-            GUILayout.Space(5);
+            */
+ 
 
 
+        }
+
+        private void SaveProject()
+        {
+            AssetDatabase.SaveAssets();
+            Debug.LogWarning("Project saved");
         }
 
         private void DrawQuestion(Language _desiredLanguage)
@@ -69,10 +96,9 @@ namespace Dialogues
         private void DrawAnswers(Language _desiredLanguage)
         {
             List<SO_Answer> answers = null;
-            string answer;
+            SO_Answer answer = null;
+            string answerBody;
             GUIStyle style = new GUIStyle();
-
-
 
             answers = structure.GetAnswers();
             if (answers != null)
@@ -81,12 +107,16 @@ namespace Dialogues
                 for (int index = 0; index < answers.Count; index++)
                 {
                     GUILayout.BeginVertical();
+                    answer = answers[index];
 
                     // BODY
-                    answer = answers[index].GetAnswerBody(_desiredLanguage);
+                    answerBody = answer.GetAnswerBody(_desiredLanguage);
 
                     GUILayout.Label("A " + index + ": ");
-                    GUILayout.TextArea( answer);
+                    answerBody = GUILayout.TextArea( answerBody);
+
+                    answer.SetAnswerBody(_desiredLanguage, answerBody);     // edit the answer body via editor
+
 
                     // NEXT STRUCTURE
                     SO_DialogStructure nextStructure;
@@ -107,27 +137,6 @@ namespace Dialogues
                     }
                     GUILayout.Label(labelText, style);
                     style.normal.textColor = Color.black;
-
-                    // event to invoke
-                    /*
-                    string eventText;
-                    eventText = "CALLING EVENT -->";
-
-                    UnityAction onPressAction;
-                    onPressAction = answers[index].GetEventActionToPerform();
-                    if (onPressAction != null)
-                    {
-                        eventText += "\t" +  onPressAction.Target.ToString();
-                        style.normal.textColor = Color.blue;
-
-                    }
-                    else
-                    {
-                        eventText += "NO EVENT TO INVOKE";
-                        style.normal.textColor = Color.grey;
-                    }
-                    GUILayout.Label(eventText, style);
-                    */
 
                     // events to invoke
                     string eventText;

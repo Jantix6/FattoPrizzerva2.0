@@ -70,26 +70,16 @@ namespace Dialogues
             List<SO_DialogEvent> answerEvents = new List<SO_DialogEvent>();
             answerEvents = answer.GetListOfEvents();
 
-            foreach (SO_DialogEvent dialogEvent in answerEvents)
+            if (answerEvents != null && answerEvents.Count > 0)
             {
-                eventOnClickName = dialogEvent.name;
-                EditorGUILayout.LabelField("Event to perform: ");
-                EditorGUILayout.LabelField(eventOnClickName, linkedStyle);
+                foreach (SO_DialogEvent dialogEvent in answerEvents)
+                {
+                    eventOnClickName = dialogEvent.name;
+                    EditorGUILayout.LabelField("Event to perform: ");
+                    EditorGUILayout.LabelField(eventOnClickName, linkedStyle);
+                }
             }
-
-            /*
-            UnityAction actionToPerform = answer.GetEventActionsToPerform();
-            if (actionToPerform != null)
-            {
-                eventOnClickName = actionToPerform.Target.ToString();
-                EditorGUILayout.LabelField("Event to perform: ");
-                EditorGUILayout.LabelField(eventOnClickName, linkedStyle);
-            }
-            else
-            {
-                // EditorGUILayout.LabelField("\t Event not set");
-            }
-            */
+            
         }
 
         private void DrawAnswers()

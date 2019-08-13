@@ -9,7 +9,6 @@ namespace Dialogues
     {
         protected Dialogs_GameController dialogsGameController;
 
-
         public virtual void Initialize(Dialogs_GameController _dialogGameController)
         {
             dialogsGameController = _dialogGameController;          
@@ -21,7 +20,6 @@ namespace Dialogues
             // override
             Debug.Log("Calling excecute of " + this.name);
         }
-
         
     }
 }

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e5f4110b8bf1444aaf623b315ca6717, type: 3}
-  m_Name: Q_2
+  m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
+  m_Name: A8
   m_EditorClassIdentifier: 
-  speaker: {fileID: 0}
-  answers_Lst: []
-  question: {fileID: 11400000, guid: b0cf7ea2eaa37ba4aaa6d26f45c7da85, type: 2}
+  eventOnClick: {fileID: 0}
+  eventsOnClickContainer: {fileID: 0}
+  targetStructure: {fileID: 0}
+  answer: {fileID: 0}

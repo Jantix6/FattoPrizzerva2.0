@@ -17,7 +17,7 @@ namespace Dialogues
         [TextArea(4, 228)] public string text;
 
 
-        private void OnEnable()
+        public void OnEnable()
         {
             // nomenclature based lenguage
             Language expectedLanguage = AutoLanguageIdentification();
@@ -34,7 +34,6 @@ namespace Dialogues
                     Debug.LogError("The object " + this.name + "might have a nomenclature problem LANGUAGE != NAME LANGUAGE");
                 }
             }
-
 
         }
 

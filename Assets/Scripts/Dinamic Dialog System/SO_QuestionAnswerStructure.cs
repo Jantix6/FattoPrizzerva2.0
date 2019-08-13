@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace Dialogues
 {
     [CreateAssetMenu(fileName = "QAStructure", menuName = "QAStructure/New QA Structure")]
@@ -33,9 +34,7 @@ namespace Dialogues
             {
                 Debug.LogError("There is some problem with the answers of the object " + this.name);
                 return null;
-            }
-
-            
+            }    
         }
       
         private bool CheckAnswersIntegrity()
@@ -51,7 +50,7 @@ namespace Dialogues
             }
         }
 
-
+        
     }
 }
 
