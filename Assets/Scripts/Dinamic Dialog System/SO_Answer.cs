@@ -65,15 +65,25 @@ namespace Dialogues
          
         public string GetAnswerBody(Language _targetLanguage)
         {
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
-            return desiredLBS.text;
+            if (answer)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
+                return desiredLBS.text;
+            }
+            return null;
+            
         }
         public void SetAnswerBody(Language _targetLanguage, string _newText)
         {
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
             desiredLBS.text = _newText;
+        }
+        public void SetAnswerBody(SO_langaugeBasedStringContainer _languageBasedStringContainer)
+        {
+            if (_languageBasedStringContainer)
+                answer = _languageBasedStringContainer;
         }
         public SO_langaugeBasedStringContainer GetLanguageBasedStringContainer()
         {

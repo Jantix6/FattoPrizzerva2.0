@@ -13,15 +13,25 @@ namespace Dialogues
 
         public string GetQuestion(Language _targetLanguage)
         {
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = question.GetLanguageBasedString(_targetLanguage, this.name);
-            return desiredLBS.text;
+            if (question)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = question.GetLanguageBasedString(_targetLanguage, this.name);
+                return desiredLBS.text;
+            }
+
+            return null;
+            
         }
         public void SetQuestion(Language _targetLanguage, string _text)
         {
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = question.GetLanguageBasedString(_targetLanguage, this.name);
             desiredLBS.text = _text;
+        }
+        public void SetQuestion(SO_langaugeBasedStringContainer _questionLBS)
+        {
+            question = _questionLBS;
         }
 
         public List<SO_Answer> GetAnswers()
@@ -37,6 +47,14 @@ namespace Dialogues
             }    
         }
       
+        public void AddAnswer(SO_Answer answer)
+        {
+            if (CheckAnswersIntegrity() == false)
+                answers_Lst = new List<SO_Answer>();
+
+            answers_Lst.Add(answer);
+        }
+
         private bool CheckAnswersIntegrity()
         {
             if (answers_Lst.Count == 0 || answers_Lst == null)

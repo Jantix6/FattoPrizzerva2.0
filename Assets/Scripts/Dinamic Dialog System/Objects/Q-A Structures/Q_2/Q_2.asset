@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Q_2
   m_EditorClassIdentifier: 
   speaker: {fileID: 0}
-  answers_Lst: []
+  answers_Lst:
+  - {fileID: 11400000, guid: ae362b4f860dc224996f2d149fdbb6fa, type: 2}
+  - {fileID: 11400000, guid: 90a429aa3fa4473459ae049414ba7c5b, type: 2}
+  - {fileID: 11400000, guid: 1d1ea7a443644594cb068d4756aec4e1, type: 2}
   question: {fileID: 11400000, guid: b0cf7ea2eaa37ba4aaa6d26f45c7da85, type: 2}

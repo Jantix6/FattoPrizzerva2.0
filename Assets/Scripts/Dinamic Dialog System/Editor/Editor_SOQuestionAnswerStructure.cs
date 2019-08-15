@@ -17,6 +17,15 @@ namespace Dialogues
         public Language previewLanguage = Language.ENGLISH;
         private Language previousLanguage;
 
+        // Structure genrator variables
+        [SerializeField] private int numberOfAnswers = 0;
+        [SerializeField] private int startingAnswerNumber;
+        private string questionFolderName = "1_Question";
+        private string answersFolderName = "2_Answers";
+        private string answerPrefix = "A";
+
+
+
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -41,6 +50,10 @@ namespace Dialogues
                 // Draw Answers
                 DrawAnswers(previewLanguage);
                 GUILayout.Space(5);
+
+            } else
+            {
+                EditorGUILayout.HelpBox("Select a language from the drop down in order to modify the dialog data of the specified language", MessageType.Info);
             }
 
             // save changes button
@@ -48,27 +61,24 @@ namespace Dialogues
             {
                 SaveProject();
             }
-            
-            /*
-            int enumLenght = Enum.GetNames(typeof(Language)).Length - 1;            // - NONE
-            foreach (Language language in Enum.GetValues(typeof(Language)))
+
+            // Structure creation //
+            // ------------------------------------------------------------------------ //
+            StructureCreation();
+
+
+        }
+
+        private void StructureCreation()
+        {
+            EditorGUILayout.HelpBox("Create all the strucutres of this object down bellow", MessageType.Info);
+            numberOfAnswers = EditorGUILayout.IntField("Number of answers", numberOfAnswers);
+            startingAnswerNumber = EditorGUILayout.IntField("Starting answer number" ,startingAnswerNumber);
+
+            if (GUILayout.Button("Create all my structures"))
             {
-                previewLanguage = language;
-
-                if (previewLanguage != Language.NONE)
-                {
-                    // Draw question
-                    GUILayout.Space(5);
-                    DrawQuestion(previewLanguage);
-                    // Draw Answers
-                    DrawAnswers(previewLanguage);
-                    GUILayout.Space(5);
-                }
+                CreateQuestionAnswerFullStructure();
             }
-            */
- 
-
-
         }
 
         private void SaveProject()
@@ -84,13 +94,13 @@ namespace Dialogues
 
             GUILayout.Label("QUESTION: ");
 
-            if (question != default)
+            if (question != null)
             {
                 question = GUILayout.TextArea(question);
                 structure.SetQuestion(_desiredLanguage, question);
             }
             else
-                GUILayout.Label(" NOT FOUND ");
+                GUILayout.TextArea(question);
         }
 
         private void DrawAnswers(Language _desiredLanguage)
@@ -166,6 +176,7 @@ namespace Dialogues
                     GUILayout.Space(10);
 
 
+
                 }
 
             }
@@ -178,6 +189,79 @@ namespace Dialogues
             }
         }
 
+        // Structure generator //
+        // ---------------------------------------------------------------------------------- //
+
+        private void CreateQuestionAnswerFullStructure()
+        {
+            string mainFolderPath;
+            int lastIndexOfSeparator;
+
+            // get the folder path in witch to create all the folders and then assets
+            mainFolderPath = AssetDatabase.GetAssetPath(structure);
+            lastIndexOfSeparator = mainFolderPath.LastIndexOf('/');
+            mainFolderPath = mainFolderPath.Remove(lastIndexOfSeparator);
+
+            // create folders
+            CreateQuestionFolder(mainFolderPath);
+            CreateAnswersFolder(mainFolderPath);
+        }
+        // Create question folder and all its contents
+        private void CreateQuestionFolder(string mainFolderPath)
+        {
+            string questionNameOnStructure = "Question";
+            string extension = ".asset";
+
+            AssetDatabase.CreateFolder(mainFolderPath, questionFolderName);
+            string questionFolderPath = mainFolderPath + "/" + questionFolderName;
+
+            // create the LBS Container
+            SO_langaugeBasedStringContainer LBSContainer = CreateInstance<SO_langaugeBasedStringContainer>();
+            AssetDatabase.CreateAsset(LBSContainer, questionFolderPath + "/" + LBSContainer.GetFilename() + "_" + questionNameOnStructure + extension);
+
+            // set it on the question variable of this structure
+            LBSContainer.CreateLanguageBasedStrings();                  // it does create it's own strings
+            structure.SetQuestion(LBSContainer);                        // add it to my question variable
+        }
+
+        // Create the main answers folder and all the necesary folders and answers (requested by the user)
+        private void CreateAnswersFolder(string mainFolderPath)
+        {
+            string extension = ".asset";
+
+            AssetDatabase.CreateFolder(mainFolderPath, answersFolderName);              // answers
+            string answersFolderPath = mainFolderPath + "/" + answersFolderName;
+            string[] folderPaths = new string[numberOfAnswers];
+
+            // create the folders
+            for (int i = 0; i < numberOfAnswers; i++)
+            {
+                string answerFolderName = answerPrefix + "_" +  (startingAnswerNumber + i).ToString();                     // i must be the id of the answer defined on the .doc
+
+                // create answer folder
+                AssetDatabase.CreateFolder(answersFolderPath, answerFolderName); 
+                folderPaths[i] = answersFolderPath + "/" + answerFolderName;
+
+                // Create answer folder content -------------------------------- //
+                Debug.Log(folderPaths[i]);
+                // create answer object
+                SO_Answer answerObject = CreateInstance<SO_Answer>();
+                AssetDatabase.CreateAsset(answerObject, folderPaths[i] + "/" + answerFolderName + extension);
+
+                // create LBS for the answer
+                SO_langaugeBasedStringContainer lbsContainer = CreateInstance<SO_langaugeBasedStringContainer>();
+                AssetDatabase.CreateAsset(lbsContainer, folderPaths[i] + "/" + lbsContainer.GetFilename() + "_" + answerFolderName + extension);
+                lbsContainer.CreateLanguageBasedStrings();
+
+                // set the lbs of the answer
+                answerObject.SetAnswerBody(lbsContainer);
+
+                // add the answer to this object
+                structure.AddAnswer(answerObject);
+            }
+
+
+        }
 
     }
 }

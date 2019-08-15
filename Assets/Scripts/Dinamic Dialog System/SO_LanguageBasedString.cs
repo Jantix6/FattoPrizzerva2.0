@@ -15,10 +15,35 @@ namespace Dialogues
         public bool Usable { get; set; }
         public Language language;
         [TextArea(4, 228)] public string text;
+        private static Dictionary<string   , Language> languagesDictionary;
 
+        //public static List<string> GetLanguageDictionaryKeys()
+        //{
+        //    List<string> keysList;
+        //    keysList = new List<string>(this.languagesDictionary.Keys);
+        //    return keysList;
+        //
 
+        private static void InitializeLanguagesDictinary()
+        {
+            languagesDictionary = new Dictionary<string, Language>();
+            languagesDictionary.Add("CAT", Language.CATALAN);
+            languagesDictionary.Add("ESP", Language.SPANISH);
+            //languagesDictionary.Add("CAST", Language.SPANISH);
+            languagesDictionary.Add("ENG", Language.ENGLISH);
+        }
+        public static Dictionary<string, Language> GetLanguagesDictioanry()
+        {
+            if (languagesDictionary == null)
+                InitializeLanguagesDictinary();
+
+            return languagesDictionary;
+        }
         public void OnEnable()
         {
+            // add language relations
+            InitializeLanguagesDictinary();
+
             // nomenclature based lenguage
             Language expectedLanguage = AutoLanguageIdentification();
             if (language == Language.NONE)
@@ -41,21 +66,27 @@ namespace Dialogues
         private Language AutoLanguageIdentification()
         {
             string identifiedLanguage = ReadLanguageFromName();
-            if (identifiedLanguage != "")
-            {
-                if (identifiedLanguage == "CAT")
-                    return Language.CATALAN;
-                else if (identifiedLanguage == "ESP" || identifiedLanguage == "CAST")
-                    return Language.SPANISH;
-                else if (identifiedLanguage == "ENG")
-                    return Language.ENGLISH;
-            }
-            else
-            {
-                return Language.NONE;
-            }
+            Language returnLanguage = Language.NONE;
+            languagesDictionary.TryGetValue(identifiedLanguage, out returnLanguage);
 
-            return Language.NONE;
+            return returnLanguage;
+
+
+            //if (identifiedLanguage != "")
+            //{
+            //    if (identifiedLanguage == "CAT")
+            //        return Language.CATALAN;
+            //    else if (identifiedLanguage == "ESP" || identifiedLanguage == "CAST")
+            //        return Language.SPANISH;
+            //    else if (identifiedLanguage == "ENG")
+            //        return Language.ENGLISH;
+            //}
+            //else
+            //{
+            //    return Language.NONE;
+            //}
+
+            //return Language.NONE;
 
         }
 

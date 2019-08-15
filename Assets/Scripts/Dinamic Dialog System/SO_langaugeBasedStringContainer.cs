@@ -11,8 +11,12 @@ namespace Dialogues
     public class SO_langaugeBasedStringContainer : ScriptableObject
     {
         [SerializeField] private List<SO_LanguageBasedString> languageBasedStrings_Lst;         // LBSs
+        
 
-
+        public string GetFilename()
+        {
+            return "LBS_Container";
+        }
         public List<SO_LanguageBasedString> GetLanguageBasedStrings()
         {
             return languageBasedStrings_Lst;
@@ -23,6 +27,10 @@ namespace Dialogues
             string _extension = ".asset";
             string _path;
             int _lastIndex;
+            Dictionary<string, Language> languagesDictionary;
+            List<string> listOfDictionaryKeys ;
+
+            
 
             // let the path to the folder
             _path = AssetDatabase.GetAssetPath(this);
@@ -39,15 +47,17 @@ namespace Dialogues
             
 
             languageBasedStrings_Lst = new List<SO_LanguageBasedString>();
+            languagesDictionary = SO_LanguageBasedString.GetLanguagesDictioanry();
+            listOfDictionaryKeys = new List<string>(languagesDictionary.Keys);
 
             for (int i = 0; i < _numberOfElements; i++)
             {
-                SO_LanguageBasedString newLBS = SO_LanguageBasedString.CreateInstance<SO_LanguageBasedString>();
-                newLBS.name = "CAT";
+                SO_LanguageBasedString newLBS = CreateInstance<SO_LanguageBasedString>();
 
-                // falta cambiar la lengua de cada uno para que funcione adecuadamente
+                newLBS.name = listOfDictionaryKeys[i];
 
                 AssetDatabase.CreateAsset(newLBS, _path + '/' + newLBS.name + "_" + _folderName + _extension);
+                Debug.LogWarning(_path + '/' + newLBS.name + "_" + _folderName + _extension);
                 languageBasedStrings_Lst.Add(newLBS);
                 newLBS.OnEnable();
             }

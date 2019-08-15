@@ -15,4 +15,4 @@ MonoBehaviour:
   eventOnClick: {fileID: 0}
   eventsOnClickContainer: {fileID: 0}
   targetStructure: {fileID: 0}
-  answer: {fileID: 0}
+  answer: {fileID: 11400000, guid: 6f6ddc1a6fd118b4ab32e47eba67bd19, type: 2}
