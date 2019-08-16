@@ -17,19 +17,12 @@ namespace Dialogues
         [TextArea(4, 228)] public string text;
         private static Dictionary<string   , Language> languagesDictionary;
 
-        //public static List<string> GetLanguageDictionaryKeys()
-        //{
-        //    List<string> keysList;
-        //    keysList = new List<string>(this.languagesDictionary.Keys);
-        //    return keysList;
-        //
 
         private static void InitializeLanguagesDictinary()
         {
             languagesDictionary = new Dictionary<string, Language>();
             languagesDictionary.Add("CAT", Language.CATALAN);
             languagesDictionary.Add("ESP", Language.SPANISH);
-            //languagesDictionary.Add("CAST", Language.SPANISH);
             languagesDictionary.Add("ENG", Language.ENGLISH);
         }
         public static Dictionary<string, Language> GetLanguagesDictioanry()
@@ -43,6 +36,19 @@ namespace Dialogues
         {
             // add language relations
             InitializeLanguagesDictinary();
+
+            GuesLanguage();
+
+            // ATENCIÓN ------------------------------------------------------------------------------------------------------ //
+            if (text is null)
+                text = "";              // SO- si no le asignas un valor a la variable string en este SO esta es nula!!!!!!!!!!!!
+            // Mucho ojo con los SO ------------------------------------------------------------------------------------------ //
+        }
+
+        public void GuesLanguage()
+        {
+            //Debug.LogError("Calling gues language" + this.name);
+            Debug.LogWarning("2_Calling gues language " + this.name);
 
             // nomenclature based lenguage
             Language expectedLanguage = AutoLanguageIdentification();
@@ -59,54 +65,54 @@ namespace Dialogues
                     Debug.LogError("The object " + this.name + "might have a nomenclature problem LANGUAGE != NAME LANGUAGE");
                 }
             }
-
         }
-
 
         private Language AutoLanguageIdentification()
         {
-            string identifiedLanguage = ReadLanguageFromName();
+            Debug.LogWarning("2-1_Calling gues AutoLanguageIdentification " + this.name);
+
+            string identifiedLanguage = null;
+            identifiedLanguage = ReadLanguageFromName();
             Language returnLanguage = Language.NONE;
-            languagesDictionary.TryGetValue(identifiedLanguage, out returnLanguage);
 
+            if (identifiedLanguage != null)
+            {
+                languagesDictionary.TryGetValue(identifiedLanguage, out returnLanguage);
+            }
+            
             return returnLanguage;
-
-
-            //if (identifiedLanguage != "")
-            //{
-            //    if (identifiedLanguage == "CAT")
-            //        return Language.CATALAN;
-            //    else if (identifiedLanguage == "ESP" || identifiedLanguage == "CAST")
-            //        return Language.SPANISH;
-            //    else if (identifiedLanguage == "ENG")
-            //        return Language.ENGLISH;
-            //}
-            //else
-            //{
-            //    return Language.NONE;
-            //}
-
-            //return Language.NONE;
 
         }
 
         private string ReadLanguageFromName()
         {
+            Debug.LogWarning("2-2_Calling ReadLanguageFromName " + this.name);
+
             string _languageExpresion = "";
             string separation = "_";
+            string objectName = this.name;
 
-            foreach (char character in this.name)
+            if (objectName.Length > 0)
             {
-                if (character.ToString() == separation.ToString())
+                foreach (char character in objectName)
                 {
-                    return _languageExpresion;
+                    if (character.ToString() == separation.ToString())
+                    {
+                        return _languageExpresion;
+                    }
+                    _languageExpresion += character;
                 }
 
-                _languageExpresion += character;
+            } else
+            {
+                Debug.LogWarning("No name set on object " + this);
+                return null;
             }
 
-            Debug.LogError("No language identified by the name of the object (is MANDATORY to use the structure: LLL_NameOfTheObject");
+            Debug.LogError("No language identified by the name of the object (is MANDATORY to use the structure: LLL_NameOfTheObject" + objectName + " " + _languageExpresion);
             return null;
+
+
         }
 
         // PROCESS ---------------------------------------------------------------------------------------------------------- //

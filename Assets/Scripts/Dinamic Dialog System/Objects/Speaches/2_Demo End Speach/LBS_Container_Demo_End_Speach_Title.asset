@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e5f4110b8bf1444aaf623b315ca6717, type: 3}
-  m_Name: Q_1
+  m_Script: {fileID: 11500000, guid: 65a7292f0dfc0e94eaae20fcb14c6d48, type: 3}
+  m_Name: LBS_Container_Demo_End_Speach_Title
   m_EditorClassIdentifier: 
-  speaker: {fileID: 0}
-  answers_Lst: []
-  question: {fileID: 0}
+  languageBasedStrings_Lst: []

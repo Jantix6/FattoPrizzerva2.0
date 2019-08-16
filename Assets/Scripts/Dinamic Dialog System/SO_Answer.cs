@@ -11,7 +11,7 @@ namespace Dialogues
     {
         private Dialogs_GameController gameController;
 
-        //[SerializeField] private List<LanguageBasedString> answers;
+
         [SerializeField] private SO_DialogEvent eventOnClick;
         [SerializeField] private SO_DialogEventsContainer eventsOnClickContainer;
         [SerializeField] private SO_DialogStructure targetStructure;
@@ -23,25 +23,7 @@ namespace Dialogues
         {
             gameController = _gameController;
             Debug.Log(gameController.name + " is now setup and ready to rock!");
-
-  
-
         }
-
-        // getting action to call on the button itself (obsolete, now we use a list in order to allow the excecution of more than one event pero button call)
-        /*
-        public UnityAction GetEventActionToPerform()
-        {
-            if (eventOnClick)
-            {
-                eventOnClick.Initialize(gameController);
-                return eventOnClick.Execute;
-            } else
-            {
-                return null;
-            }
-        }
-        */
 
         public UnityAction GetEventActionsToPerform()
         {
@@ -59,7 +41,6 @@ namespace Dialogues
             {
                 return eventsOnClickContainer.GetEventsList();
             }
-
             return null;
         }
          
@@ -76,9 +57,13 @@ namespace Dialogues
         }
         public void SetAnswerBody(Language _targetLanguage, string _newText)
         {
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
-            desiredLBS.text = _newText;
+            if (answer)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
+                desiredLBS.text = _newText;
+            }
+
         }
         public void SetAnswerBody(SO_langaugeBasedStringContainer _languageBasedStringContainer)
         {
@@ -96,7 +81,7 @@ namespace Dialogues
                 return targetStructure;
             else
             {
-                Debug.LogError("Target strucuture is not set on " + this.name);
+                // Debug.LogError("Target strucuture is not set on " + this.name);
                 return null;
             }          
         }

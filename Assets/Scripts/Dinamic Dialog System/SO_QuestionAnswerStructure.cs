@@ -59,7 +59,7 @@ namespace Dialogues
         {
             if (answers_Lst.Count == 0 || answers_Lst == null)
             {
-                Debug.LogError("No titles found on object " + this.name);
+                Debug.LogError("No answers found on object " + this.name);
                 return false;
 
             } else

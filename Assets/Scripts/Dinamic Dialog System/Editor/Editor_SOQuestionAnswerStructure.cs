@@ -25,7 +25,6 @@ namespace Dialogues
         private string answerPrefix = "A";
 
 
-
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -65,8 +64,6 @@ namespace Dialogues
             // Structure creation //
             // ------------------------------------------------------------------------ //
             StructureCreation();
-
-
         }
 
         private void StructureCreation()
@@ -78,7 +75,13 @@ namespace Dialogues
             if (GUILayout.Button("Create all my structures"))
             {
                 CreateQuestionAnswerFullStructure();
+                
             }
+
+            
+            
+
+          
         }
 
         private void SaveProject()
@@ -100,7 +103,7 @@ namespace Dialogues
                 structure.SetQuestion(_desiredLanguage, question);
             }
             else
-                GUILayout.TextArea(question);
+                GUILayout.Label("Question not found");
         }
 
         private void DrawAnswers(Language _desiredLanguage)
@@ -112,8 +115,7 @@ namespace Dialogues
 
             answers = structure.GetAnswers();
             if (answers != null)
-            {
-                
+            {          
                 for (int index = 0; index < answers.Count; index++)
                 {
                     GUILayout.BeginVertical();
@@ -127,13 +129,12 @@ namespace Dialogues
 
                     answer.SetAnswerBody(_desiredLanguage, answerBody);     // edit the answer body via editor
 
-
                     // NEXT STRUCTURE
                     SO_DialogStructure nextStructure;
                     nextStructure = answers[index].GetTargetStructure();
 
-                    string labelText = "";
-                    labelText += "TO --> ";
+                    string labelText;
+                    labelText = "TO --> ";
 
                     if (nextStructure != null)
                     {
@@ -168,17 +169,9 @@ namespace Dialogues
                             eventText = "";
                         }
                     }
-
-                    
-
                     GUILayout.EndVertical();
-
                     GUILayout.Space(10);
-
-
-
                 }
-
             }
             else
             {

@@ -18,17 +18,28 @@ namespace Dialogues
 
         public string GetSpeachTitle(Language _targetLanguage)
         {
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = title.GetLanguageBasedString(_targetLanguage,this.name);
+            if (title != null)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = title.GetLanguageBasedString(_targetLanguage, this.name);
 
-            return desiredLBS.text;
+                return desiredLBS.text;
+            }
+            return null;
+
         }
         public string GetSpeachBody(Language _targetLanguage)
         {
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = body.GetLanguageBasedString(_targetLanguage, this.name);
+            if (body != null)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = body.GetLanguageBasedString(_targetLanguage, this.name);
 
-            return desiredLBS.text;
+                return desiredLBS.text;
+            }
+            return null;
+
+
         }
         public void SetSpeachBody(Language _targetLanguage, string _newText)
         {
@@ -49,6 +60,14 @@ namespace Dialogues
             desiredLBS = title.GetLanguageBasedString(_targetLanguage, this.name);
 
             desiredLBS.text = text;
+        }
+        public void SetTitle(SO_langaugeBasedStringContainer _title)
+        {
+            title = _title;
+        }
+        public void SetBody(SO_langaugeBasedStringContainer _body)
+        {
+            body = _body;
         }
     }
 
