@@ -1,11 +1,16 @@
-Object Type;Objject ID;CAT;CAST;ENG
-Q;1;cat text;cast text;eng text
-Q;2;cat text;cast text;eng text
-Q;3;cat text;cast text;eng text
-Q;4;cat text;cast text;eng text
-Q;5;cat text;cast text;eng text
-Q;6;cat text;cast text;eng text
-Q;7;cat text;cast text;eng text
-A;1;cat text;cast text;eng text
-A;2;cat text;cast text;eng text
-A;3;cat text;cast text;eng text
+;;;;;;;;;
+;ID;;title_CAT;title_ESP;title_ENG;;body_CAT;body_ESP;body_ENG
+;0;;Ey, molt bones!;Bueno ,¿Qué te cuentas?;What's up mate?;;Mira a qui noo tenim aquí... bé, he he, Com vas, com vens? Be tampoc crec que ho sàpigues No passa res no passa res, és prou comprensible, ja aniràs veient... o pensant potser... he he. Imagino que t'estàs preguntant les típiques coses que un es pregunta quan es troba a un lloc del qual no en sap res oi? Dooncs t’he de dir que crec fermament que el millor per a tu serà que no te’n digui res. Ho aniràs entenent... espero. I sinó? Tant és! L’únic propòsit de les meves accions és que puguis experimentar amb les normes del lloc on misteriosament (tot i que, amb una mica de sort i cervell, d’aquí no massa t’hauries d’adonar que no tant misteriós) has anat a parar i així siguis una mica més conscient de les teves possibilitats. Parlant clar, no deixaràs de tenir-me al davant fins que no facis amb mi pràcticament tot el que et puc oferir. Sona estrany oi? Ho sé i ho vaig pensar bastant abans de saber que t’ho diria.;esp body;eng body
+;1;;;;;;;;
+;2;;;;;;;;
+;3;;;;;;;;
+;4;;;;;;;;
+;5;;;;;;;;
+;6;;;;;;;;
+;7;;;;;;;;
+;8;;;;;;;;
+;;;;;;;;;
+;;;;;;;;;
+;;;;;;;;;
+;;;;;;;;;
+;;;;;;;;;

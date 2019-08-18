@@ -474,6 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1853820471}
   - component: {fileID: 1853820470}
+  - component: {fileID: 1853820472}
   m_Layer: 0
   m_Name: DialoguesManager
   m_TagString: Untagged
@@ -521,3 +522,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1853820472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853820469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94291283ff49f5a4fa24e03d5c17d9c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speachData_CSV: {fileID: 4900000, guid: afe7e2f1d8d686b4082e05dfcd1209f5, type: 3}
+  configScriptableObject: {fileID: 11400000, guid: ad472b7a987db7e469147e1c2dc6ec2d,
+    type: 2}
