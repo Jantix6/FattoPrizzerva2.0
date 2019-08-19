@@ -69,6 +69,7 @@ namespace Dialogues
         {
             body = _body;
         }
+
     }
 
 }

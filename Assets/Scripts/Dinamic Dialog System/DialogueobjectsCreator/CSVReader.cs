@@ -8,9 +8,6 @@ using UnityEditor;
 
 public static class CSVReader 
 {
-
-    
-
     // read data and return it as a list of strings
     public static List<string> ReadData (string _objectPath)
     {

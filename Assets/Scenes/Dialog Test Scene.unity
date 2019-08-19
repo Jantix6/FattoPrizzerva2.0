@@ -535,5 +535,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speachData_CSV: {fileID: 4900000, guid: afe7e2f1d8d686b4082e05dfcd1209f5, type: 3}
+  qaData_CSV: {fileID: 4900000, guid: 9d9ceaeb6751c7042beacab6ba11682c, type: 3}
   configScriptableObject: {fileID: 11400000, guid: ad472b7a987db7e469147e1c2dc6ec2d,
     type: 2}

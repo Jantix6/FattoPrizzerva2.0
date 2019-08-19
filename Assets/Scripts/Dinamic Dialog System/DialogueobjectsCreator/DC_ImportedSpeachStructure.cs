@@ -20,6 +20,34 @@ namespace Dialogues
         private string engBody;
 
         // private Dictionary<int, Func<string>> setStringDictionary;
+        public string GetId ()
+        {
+            return id;
+        }
+        public string GetCatTitle()
+        {
+            return catTitle;
+        }
+        public string GetEspTitle()
+        {
+            return espTitle;
+        }
+        public string GetEngTitle()
+        {
+            return engTitle;
+        }
+        public string GetCatBody()
+        {
+            return catBody;
+        }
+        public string GetEspBody()
+        {
+            return espBody;
+        }
+        public string GetEngBody()
+        {
+            return engBody;
+        }
 
         public DC_ImportedSpeachStructure (SO_DialogObjectCreatorConfig _config)
         {
@@ -38,36 +66,36 @@ namespace Dialogues
                     "esptBody " + espBody + "\n" +
                     "engBody " + engBody;
 
-            Debug.Log(data);
+           Debug.Log(data);
         }
 
         public void SetValue(int _indexOnLine, string _fieldData)
         {
-            if (_indexOnLine == config.ObjectIdentifierPosition)
+            if (_indexOnLine == config.GetSPeachCSVSettings().ObjectIdentifierPosition)
             {
                 id = (_fieldData);
             }
-            else if (_indexOnLine == config.CatTitlePosition)
+            else if (_indexOnLine == config.GetSPeachCSVSettings().CatTitlePosition)
             {
                 catTitle = (_fieldData);
             }
-            else if (_indexOnLine == config.EspTitlePosition)
+            else if (_indexOnLine == config.GetSPeachCSVSettings().EspTitlePosition)
             {
                 espTitle = (_fieldData);
             }
-            else if (_indexOnLine == config.EngTitlePosition)
+            else if (_indexOnLine == config.GetSPeachCSVSettings().EngTitlePosition)
             {
                 engTitle = (_fieldData);
             }
-            else if (_indexOnLine == config.CatBodyPosition)
+            else if (_indexOnLine == config.GetSPeachCSVSettings().CatBodyPosition)
             {
                 catBody = (_fieldData);
             }
-            else if (_indexOnLine == config.EspBodyPosition)
+            else if (_indexOnLine == config.GetSPeachCSVSettings().EspBodyPosition)
             {
                 espBody = (_fieldData);
             }
-            else if (_indexOnLine == config.EngBodyPosition)
+            else if (_indexOnLine == config.GetSPeachCSVSettings().EngBodyPosition)
             {
                 engBody = (_fieldData);
             }
