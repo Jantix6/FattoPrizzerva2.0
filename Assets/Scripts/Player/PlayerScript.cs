@@ -69,6 +69,9 @@ public class PlayerScript : MonoBehaviour
     private float timeKnockBack = 0;
 
     private float life = 100;
+    private bool canDamage = true;
+    private bool impacted = false;
+    private float currentTEimeToExitImpacted = 0;
 
     private float forceJump = 0;
     private PlantaTierra plantaTierra;
@@ -397,6 +400,16 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+
+        if(impacted)
+        {
+            currentTEimeToExitImpacted += Time.deltaTime;
+            if(currentTEimeToExitImpacted >= 0.2f)
+            {
+                impacted = false;
+                currentTEimeToExitImpacted = 0;
+            }
+        }
     }
 
     private void OnActionButton()
@@ -493,14 +506,27 @@ public class PlayerScript : MonoBehaviour
         return layer;
     }
 
-    public float ChangeLife(float _life)
+    public void ChangeLife(float _life)
     {
-        life += _life;
-        if (life > 100)
-            life = 100;
-        else if (life < 0)
-            life = 0;
-        print(life + "  " + _life);
+        if (!impacted)
+        {
+            impacted = true;
+            currentTEimeToExitImpacted = 0;
+            if (canDamage)
+            {
+                life += _life;
+                if (life > 100)
+                    life = 100;
+                else if (life < 0)
+                    life = 0;
+            }
+            canvasPlayer.ChangeLife();
+        }
+
+    }
+
+    public float GetLife()
+    {
         return life;
     }
 
@@ -545,6 +571,21 @@ public class PlayerScript : MonoBehaviour
     public float GetGravity()
     {
         return gravity;
+    }
+
+    public bool GetCanDamaged()
+    {
+        return canDamage;
+    }
+
+    public void SetCanDamage(bool _canDamage)
+    {
+        canDamage = _canDamage;
+    }
+
+    public bool GetImpact()
+    {
+        return impacted;
     }
 
     public void SetPlantaTierra(PlantaTierra _planta)

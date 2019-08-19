@@ -6,7 +6,7 @@ public class AdrenalinaPunch : BaseState
 {
 
     [SerializeField] private float speedPunch = 5;
-    [SerializeField] private float damageBase = 10;
+    [SerializeField] private float damageBase = 25;
     private float normalDamage;
     [SerializeField] private float timerDamage = 0.25f;
     private float currentTime = 0;

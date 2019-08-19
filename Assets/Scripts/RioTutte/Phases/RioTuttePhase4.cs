@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RioTuttePhase4 : MonoBehaviour
 {
-    public enum State { MOVING, KNOCKBACK, TELEPORT, STUNED, MOVINGINVERSE, FIRSTTELEPORT }; //dash provisional
+    public enum State { MOVING, KNOCKBACK, STUNED, MOVINGINVERSE, FIRSTTELEPORT, IDLECANSADO }; //dash provisional
     public State currentState = State.MOVING;
     private RioTutteMainScript mainScript;
     private StateMachine stateMachine;
@@ -13,6 +13,7 @@ public class RioTuttePhase4 : MonoBehaviour
     public BaseState teleport;
     public BaseState stun;
     public BaseState firstTeleport;
+    public BaseState idleCansado;
     public float damageImpact = 15;
     public float timeImpact = 0.5f;
     public float damageMinToMove = 40;
@@ -54,6 +55,7 @@ public class RioTuttePhase4 : MonoBehaviour
 
         mainScript.SetDamageMin(damageMinToMove);
         mainScript.GetPlayer().StartKnockBack(0, 200, Vector3.zero, false);
+        mainScript.GetPlayer().SetCanDamage(false);
 
     }
 
@@ -80,15 +82,7 @@ public class RioTuttePhase4 : MonoBehaviour
                 case EnemieBasic.TypeOfDamage.EMPUJAAMBOS:
                     break;
                 case EnemieBasic.TypeOfDamage.EMPUJAENEMIGO:
-                    if (currentState != State.TELEPORT && currentState != State.STUNED)
-                    {
-                        CheckLifes(-1);
-                        ChangeState(State.KNOCKBACK);
-                    }
-                    else if (currentState != State.STUNED)
-                    {
-                        CheckLifes(-0.25f);
-                    }
+                    ChangeState(State.KNOCKBACK);
                     mainScript.RerstartTypeOfDamage();
                     break;
                 case EnemieBasic.TypeOfDamage.EMPUJADOCONCONDICIÓN:
@@ -123,6 +117,15 @@ public class RioTuttePhase4 : MonoBehaviour
                     //Escena de pararse
                 }
             }
+
+            if (mainScript.GetPlayer().GetImpact())
+            {
+                started = false;
+                mainScript.GetPlayer().SetCanDamage(true);
+                ChangeState(State.IDLECANSADO);
+                mainScript.GetPlayer().StartAdrenalina(true);
+            }
+
         }
 
 
@@ -152,38 +155,34 @@ public class RioTuttePhase4 : MonoBehaviour
         else if (mainScript.GetPlayer().currentState == PlayerScript.State.PLANNING && currentState != State.MOVINGINVERSE)
             ChangeState(State.MOVINGINVERSE);
 
-        if (currentState == State.MOVING)
-        {
-            currentTimeState += Time.deltaTime;
-            if (currentTimeState >= timeBetweenDash)
-            {
-                ChangeState(State.TELEPORT);
-            }
-        }
-
 
     }
 
     public void ChangeState(State _newState)
     {
-        currentState = _newState;
 
         switch (_newState)
         {
             case State.MOVING:
                 mainScript.SetDamageMin(damageMinToMove);
                 if (!started)
+                {
+                    currentTimeDash++;
                     mainScript.speed = 3;
-                stateMachine.ChangeState(moving);
+
+                    if (currentState == State.IDLECANSADO)
+                        mainScript.speed = 1f;
+                    else
+                        ChangeState(State.IDLECANSADO);
+                }
+                if (currentTimeDash < 1 || currentState == State.IDLECANSADO)
+                    stateMachine.ChangeState(moving);
                 break;
             case State.KNOCKBACK:
                 currentDash = 0;
                 currentTimeDash = 0;
                 stateMachine.ChangeState(knockback);
                 break;
-            case State.TELEPORT:
-                currentDash++;
-                stateMachine.ChangeState(teleport);
 
                 break;
             case State.STUNED:
@@ -201,10 +200,16 @@ public class RioTuttePhase4 : MonoBehaviour
 
             case State.FIRSTTELEPORT:
                 stateMachine.ChangeState(firstTeleport);
+                break;
+
+            case State.IDLECANSADO:
+                stateMachine.ChangeState(idleCansado);
 
                 break;
 
         }
+        currentState = _newState;
+
     }
 
     public float GetTimeStun()

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 4857383162439417979}
   - component: {fileID: 9012563261808981696}
   - component: {fileID: 4525670728920267087}
+  - component: {fileID: 1729453951}
   m_Layer: 0
   m_Name: RioTutte
   m_TagString: Enemie
@@ -166,6 +167,7 @@ MonoBehaviour:
   teleport: {fileID: 9012563261808981696}
   stun: {fileID: 1998550574269637818}
   firstTeleport: {fileID: 4525670728920267087}
+  idleCansado: {fileID: 1729453951}
   damageImpact: 15
   timeImpact: 0.5
   damageMinToMove: 40
@@ -176,6 +178,10 @@ MonoBehaviour:
   currentTimeDash: 0
   timesStunedToChangePhase: 5
   knockbackPlant: 0
+  wall: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &5971155505212697208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +303,20 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1536
+--- !u!114 &1729453951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971155505212697156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f303dba8bd673874cafbe61336157c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  timeToExitIdle: 2
 --- !u!1 &5971155505687106188
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,11 +11,19 @@ public class CanvasPlayerScript : MonoBehaviour
 
     [SerializeField] private Image progresBarAdrenalina;
 
+    [SerializeField] private Image progresBarLife;
+
+
 
     public void ChangeStamina()
     {
         progresBarStamina.fillAmount = player.stamina.Stamina / player.stamina.MaxStamina;
         progresBarStaminaToRecover.fillAmount = (player.stamina.Stamina + player.stamina.CurrentRegenStamina) / player.stamina.MaxStamina;
+    }
+
+    public void ChangeLife()
+    {
+        progresBarLife.fillAmount = (player.GetLife() / 100f);
     }
 
     public void ChangeAdrenalina()
