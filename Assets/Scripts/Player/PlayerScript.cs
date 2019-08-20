@@ -96,6 +96,7 @@ public class PlayerScript : MonoBehaviour, ICongelable
     {
         gameController = GameObject.FindGameObjectWithTag("GameManager");
         dialogsController = gameController.GetComponent<Dialogs_GameController>();
+        dialogsController.AddToFreazablesList(this);
 
         stamina = GetComponent<IEstaminable>();
         adrenalina = GetComponent<IAdrenalinable>();
