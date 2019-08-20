@@ -29,10 +29,32 @@ namespace Assets.Scripts.Chess
         public float health = 1;
         public bool unlocked = false;
 
+        public Color CelestialColor;
+        public Color DevilColor;
+
         public void SetBoard()
         {
             SetPosition(new Vector2(transform.position.x, transform.position.z));
             Board.instance.board[position.x, position.y] = this;
+
+            SetCellColor();
+        }
+
+        private void SetCellColor()
+        {
+            if (type == CellType.Normal) GetComponent<Renderer>().material.color = CelestialColor;
+
+            if (type == CellType.Normal)
+            {
+                if (position.x % 2 == 0 && position.y % 2 != 0) GetComponent<Renderer>().material.color = DevilColor;
+                if (position.x % 2 != 0 && position.y % 2 == 0) GetComponent<Renderer>().material.color = DevilColor;
+            }
+
+            if (type == CellType.Portal)
+            {
+                if (position.x % 2 == 0 && position.y % 2 != 0) GetComponent<Renderer>().material.color = Color.grey;
+                if (position.x % 2 != 0 && position.y % 2 == 0) GetComponent<Renderer>().material.color = Color.grey;
+            }
         }
 
         public void SetPosition(Vector2 position)

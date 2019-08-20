@@ -76,7 +76,7 @@ namespace Assets.Scripts.Chess.Pieces
             Destroy(gameObject);
         }
 
-        public override List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection)
+        public List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection)
         {
             var IsValid = true;
 

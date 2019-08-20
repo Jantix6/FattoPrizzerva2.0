@@ -78,7 +78,6 @@ namespace Assets.Scripts.Chess.Pieces
         }
 
         public abstract void GetPossibleMoves(bool omnidirectional);
-        public abstract List<Cell> FindPossibleMoves(Cell initialCell, int xDirection, int yDirection);
         public abstract int CalculateCost(Cell nextPosition);
     }
 }

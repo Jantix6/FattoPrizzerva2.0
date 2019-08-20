@@ -51,6 +51,12 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   piecePlaced: {fileID: 0}
   availableCell: {fileID: 4070591391679337296}
+  connectedPortal: {fileID: 0}
+  portalDirection: {x: 0, y: 0}
+  health: 1
+  unlocked: 0
+  CelestialColor: {r: 1, g: 0.91199225, b: 0.495283, a: 0}
+  DevilColor: {r: 0.2735849, g: 0, b: 0, a: 0}
 --- !u!65 &3235016400680376070
 BoxCollider:
   m_ObjectHideFlags: 0
