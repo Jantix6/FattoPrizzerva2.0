@@ -83,6 +83,8 @@ public class PlayerScript : MonoBehaviour, ICongelable
     private bool freezed = false;
 
     private CharacterController characterController;
+    private GameObject gameController;
+    private Dialogs_GameController dialogsController;
     public SpriteRenderer spriteRenderer;
     public Animator anim;
     private Color startColor;
@@ -92,6 +94,9 @@ public class PlayerScript : MonoBehaviour, ICongelable
     // Start is called before the first frame update
     void Awake()
     {
+        gameController = GameObject.FindGameObjectWithTag("GameManager");
+        dialogsController = gameController.GetComponent<Dialogs_GameController>();
+
         stamina = GetComponent<IEstaminable>();
         adrenalina = GetComponent<IAdrenalinable>();
         characterController = GetComponent<CharacterController>();
