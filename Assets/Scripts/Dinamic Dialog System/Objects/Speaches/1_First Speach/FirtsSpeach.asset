@@ -15,5 +15,4 @@ MonoBehaviour:
   speaker: {fileID: 11400000, guid: be89006906a6e874d9e3da192d66a313, type: 2}
   title: {fileID: 11400000, guid: 2abf1e018487c604db54d1dc9c869a84, type: 2}
   body: {fileID: 11400000, guid: 55e1f4bccfd0af44999dbc69ddb20f0a, type: 2}
-  nextDialogStructure: {fileID: 11400000, guid: ac2cfe9b9d751014bbb00d8570cf44db,
-    type: 2}
+  nextDialogStructure: {fileID: 0}

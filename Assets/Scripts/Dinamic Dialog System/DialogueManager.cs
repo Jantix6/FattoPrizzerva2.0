@@ -21,8 +21,8 @@ namespace Dialogues
         private CanvasedDialogElement activeDialogueElement;
 
         [Header("Debug")]
-        [SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
-        [SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
+        //[SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
+        //[SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
         public Language selectedLanguage = Language.CATALAN;
 
         // Contrlol
