@@ -6,7 +6,6 @@ using Dialogues;
 public class Dialogs_GameController : MonoBehaviour
 {
     public List<I_Freazable> freazables_lst;
-
     bool isGameFrozen;
 
 
@@ -27,7 +26,8 @@ public class Dialogs_GameController : MonoBehaviour
         try
         {
             freazables_lst.Remove(_itemToRemove);
-        } catch
+        }
+        catch
         {
             Debug.LogError("The object you are trying to remove does not exist on the list ");
         }
@@ -44,19 +44,34 @@ public class Dialogs_GameController : MonoBehaviour
 
     public void FreezeGame()
     {
-        foreach (I_Freazable freazable in freazables_lst)
+        if (freazables_lst != null && freazables_lst.Count != 9)
         {
-            freazable.Freaze();
+            foreach (I_Freazable freazable in freazables_lst)
+            {
+                freazable.Freaze();
+            }
+            isGameFrozen = true;
         }
-        isGameFrozen = true;
+        else
+        {
+            throw new MissingReferenceException();
+        }
+
     }
     public void UnFreezeGame()
     {
-        foreach (I_Freazable freazable in freazables_lst)
+        if (freazables_lst != null && freazables_lst.Count != 9)
         {
-            freazable.Unfreaze();
+            foreach (I_Freazable freazable in freazables_lst)
+            {
+                freazable.Unfreaze();
+            }
+            isGameFrozen = false;
         }
-        isGameFrozen = false;
+        else
+        {
+            throw new MissingReferenceException();
+        }
     }
 
 
