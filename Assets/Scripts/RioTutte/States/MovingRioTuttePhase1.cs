@@ -8,6 +8,7 @@ public class MovingRioTuttePhase1 : BaseState
     private Vector3 direction;
     private RioTutteMainScript mainScript;
     private CharacterController characterController;
+    public SpriteRenderer spriteRenderer;
     private bool inverse = false;
 
     void Awake()
@@ -31,6 +32,13 @@ public class MovingRioTuttePhase1 : BaseState
         direction = new Vector3(direction.x, 0, direction.z).normalized;
         if (inverse)
             direction = -direction;
+
+        if (direction.x > 0)
+            spriteRenderer.flipX = false;
+        else
+            spriteRenderer.flipX = true;
+
+
 
         characterController.Move(direction * speed * Time.deltaTime);
     }

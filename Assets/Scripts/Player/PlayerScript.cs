@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -377,6 +378,7 @@ public class PlayerScript : MonoBehaviour
             if(adrenalina.Adrenalina <= 0)
             {
                 exhaust = true;
+                normalSpeed = normalSpeed / 3;//cambiar cosas
                 //te quedas en la mierda
             }
             else
@@ -518,7 +520,10 @@ public class PlayerScript : MonoBehaviour
                 if (life > 100)
                     life = 100;
                 else if (life < 0)
+                {
                     life = 0;
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
             }
             canvasPlayer.ChangeLife();
         }
