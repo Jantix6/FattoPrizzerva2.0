@@ -115,6 +115,7 @@ namespace Dialogues
 
         }
 
+        /*
         public void GoToNextStructure()
         {
             int desiredIndex;
@@ -146,7 +147,7 @@ namespace Dialogues
                 EndDialogue();
             }
         }
-
+        */
         #endregion
 
 
@@ -155,18 +156,27 @@ namespace Dialogues
 
         private void Awake()
         {
-            // gameController = GetComponent<Dialogs_GameController>();
+            if (gameController == null)
+                Debug.LogError("Gamecontroller is not set");
+            if (dialogueCanvas == null)
+                Debug.LogError("Dialoguecanvas is not set");
+            if (dialogueNavitagionEventSystem == null)
+                Debug.LogError("dialogueNavitagionEventSystem is not set");
+            if (canvasedDialoguePrefab == null)
+                Debug.LogError("canvasedDialoguePrefab is not set");
+            if (canvasedSpeachPrefab == null)
+                Debug.LogError("canvasedSpeachPrefab");
 
-            DebugSetLenguage();
+            
 
             if (dialogStructures is null || dialogStructures.Count == 0)
-                Debug.LogError("QAStructures ERROR");
+                Debug.LogError("ERROR: dialogStructures is not set or it is empty");
             currentStructureIndex = 0;
         }
 
         private void Start()
         {
-            // StartDialogue(currentStructureIndex);
+            DebugSetLenguage();
         }
 
 
