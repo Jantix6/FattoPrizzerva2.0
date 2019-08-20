@@ -78,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phase: 0
   direction: {x: 0, y: 0, z: -1}
-  speed: 0
+  speed: 1
 --- !u!114 &5971155505212697209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +119,7 @@ MonoBehaviour:
   damageMinToMove: 15
   numOfDashes: 2
   currentDash: 0
-  timeBetweenDash: 0.5
+  timeBetweenDash: 1
   currentTimeDash: 0
   timesStunedToChangePhase: 5
   knockbackPlant: 0
@@ -142,12 +142,12 @@ MonoBehaviour:
   stun: {fileID: 1998550574269637818}
   damageImpact: 15
   timeImpact: 1.5
-  damageMinToMove: 20
+  damageMinToMove: 40
   numOfDashes: 3
   currentDash: 0
   timeBetweenDash: 2
   currentTimeDash: 0
-  timesStunedToChangePhase: 1
+  timesStunedToChangePhase: 5
   knockbackPlant: 0
 --- !u!114 &3711986757945743631
 MonoBehaviour:
@@ -176,7 +176,7 @@ MonoBehaviour:
   currentDash: 0
   timeBetweenDash: 0.75
   currentTimeDash: 0
-  timesStunedToChangePhase: 5
+  timesStunedToChangePhase: 1
   knockbackPlant: 0
   wall: {fileID: 0}
   layerMask:
@@ -209,8 +209,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speedDash: 30
-  timeDelay: 0.1
-  timeDash: 0.7
+  timeDelay: 0.15
+  timeDash: 1
 --- !u!114 &5971155505212697212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speed: 1
+  spriteRenderer: {fileID: 5971155505687106190}
 --- !u!114 &280633563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   speedDash: 45
-  timeDash: 0.2
+  timeDash: 0.3
 --- !u!114 &4525670728920267087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,7 +303,7 @@ MonoBehaviour:
   timeDash: 0.3
   layerMask:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 0
 --- !u!114 &1729453951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,13 +343,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5971155505687106188}
-  m_LocalRotation: {x: 0.4846074, y: -0, z: -0, w: 0.87473184}
-  m_LocalPosition: {x: 0.067, y: 0.091, z: 0.147}
+  m_LocalRotation: {x: 0.27277133, y: -0, z: -0, w: 0.9620789}
+  m_LocalPosition: {x: 0.06699991, y: 0.09099996, z: 0.14700001}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_Children: []
   m_Father: {fileID: 5971155505212697159}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 57.973003, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 31.659002, y: 0, z: 0}
 --- !u!212 &5971155505687106190
 SpriteRenderer:
   m_ObjectHideFlags: 0
