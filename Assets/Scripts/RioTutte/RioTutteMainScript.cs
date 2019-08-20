@@ -67,6 +67,7 @@ public class RioTutteMainScript : EnemieBasic, ICongelable
             }
             else
             {
+                currentDamage = TypeOfDamage.NADA;
                 timeToWait -= Time.deltaTime;
                 if (timeToWait < 0)
                     timeToWait = 0;
