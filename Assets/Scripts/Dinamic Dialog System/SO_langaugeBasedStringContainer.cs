@@ -11,7 +11,12 @@ namespace Dialogues
     public class SO_langaugeBasedStringContainer : ScriptableObject
     {
         [SerializeField] private List<SO_LanguageBasedString> languageBasedStrings_Lst;         // LBSs
-        
+
+        private void OnValidate()
+        {
+            EditorUtility.SetDirty(this);
+        }
+
         public string GetFilename()
         {
             return "LBS_Container";
