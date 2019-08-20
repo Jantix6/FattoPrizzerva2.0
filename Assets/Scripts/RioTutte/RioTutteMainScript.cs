@@ -16,9 +16,15 @@ public class RioTutteMainScript : EnemieBasic, ICongelable
     public float speed = 1;
     private float timeToWait = 0;
     private bool frozen = false;
+    private GameObject gameController;
+    private Dialogs_GameController dialogsController;
     // Start is called before the first frame update
     void Awake()
     {
+        gameController = GameObject.FindGameObjectWithTag("GameManager");
+        dialogsController = gameController.GetComponent<Dialogs_GameController>();
+        dialogsController.AddToFreazablesList(this);
+
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         characterController = GetComponent<CharacterController>();
         phase1 = GetComponent<RioTuttePhase1>();
