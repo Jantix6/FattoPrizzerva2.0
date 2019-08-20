@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : MonoBehaviour, ICongelable
 {
     public enum State
     {
@@ -80,7 +80,7 @@ public class PlayerScript : MonoBehaviour
 
     private Vector3 directionKnockBack;
 
-
+    private bool freezed = false;
 
     private CharacterController characterController;
     public SpriteRenderer spriteRenderer;
@@ -118,46 +118,49 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (adrenalinaOn)
-            AdrenalinaCheckVariablesUntilMoving();
-        else CheckVariablesUntilMoving();
-
-        stateMachine.ExecuteState();
-        switch (currentState)
+        if (!freezed)
         {
-            case State.MOVING:
-                if(!adrenalinaOn)
-                    stamina.RegenStamina();
+            if (adrenalinaOn)
+                AdrenalinaCheckVariablesUntilMoving();
+            else CheckVariablesUntilMoving();
 
-                break;
-            case State.PUNCHING:
+            stateMachine.ExecuteState();
+            switch (currentState)
+            {
+                case State.MOVING:
+                    if (!adrenalinaOn)
+                        stamina.RegenStamina();
 
-                break;
-            case State.RUNING:
-                break;
-            case State.PUNCHRUNNING:
-                break;
-            case State.FLYINGKICK:
+                    break;
+                case State.PUNCHING:
 
-                break;
-            case State.KNOCKBACK:
+                    break;
+                case State.RUNING:
+                    break;
+                case State.PUNCHRUNNING:
+                    break;
+                case State.FLYINGKICK:
 
-                break;
-            case State.HABILITY:
+                    break;
+                case State.KNOCKBACK:
 
-                break;
-            case State.ADRENALINAPUNCH:
+                    break;
+                case State.HABILITY:
 
-                break;
-            case State.ADRENALINARUN:
-                break;
-            case State.ADRENALINAPUNCHRUN:
-                break;
-            case State.ADRENALINAAEREOPUNCH:
+                    break;
+                case State.ADRENALINAPUNCH:
 
-                break;
+                    break;
+                case State.ADRENALINARUN:
+                    break;
+                case State.ADRENALINAPUNCHRUN:
+                    break;
+                case State.ADRENALINAAEREOPUNCH:
+
+                    break;
+            }
+            CheckStats();
         }
-        CheckStats();
     }
 
     public void ChangeState(State newState)
@@ -375,7 +378,7 @@ public class PlayerScript : MonoBehaviour
             adrenalina.ReduceAdrenalina();
             canvasPlayer.ChangeAdrenalina();
 
-            if(adrenalina.Adrenalina <= 0)
+            if (adrenalina.Adrenalina <= 0)
             {
                 exhaust = true;
                 normalSpeed = normalSpeed / 3;//cambiar cosas
@@ -403,10 +406,10 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if(impacted)
+        if (impacted)
         {
             currentTEimeToExitImpacted += Time.deltaTime;
-            if(currentTEimeToExitImpacted >= 0.2f)
+            if (currentTEimeToExitImpacted >= 0.2f)
             {
                 impacted = false;
                 currentTEimeToExitImpacted = 0;
@@ -438,7 +441,7 @@ public class PlayerScript : MonoBehaviour
     {
         adrenalinaOn = _active;
         exhaust = false;
-        if(adrenalinaOn)
+        if (adrenalinaOn)
         {
             adrenalina.Adrenalina = adrenalina.MaxAdrenalina;
         }
@@ -449,7 +452,7 @@ public class PlayerScript : MonoBehaviour
 
     public float ChangeSpeed(float _speed)
     {
-        if(!adrenalinaOn)
+        if (!adrenalinaOn)
             _speed = Mathf.Clamp(_speed, normalSpeed, runScript.maxSpeed);
         else
             _speed = Mathf.Clamp(_speed, adrenalinaSpeed, adrenalinaRunScript.maxSpeed);
@@ -602,6 +605,16 @@ public class PlayerScript : MonoBehaviour
         }
         else
             forceJump = 0;
+    }
+
+    public void Congelar()
+    {
+        freezed = true;
+    }
+
+    public void Descongelar()
+    {
+        freezed = false;
     }
     #endregion
 }
