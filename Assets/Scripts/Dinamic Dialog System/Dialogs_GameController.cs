@@ -21,10 +21,7 @@ public class Dialogs_GameController : MonoBehaviour
     {
         if (Input.GetKeyUp(freeze_Key))
         {
-            if (isGameFrozen)
-                UnFreezeGame();
-            else
-                FreezeGame();
+            ToggleFrozenGame();
         }
 
 
