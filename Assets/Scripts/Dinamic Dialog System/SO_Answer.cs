@@ -12,7 +12,7 @@ namespace Dialogues
         private Dialogs_GameController gameController;
 
 
-        [SerializeField] private SO_DialogEvent eventOnClick;
+        // [SerializeField] private SO_DialogEvent eventOnClick;
         [SerializeField] private SO_DialogEventsContainer eventsOnClickContainer;
         [SerializeField] private SO_DialogStructure targetStructure;
 

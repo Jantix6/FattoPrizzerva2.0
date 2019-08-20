@@ -7,7 +7,7 @@ namespace Dialogues
 
     public abstract class SO_DialogEvent : ScriptableObject
     {
-        protected Dialogs_GameController dialogsGameController;
+         protected Dialogs_GameController dialogsGameController;
 
         public virtual void Initialize(Dialogs_GameController _dialogGameController)
         {

@@ -20,6 +20,9 @@ namespace Dialogues
 
         private CanvasedDialogElement activeDialogueElement;
 
+        // Karma Data 
+        [SerializeField] private DC_Karma karmaDataContainer;
+
         [Header("Debug")]
         //[SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
         //[SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
@@ -65,6 +68,7 @@ namespace Dialogues
                 currentStructureIndex = -1;
 
                 IsEnabled = false;
+                karmaDataContainer.ApplyLocakToGlobalKarma();       
                 gameController.UnFreezeGame();
             }
         }
@@ -166,6 +170,8 @@ namespace Dialogues
                 Debug.LogError("canvasedDialoguePrefab is not set");
             if (canvasedSpeachPrefab == null)
                 Debug.LogError("canvasedSpeachPrefab");
+            if (karmaDataContainer == null)
+                Debug.LogError("karmaDataContianer is not set");
 
             
 
