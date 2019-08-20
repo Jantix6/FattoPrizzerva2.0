@@ -10,11 +10,13 @@ public class HudCambioCarasRioTutte : MonoBehaviour
     public Caras currentCara = Caras.NORMAL;
     public Image image;
 
+
+
     public void ChangeCara(Caras _newCara)
     {
         if (caras.Count > 0)
         {
-            switch (currentCara)
+            switch (_newCara)
             {
                 case Caras.NORMAL:
                     image.sprite = caras[0];
@@ -35,6 +37,8 @@ public class HudCambioCarasRioTutte : MonoBehaviour
                     image.sprite = caras[5];
                     break;
             }
+
+            currentCara = _newCara;
         }
     }
 }
