@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RioTuttePhase4 : MonoBehaviour
 {
-    public enum State { MOVING, KNOCKBACK, TELEPORT, STUNED, MOVINGINVERSE }; //dash provisional
+    public enum State { MOVING, KNOCKBACK, STUNED, MOVINGINVERSE, FIRSTTELEPORT, IDLECANSADO }; //dash provisional
     public State currentState = State.MOVING;
     private RioTutteMainScript mainScript;
     private StateMachine stateMachine;
@@ -12,6 +12,8 @@ public class RioTuttePhase4 : MonoBehaviour
     public BaseState knockback;
     public BaseState teleport;
     public BaseState stun;
+    public BaseState firstTeleport;
+    public BaseState idleCansado;
     public float damageImpact = 15;
     public float timeImpact = 0.5f;
     public float damageMinToMove = 40;
@@ -21,60 +23,108 @@ public class RioTuttePhase4 : MonoBehaviour
     public int currentDash = 0;
     public float timeBetweenDash = 0.75f;
     public float currentTimeDash = 0;
-    private float currentTimeMovingToDash = 0;
-    public float timesStunedToChangePhase = 5;
+    public float timesStunedToChangePhase = 1;
     public bool knockbackPlant = false;
     private float lifes = 5;
+    private bool started = true;
+    private bool firstTime = false;
+    public GameObject wall;
+    public LayerMask layerMask;
 
     public void StartExecution()
     {
+
+        //Escena de pararse
+
         mainScript = GetComponent<RioTutteMainScript>();
-        mainScript.speed = 3f;
+        mainScript.speed = 1f;
+        lifes = timesStunedToChangePhase;
+        started = true;
         stateMachine = mainScript.GetStateMachine();
         ChangeState(State.MOVING);
 
+        RaycastHit rayhit;
+        if (Physics.Raycast(transform.position, (mainScript.GetPlayer().transform.position - gameObject.transform.position).normalized,
+            out rayhit, 200, layerMask))
+        {
+            wall = rayhit.collider.gameObject;
+        }
+        else
+            print("NULL");
+
 
         mainScript.SetDamageMin(damageMinToMove);
-
+        mainScript.GetPlayer().StartKnockBack(0, 200, Vector3.zero, false);
+        mainScript.GetPlayer().SetCanDamage(false);
 
     }
 
     public void Execute()
     {
-        if (mainScript.GetPlayer().currentState != PlayerScript.State.INSIDEPLANT || currentState == State.KNOCKBACK)
+        if (!started)
         {
-            ExecuteState();
-        }
+            if (mainScript.GetPlayer().currentState != PlayerScript.State.INSIDEPLANT || currentState == State.KNOCKBACK)
+            {
+                ExecuteState();
+            }
 
-        switch (mainScript.GetTypeOfDamage())
-        {
-            case EnemieBasic.TypeOfDamage.PLAYEREMPUJADO:
-                break;
-            case EnemieBasic.TypeOfDamage.PLAYERREBOTA:
-                mainScript.GetPlayer().StartKnockBack(damageImpact, timeImpact / 2,
-                    (mainScript.GetPlayer().transform.position - gameObject.transform.position).normalized);
-                mainScript.RerstartTypeOfDamage();
-                break;
-            case EnemieBasic.TypeOfDamage.NADA:
-                break;
-            case EnemieBasic.TypeOfDamage.EMPUJAAMBOS:
-                break;
-            case EnemieBasic.TypeOfDamage.EMPUJAENEMIGO:
-                if (currentState != State.TELEPORT && currentState != State.STUNED)
-                {
-                    CheckLifes(-1);
+            switch (mainScript.GetTypeOfDamage())
+            {
+                case EnemieBasic.TypeOfDamage.PLAYEREMPUJADO:
+                    break;
+                case EnemieBasic.TypeOfDamage.PLAYERREBOTA:
+                    mainScript.GetPlayer().StartKnockBack(damageImpact, timeImpact / 2,
+                        (mainScript.GetPlayer().transform.position - gameObject.transform.position).normalized);
+                    mainScript.RerstartTypeOfDamage();
+                    break;
+                case EnemieBasic.TypeOfDamage.NADA:
+                    break;
+                case EnemieBasic.TypeOfDamage.EMPUJAAMBOS:
+                    break;
+                case EnemieBasic.TypeOfDamage.EMPUJAENEMIGO:
                     ChangeState(State.KNOCKBACK);
-                }
-                else if (currentState != State.STUNED)
+                    mainScript.RerstartTypeOfDamage();
+                    break;
+                case EnemieBasic.TypeOfDamage.EMPUJADOCONCONDICIÓN:
+                    ChangeState(State.KNOCKBACK);
+                    mainScript.RerstartTypeOfDamage();
+                    break;
+
+            }
+        }
+        else
+        {
+            stateMachine.ExecuteState();
+            if (firstTime)
+            {
+                Vector3 dir = (mainScript.GetPlayer().transform.position - gameObject.transform.position).normalized;
+                RaycastHit rayhit;
+                if (Physics.Raycast(mainScript.GetPlayer().transform.position, dir, out rayhit, 200, layerMask)
+                    && (mainScript.GetPlayer().currentState == PlayerScript.State.MOVING || mainScript.GetPlayer().currentState == PlayerScript.State.RUNING))
                 {
-                    CheckLifes(-0.25f);
+                    if (rayhit.collider.gameObject != wall)
+                        ChangeState(State.FIRSTTELEPORT);
                 }
-                mainScript.RerstartTypeOfDamage();
-                break;
-            case EnemieBasic.TypeOfDamage.EMPUJADOCONCONDICIÓN:
-                ChangeState(State.KNOCKBACK);
-                mainScript.RerstartTypeOfDamage();
-                break;
+            }
+
+
+            if (!firstTime && (gameObject.transform.position - mainScript.GetPlayer().transform.position).magnitude <= 1f)
+            {
+                if (mainScript.GetPlayer().currentState == PlayerScript.State.KNOCKBACK)
+                {
+                    mainScript.GetPlayer().StopKnockBack();
+                    firstTime = true;
+                    //Escena de pararse
+                }
+            }
+
+            if (mainScript.GetPlayer().GetImpact())
+            {
+                started = false;
+                mainScript.GetPlayer().SetCanDamage(true);
+                ChangeState(State.IDLECANSADO);
+                mainScript.GetPlayer().StartAdrenalina(true);
+            }
 
         }
 
@@ -104,57 +154,62 @@ public class RioTuttePhase4 : MonoBehaviour
         }
         else if (mainScript.GetPlayer().currentState == PlayerScript.State.PLANNING && currentState != State.MOVINGINVERSE)
             ChangeState(State.MOVINGINVERSE);
-        
-        if(currentState == State.MOVING )
-        {
-            currentTimeState += Time.deltaTime;
-            if(currentTimeState >= timeBetweenDash)
-            {
-                ChangeState(State.TELEPORT);
-            }
-        }
 
 
     }
 
     public void ChangeState(State _newState)
     {
-        currentState = _newState;
 
         switch (_newState)
         {
             case State.MOVING:
                 mainScript.SetDamageMin(damageMinToMove);
-                mainScript.speed = 3;
-                currentTimeMovingToDash = 0;
-                stateMachine.ChangeState(moving);
+                if (!started)
+                {
+                    currentTimeDash++;
+                    mainScript.speed = 3;
+
+                    if (currentState == State.IDLECANSADO)
+                        mainScript.speed = 1f;
+                    else
+                        ChangeState(State.IDLECANSADO);
+                }
+                if (currentTimeDash < 1 || currentState == State.IDLECANSADO)
+                    stateMachine.ChangeState(moving);
                 break;
             case State.KNOCKBACK:
                 currentDash = 0;
                 currentTimeDash = 0;
-                currentTimeMovingToDash = 0;
                 stateMachine.ChangeState(knockback);
                 break;
-            case State.TELEPORT:
-                currentDash++;
-                stateMachine.ChangeState(teleport);
 
                 break;
             case State.STUNED:
                 mainScript.SetDamageMin(0);
                 currentDash = 0;
                 currentTimeDash = 0;
-                currentTimeMovingToDash = 0;
                 stateMachine.ChangeState(stun);
                 break;
             case State.MOVINGINVERSE:
                 mainScript.SetDamageMin(damageMinToMove);
                 mainScript.speed = 0.75f;
-                currentTimeMovingToDash = 0;
+
                 stateMachine.ChangeState(moving);
                 break;
 
+            case State.FIRSTTELEPORT:
+                stateMachine.ChangeState(firstTeleport);
+                break;
+
+            case State.IDLECANSADO:
+                stateMachine.ChangeState(idleCansado);
+
+                break;
+
         }
+        currentState = _newState;
+
     }
 
     public float GetTimeStun()

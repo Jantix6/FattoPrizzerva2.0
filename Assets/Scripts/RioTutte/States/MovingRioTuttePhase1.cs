@@ -8,6 +8,7 @@ public class MovingRioTuttePhase1 : BaseState
     private Vector3 direction;
     private RioTutteMainScript mainScript;
     private CharacterController characterController;
+    public SpriteRenderer spriteRenderer;
     private bool inverse = false;
 
     void Awake()
@@ -32,6 +33,13 @@ public class MovingRioTuttePhase1 : BaseState
         if (inverse)
             direction = -direction;
 
+        if (direction.x > 0)
+            spriteRenderer.flipX = false;
+        else
+            spriteRenderer.flipX = true;
+
+
+
         characterController.Move(direction * speed * Time.deltaTime);
     }
 
@@ -48,6 +56,7 @@ public class MovingRioTuttePhase1 : BaseState
             {
                 Vector3 direction = mainScript.GetPlayer().gameObject.transform.position - gameObject.transform.position;
                 direction = new Vector3(direction.x, 0, direction.z).normalized;
+
                 switch (mainScript.phase)
                 {
                     case 1:
@@ -57,7 +66,10 @@ public class MovingRioTuttePhase1 : BaseState
                         mainScript.GetPlayer().StartKnockBack(mainScript.GetPhase2().damageImpact, mainScript.GetPhase2().timeImpact, direction);
                         break;
                     case 3:
-                        mainScript.GetPlayer().StartKnockBack(mainScript.GetPhase3().damageImpact, mainScript.GetPhase2().timeImpact / 2, direction);
+                        mainScript.GetPlayer().StartKnockBack(mainScript.GetPhase3().damageImpact, mainScript.GetPhase3().timeImpact / 2, direction);
+                        break;
+                    case 4:
+                        mainScript.GetPlayer().StartKnockBack(mainScript.GetPhase4().damageImpact, mainScript.GetPhase4().timeImpact / 2, direction);
                         break;
 
 

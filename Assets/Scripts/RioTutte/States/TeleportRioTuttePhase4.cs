@@ -17,7 +17,7 @@ public class TeleportRioTuttePhase4 : BaseState
     private void Start()
     {
         mainScript = GetComponent<RioTutteMainScript>();
-        teleports = 0;
+        teleports = 10;
         player = mainScript.GetPlayer();
         characterController = mainScript.GetCharacterController();
     }
@@ -27,7 +27,6 @@ public class TeleportRioTuttePhase4 : BaseState
         teleported = false;
         mainScript.GetPhase4().currentTimeState = 0;
         currentTime = 0;
-        teleports++;
         mainScript.direction = (player.gameObject.transform.position - gameObject.transform.position).normalized;
         mainScript.direction = new Vector3(mainScript.direction.x, 0, mainScript.direction.z);
         //comprobar con un rayo si en la dirección dónde se ha movido por ultima vez hay una pared si la hay haced lo q ya hay

@@ -28,7 +28,6 @@ public class PunchFly : BaseState
     {
         direction = _direction;
         speed = _speed;
-        player.gameObject.transform.rotation = Quaternion.LookRotation(player.gameObject.transform.forward, _direction);
         player.ChangeState(PlayerScript.State.FLYINGKICK);
     }
 

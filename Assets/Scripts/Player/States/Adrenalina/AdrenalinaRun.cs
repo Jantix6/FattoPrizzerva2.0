@@ -108,10 +108,6 @@ public class AdrenalinaRun : BaseState
 
                 }
             }
-
-
-            gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward, toMove);
-
         }
         else
         {

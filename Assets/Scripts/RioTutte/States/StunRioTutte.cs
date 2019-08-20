@@ -24,8 +24,11 @@ public class StunRioTutte : BaseState
                 maxTime = mainScript.GetPhase2().GetTimeStun();
                 break;
             case 3:
+                maxTime = mainScript.GetPhase3().GetTimeStun();
                 break;
             case 4:
+                maxTime = mainScript.GetPhase4().GetTimeStun();
+
                 break;
         }
     }
@@ -42,8 +45,11 @@ public class StunRioTutte : BaseState
                     mainScript.GetPhase2().ChangeState(RioTuttePhase2.State.MOVING);
                     break;
                 case 3:
+                    mainScript.GetPhase3().ChangeState(RioTuttePhase3.State.MOVING);
                     break;
                 case 4:
+                    mainScript.GetPhase4().ChangeState(RioTuttePhase4.State.MOVING);
+
                     break;
             }
         }

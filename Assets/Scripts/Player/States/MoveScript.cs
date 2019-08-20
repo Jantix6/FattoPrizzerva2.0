@@ -107,6 +107,7 @@ public class MoveScript : BaseState
 
         }
         speed = player.ChangeSpeed(speed);
+        player.toMove = toMove;
         CollisionFlags collisionFlags = characterController.Move(toMove * Time.deltaTime * speed);
     }
 
