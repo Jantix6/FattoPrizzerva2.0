@@ -61,7 +61,8 @@ namespace Assets.Scripts.Chess
         private void StartPreview()
         {
             selectedPiece.ActionHandler.Actions.Clear();
-            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.blue;
+            selectedPiece.boardPosition.availableCell.enabled = true;
+            selectedPiece.boardPosition.availableCell.color = Color.blue;
 
             movementExecutor.GetPossibleMoves(true);
 
@@ -81,9 +82,11 @@ namespace Assets.Scripts.Chess
         {
             Destroy(movementExecutor.gameObject);
 
-            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+            selectedPiece.boardPosition.availableCell.enabled = false;
             selectedPiece.ActionHandler.ExecuteActions();
             selectedPiece.Moved = true;
+
+            if (selectedPiece is Pawn) PieceSelector.instance.EndTurn();
 
             selectedPiece = null;
             movementExecutor = null;
@@ -101,8 +104,9 @@ namespace Assets.Scripts.Chess
             Destroy(movementExecutor.gameObject);
             movementExecutor = null;
 
-            selectedPiece.boardPosition.GetComponent<Renderer>().material.color = Color.white;
+            selectedPiece.boardPosition.availableCell.enabled = false;
             selectedPiece.player.movements += accumulatedCost;
+            accumulatedCost = 0;
             selectedPiece = null;
 
             moving = false;
@@ -116,6 +120,24 @@ namespace Assets.Scripts.Chess
             IPieceAction actionToDo = null;
 
             bool lastAction = false;
+
+            if (selectedPiece is Bishop) actionToDo = ActionToDo(cell, ref lastAction);
+            if (selectedPiece is Pawn)
+            {
+                actionToDo = ActionToDo(cell);
+                lastAction = true;
+            }
+
+            if (actionToDo == null) return;
+
+            StartCoroutine(lastAction ? actionToDo.DoAction(ExitPreview) : actionToDo.DoAction(ExecutePreview));
+
+            moving = true;
+        }
+
+        private IPieceAction ActionToDo(Cell cell, ref bool lastAction)
+        {
+            IPieceAction actionToDo = null;
 
             if (cell.piecePlaced)
             {
@@ -131,7 +153,7 @@ namespace Assets.Scripts.Chess
                         actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
                         selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
 
-                        lastAction = true;
+                        if (!selectedPiece.omnidirectional) lastAction = true;
 
                         break;
 
@@ -159,11 +181,25 @@ namespace Assets.Scripts.Chess
                 }
             }
 
-            if (actionToDo == null) return;
+            return actionToDo;
+        }
 
-            StartCoroutine(lastAction ? actionToDo.DoAction(ExitPreview) : actionToDo.DoAction(ExecutePreview));
+        private IPieceAction ActionToDo(Cell cell)
+        {
+            IPieceAction actionToDo = null;
 
-            moving = true;
+            if (cell.piecePlaced)
+            {
+                actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
+                selectedPiece.ActionHandler.Actions.Add(new KillPawn(cell.piecePlaced as Pawn, 5, selectedPiece));
+            }
+            else
+            {
+                actionToDo = new MovementAction(cell, 0, Mathf.Infinity, movementExecutor);
+                selectedPiece.ActionHandler.Actions.Add(new MovementAction(cell, 0, 5, selectedPiece));
+            }
+
+            return actionToDo;
         }
 
         public void SelectPositionToMove()

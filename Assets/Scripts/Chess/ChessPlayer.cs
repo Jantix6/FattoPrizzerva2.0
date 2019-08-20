@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Chess
 {
@@ -12,9 +13,12 @@ namespace Assets.Scripts.Chess
         public int turn = 0;
 
         [SerializeField] private List<Cell> LockedPortals;
-        public bool locked = true;
 
-        private void Update()
+        public Text playerText;
+        public Text movementText;
+        public Text turnText;
+
+        public void Update()
         {
             if (turn == 1 || turn == 2) movements = 1;
         }
@@ -38,6 +42,13 @@ namespace Assets.Scripts.Chess
             {
                 portal.unlocked = true;
             }
+        }
+
+        public void UpdateUI()
+        {
+            playerText.text = "Player: " + (playerNumber + 1);
+            movementText.text = "Moves: " + movements;
+            turnText.text = "Turn: " + turn;
         }
 
     }

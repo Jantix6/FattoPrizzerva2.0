@@ -6,6 +6,14 @@ namespace Assets.Scripts.Chess
 {
     public class PieceSelector : MonoBehaviour
     {
+        public static PieceSelector instance;
+
+        void Awake()
+        {
+            if (instance == null) instance = this;
+            if (instance != this) Destroy(this);
+        }
+
         public ChessPlayer player;
 
         public MovementPreview previewMovement;
@@ -14,10 +22,6 @@ namespace Assets.Scripts.Chess
         [SerializeField] private ChessPlayer playerTwo;
 
         private Piece[] pieces;
-
-        [SerializeField] private Text playerText;
-        [SerializeField] private Text movementText;
-        [SerializeField] private Text turnText;
 
         private void Start()
         {
@@ -30,7 +34,8 @@ namespace Assets.Scripts.Chess
             if (Input.GetMouseButtonDown(0)) Select();
             if (Input.GetMouseButtonDown(1)) previewMovement.SelectPositionToMove();
 
-            UpdateUI();
+            playerOne.UpdateUI();
+            playerTwo.UpdateUI();
         }
 
         public static T GetFromRay<T>(string layerMaskName)
@@ -49,13 +54,6 @@ namespace Assets.Scripts.Chess
             }
 
             return default;
-        }
-
-        private void UpdateUI()
-        {
-            playerText.text = "Player: " + (player.playerNumber + 1);
-            movementText.text = "Moves: " + player.movements;
-            turnText.text = "Turn: " + player.turn;
         }
 
         private void Select()
