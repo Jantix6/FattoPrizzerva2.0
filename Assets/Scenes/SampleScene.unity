@@ -3365,6 +3365,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2940018736146248213, guid: 8cf8bc268b178ed4f8740e7727c34315,
+        type: 3}
+      propertyPath: damageMinToMove
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940018736146248213, guid: 8cf8bc268b178ed4f8740e7727c34315,
+        type: 3}
+      propertyPath: timesStunedToChangePhase
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cf8bc268b178ed4f8740e7727c34315, type: 3}
 --- !u!1001 &7471284608103801137
@@ -3508,5 +3518,11 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3371337119041151388, guid: 6ff83ad9d3c8d694489d00331837badf,
+        type: 3}
+      propertyPath: "golpePu\xF1oPrefab"
+      value: 
+      objectReference: {fileID: 6255683885061824387, guid: f1bd2a59f820a894db830cbcda53a5f6,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ff83ad9d3c8d694489d00331837badf, type: 3}
