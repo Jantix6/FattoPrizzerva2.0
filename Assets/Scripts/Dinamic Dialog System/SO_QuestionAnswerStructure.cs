@@ -57,7 +57,7 @@ namespace Dialogues
 
         private bool CheckAnswersIntegrity()
         {
-            if (answers_Lst.Count == 0 || answers_Lst == null)
+            if ( answers_Lst == null || answers_Lst.Count == 0)
             {
                 Debug.LogError("No answers found on object " + this.name);
                 return false;
