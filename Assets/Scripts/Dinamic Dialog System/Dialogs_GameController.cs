@@ -5,14 +5,30 @@ using Dialogues;
 
 public class Dialogs_GameController : MonoBehaviour
 {
-    public List<ICongelable> freazables_lst;
+    public List<ICongelable> freazables_lst;    
     bool isGameFrozen;
+
+    // debug
+    private KeyCode freeze_Key = KeyCode.Space;
 
     private void Awake()
     {
         isGameFrozen = false;
     }
 
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(freeze_Key))
+        {
+            if (isGameFrozen)
+                UnFreezeGame();
+            else
+                FreezeGame();
+        }
+
+
+    }
     public void AddToFreazablesList(ICongelable _item)
     {
         if (freazables_lst == null)
@@ -53,7 +69,7 @@ public class Dialogs_GameController : MonoBehaviour
         }
         else
         {
-            throw new MissingReferenceException();
+            throw new MissingReferenceException("La lista de congelables esta vacia o es nula");
         }
 
     }
@@ -69,7 +85,7 @@ public class Dialogs_GameController : MonoBehaviour
         }
         else
         {
-            throw new MissingReferenceException();
+            throw new MissingReferenceException("La lista de congelables esta vacia o es nula");
         }
     }
 
