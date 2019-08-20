@@ -51,13 +51,13 @@ public class TestPlayer : MonoBehaviour , ICongelable
 
     }
 
-    public void Congelar()
+    public void Congelar(bool _anim = false)
     {
         // Do whatever you need to do to be frozen
         Debug.Log(this.gameObject.name + " is now frozen ");
     }
 
-    public void Descongelar()
+    public void Descongelar(bool _anim = false)
     {
         // Do whatever you need to do to UNFREEZE
         Debug.Log(this.gameObject.name + " is now unfrozen ");

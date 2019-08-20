@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface ICongelable
 {
-    void Congelar();
-    void Descongelar();
+    void Congelar(bool _anim = false);
+    void Descongelar(bool _anim = false);
 }

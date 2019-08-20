@@ -14,6 +14,7 @@ public class RioTutteMainScript : EnemieBasic, ICongelable
     private PlayerScript player;
     public Vector3 direction = Vector3.back;
     public float speed = 1;
+    public HudCambioCarasRioTutte hudCaras;
     private float timeToWait = 0;
     private bool frozen = false;
     private GameObject gameController;
@@ -140,12 +141,12 @@ public class RioTutteMainScript : EnemieBasic, ICongelable
         characterController.Move(Vector3.down * player.GetGravity() * Time.deltaTime);
     }
 
-    public void Congelar()
+    public void Congelar(bool _anim = false)
     {
         frozen = true;
     }
 
-    public void Descongelar()
+    public void Descongelar(bool _anim = false)
     {
         frozen = false;
     }
