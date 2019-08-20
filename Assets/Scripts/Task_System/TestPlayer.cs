@@ -4,7 +4,7 @@ using UnityEngine;
 using Tasks;
 using Dialogues;
 
-public class TestPlayer : MonoBehaviour , I_Freazable
+public class TestPlayer : MonoBehaviour , ICongelable
 {
     public Dialogs_GameController gameController;
 
@@ -51,16 +51,15 @@ public class TestPlayer : MonoBehaviour , I_Freazable
 
     }
 
-    public void Freaze()
+    public void Congelar()
     {
         // Do whatever you need to do to be frozen
         Debug.Log(this.gameObject.name + " is now frozen ");
     }
 
-    public void Unfreaze()
+    public void Descongelar()
     {
         // Do whatever you need to do to UNFREEZE
         Debug.Log(this.gameObject.name + " is now unfrozen ");
-
     }
 }

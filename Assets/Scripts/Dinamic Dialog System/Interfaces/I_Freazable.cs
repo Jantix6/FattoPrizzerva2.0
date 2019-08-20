@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 namespace Dialogues
 {
     public interface I_Freazable
@@ -12,5 +13,6 @@ namespace Dialogues
 
     }
 }
+*/
 
 

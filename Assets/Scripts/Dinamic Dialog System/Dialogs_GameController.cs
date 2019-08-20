@@ -5,23 +5,22 @@ using Dialogues;
 
 public class Dialogs_GameController : MonoBehaviour
 {
-    public List<I_Freazable> freazables_lst;
+    public List<ICongelable> freazables_lst;
     bool isGameFrozen;
-
 
     private void Awake()
     {
         isGameFrozen = false;
     }
 
-    public void AddToFreazablesList(I_Freazable _item)
+    public void AddToFreazablesList(ICongelable _item)
     {
         if (freazables_lst == null)
-            freazables_lst = new List<I_Freazable>();
+            freazables_lst = new List<ICongelable>();
 
         freazables_lst.Add(_item);
     }
-    public void RemoveFromFreazables(I_Freazable _itemToRemove)
+    public void RemoveFromFreazables(ICongelable _itemToRemove)
     {
         try
         {
@@ -46,9 +45,9 @@ public class Dialogs_GameController : MonoBehaviour
     {
         if (freazables_lst != null && freazables_lst.Count != 9)
         {
-            foreach (I_Freazable freazable in freazables_lst)
+            foreach (ICongelable freazable in freazables_lst)
             {
-                freazable.Freaze();
+                freazable.Congelar();
             }
             isGameFrozen = true;
         }
@@ -62,9 +61,9 @@ public class Dialogs_GameController : MonoBehaviour
     {
         if (freazables_lst != null && freazables_lst.Count != 9)
         {
-            foreach (I_Freazable freazable in freazables_lst)
+            foreach (ICongelable freazable in freazables_lst)
             {
-                freazable.Unfreaze();
+                freazable.Descongelar();
             }
             isGameFrozen = false;
         }
