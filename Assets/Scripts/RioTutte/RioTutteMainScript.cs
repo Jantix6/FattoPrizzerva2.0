@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RioTutteMainScript : EnemieBasic
+public class RioTutteMainScript : EnemieBasic, ICongelable
 {
     public int phase = 0;
     private RioTuttePhase1 phase1;
@@ -15,6 +15,7 @@ public class RioTutteMainScript : EnemieBasic
     public Vector3 direction = Vector3.back;
     public float speed = 1;
     private float timeToWait = 0;
+    private bool frozen = false;
     // Start is called before the first frame update
     void Awake()
     {
@@ -37,32 +38,35 @@ public class RioTutteMainScript : EnemieBasic
     // Update is called once per frame
     void Update()
     {
-        if (timeToWait == 0)
+        if (!frozen)
         {
-            switch (phase)
+            if (timeToWait == 0)
             {
-                case 1:
-                    phase1.Execute();
-                    break;
-                case 2:
-                    phase2.Execute();
-                    break;
-                case 3:
-                    phase3.Execute();
-                    break;
-                case 4:
-                    phase4.Execute();
-                    break;
+                switch (phase)
+                {
+                    case 1:
+                        phase1.Execute();
+                        break;
+                    case 2:
+                        phase2.Execute();
+                        break;
+                    case 3:
+                        phase3.Execute();
+                        break;
+                    case 4:
+                        phase4.Execute();
+                        break;
+                }
             }
-        }
-        else
-        {
-            timeToWait -= Time.deltaTime;
-            if (timeToWait < 0)
-                timeToWait = 0;
-        }
+            else
+            {
+                timeToWait -= Time.deltaTime;
+                if (timeToWait < 0)
+                    timeToWait = 0;
+            }
 
-        Gravity();
+            Gravity();
+        }
     }
 
     public void ChangePhase(int _newPhase)
@@ -128,5 +132,15 @@ public class RioTutteMainScript : EnemieBasic
     private void Gravity()
     {
         characterController.Move(Vector3.down * player.GetGravity() * Time.deltaTime);
+    }
+
+    public void Congelar()
+    {
+        frozen = true;
+    }
+
+    public void Descongelar()
+    {
+        frozen = false;
     }
 }
