@@ -32,7 +32,6 @@ namespace Dialogues
 
             if (dialogStructure)
             {
-                FrezeGame();
                 dialogueManager.StartDialogue(dialogStructure);
             }          
         }
