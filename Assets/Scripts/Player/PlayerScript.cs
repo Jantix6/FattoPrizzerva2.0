@@ -7,8 +7,21 @@ public class PlayerScript : MonoBehaviour, ICongelable
 {
     public enum State
     {
-        MOVING, PUNCHING, RUNING, PUNCHRUNNING, KNOCKBACK, FLYINGKICK, HABILITY, INSIDEPLANT,
-        JUMPING, PLANNING, AEREOPUNCH, ADRENALINAPUNCH, ADRENALINARUN, ADRENALINAPUNCHRUN, ADRENALINAAEREOPUNCH
+        MOVING,
+        PUNCHING,
+        RUNING,
+        PUNCHRUNNING,
+        KNOCKBACK,
+        FLYINGKICK,
+        HABILITY,
+        INSIDEPLANT,
+        JUMPING,
+        PLANNING,
+        AEREOPUNCH,
+        ADRENALINAPUNCH,
+        ADRENALINARUN,
+        ADRENALINAPUNCHRUN,
+        ADRENALINAAEREOPUNCH
     };
     public State currentState = State.MOVING;
     public KeyCode upKey = KeyCode.W;
@@ -87,6 +100,7 @@ public class PlayerScript : MonoBehaviour, ICongelable
     private Dialogs_GameController dialogsController;
     public SpriteRenderer spriteRenderer;
     public Animator anim;
+    private float speedToSave = 0;
     private Color startColor;
     public GameObject children;
     public StateMachine stateMachine;
@@ -613,14 +627,24 @@ public class PlayerScript : MonoBehaviour, ICongelable
             forceJump = 0;
     }
 
-    public void Congelar()
+    public void Congelar(bool _anim = false)
     {
         freezed = true;
+        if (_anim && speedToSave == 0)
+        {
+            speedToSave = anim.speed;
+            anim.speed = 0;
+        }
     }
 
-    public void Descongelar()
+    public void Descongelar(bool _anim = false)
     {
         freezed = false;
+        if (speedToSave != 0)
+        {
+            anim.speed = speedToSave;
+            speedToSave = 0;
+        }
     }
     #endregion
 }

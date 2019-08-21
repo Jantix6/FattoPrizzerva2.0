@@ -58,6 +58,7 @@ public class Dialogs_GameController : MonoBehaviour
     {
         if (freazables_lst != null && freazables_lst.Count != 9)
         {
+            print("congela");
             foreach (ICongelable freazable in freazables_lst)
             {
                 freazable.Congelar();
@@ -74,6 +75,7 @@ public class Dialogs_GameController : MonoBehaviour
     {
         if (freazables_lst != null && freazables_lst.Count != 9)
         {
+            print("descongela");
             foreach (ICongelable freazable in freazables_lst)
             {
                 freazable.Descongelar();

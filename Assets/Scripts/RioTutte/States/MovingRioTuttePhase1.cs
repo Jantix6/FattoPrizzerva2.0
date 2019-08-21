@@ -38,6 +38,14 @@ public class MovingRioTuttePhase1 : BaseState
         else
             spriteRenderer.flipX = true;
 
+        if(mainScript.phase == 1)
+        {
+            if (mainScript.GetPlayer().currentState == PlayerScript.State.RUNING)
+                mainScript.hudCaras.ChangeCara(HudCambioCarasRioTutte.Caras.SORPRESAFINGIDO);
+            else
+                mainScript.hudCaras.ChangeCara(HudCambioCarasRioTutte.Caras.NORMAL);
+        }
+
 
 
         characterController.Move(direction * speed * Time.deltaTime);

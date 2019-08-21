@@ -38,7 +38,7 @@ public static class LanguageManager
 
         } else
         {
-            Debug.LogError("You need to define a valid language (selected language = " + _selectedLanguage + ")");
+            //Debug.LogError("You need to define a valid language (selected language = " + _selectedLanguage + ")");
         }
 
     }
