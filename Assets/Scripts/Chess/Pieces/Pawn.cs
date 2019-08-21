@@ -49,7 +49,7 @@ public class Pawn : Piece
         var range = 1;
         var spawnLine = initialCell.GetComponent<PawnSpawnCell>();
 
-        if (spawnLine) range = 2;
+        if (spawnLine) range = player.GetComponent<PawnPlayer>().AmountOfPiecesInSpawn() <= 3 ? 3 : 2;
 
         var positions = new List<Cell>();
         var currentCell = initialCell;
@@ -60,6 +60,7 @@ public class Pawn : Piece
             var y = initialCell.position.y + yDirection * i;
 
             currentCell = board.GetCell(x, y);
+            if (!currentCell) break;
 
             if (currentCell.piecePlaced == null) positions.Add(currentCell);
         }
@@ -94,6 +95,24 @@ public class Pawn : Piece
 
     private int GetForward()
     {
-        return 1;
+        return player?.playerNumber == 0 ? 1 : -1;
+    }
+
+    public override void MoveToCell(Cell cell)
+    {
+        base.MoveToCell(cell);
+
+        int lastPossibleCell = GetForward() == 1 ? 7 : 0;
+
+        if (boardPosition.position.y == lastPossibleCell)
+        {
+            var pawnPlayer = player as PawnPlayer;
+            if (!pawnPlayer) return;
+
+            pawnPlayer.AddRespawnPoints(1);
+            pawnPlayer.pawns.Remove(this);
+
+            Die();
+        }
     }
 }

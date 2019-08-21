@@ -38,6 +38,8 @@ namespace Assets.Scripts.Chess.PieceActions
             pawnToKill.Die();
             piece.MoveToCell(enemyCell);
 
+            piece.player.GetComponent<PawnPlayer>().AddRespawnPoints(1);
+
             callback();
         }
 

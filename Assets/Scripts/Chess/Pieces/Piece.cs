@@ -69,7 +69,7 @@ namespace Assets.Scripts.Chess.Pieces
             }
         }
 
-        public void MoveToCell(Cell cell)
+        public virtual void MoveToCell(Cell cell)
         {
             if (!dummy) boardPosition.piecePlaced = null;
             transform.position = new Vector3(cell.position.x, 0.5f, cell.position.y);

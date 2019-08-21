@@ -23,7 +23,7 @@ namespace Assets.Scripts.Chess
             if (turn == 1 || turn == 2) movements = 1;
         }
 
-        public void StartTurn()
+        public virtual void StartTurn()
         {
             turn++;
 
