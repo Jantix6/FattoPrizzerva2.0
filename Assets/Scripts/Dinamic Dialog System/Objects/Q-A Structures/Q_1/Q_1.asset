@@ -16,8 +16,4 @@ MonoBehaviour:
   answers_Lst:
   - {fileID: 11400000, guid: 0031dfdd9d361ed4ca4837e822922d88, type: 2}
   - {fileID: 11400000, guid: 7ac1192f6926d484581c62cb7ab9937a, type: 2}
-  - {fileID: 11400000, guid: 1d0ad4c5f8756bf45bf08a0bb0caa4f2, type: 2}
-  - {fileID: 11400000, guid: 3de34a6ab9243b14abe24f633eb3e062, type: 2}
-  - {fileID: 11400000, guid: a30cf6d67d0d7304faaa1cf10ea7161e, type: 2}
-  - {fileID: 11400000, guid: f4ea2d37f68a1b44bae7e3349ebbcffc, type: 2}
   question: {fileID: 11400000, guid: b5e5514ebdbba524dae5f622c3d4e7a6, type: 2}

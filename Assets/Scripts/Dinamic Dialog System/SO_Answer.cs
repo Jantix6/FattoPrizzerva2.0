@@ -43,7 +43,15 @@ namespace Dialogues
             }
             return null;
         }
-         
+        public SO_DialogEventsContainer GetDialogEventsContainer()
+        {
+            return eventsOnClickContainer;
+        }
+        public void SetDialogEventsContainer(SO_DialogEventsContainer _dialogEventsContainer)
+        {
+             eventsOnClickContainer = _dialogEventsContainer;
+        }
+
         public string GetAnswerBody(Language _targetLanguage)
         {
             if (answer)
@@ -86,11 +94,19 @@ namespace Dialogues
             }          
         }
 
+        public void SetEventsOnClickContainer (SO_DialogEventsContainer _containerOfEvents)
+        {
+            if (_containerOfEvents == null)
+                Debug.LogError("You are trying to assign a null object");
+            else 
+                eventsOnClickContainer = _containerOfEvents;
+        }
 
-
-
-
-
+        public void SetTargetStructure(SO_DialogStructure _targetStructure)
+        {
+            if (_targetStructure)
+                targetStructure = _targetStructure;
+        }
     }
 
 

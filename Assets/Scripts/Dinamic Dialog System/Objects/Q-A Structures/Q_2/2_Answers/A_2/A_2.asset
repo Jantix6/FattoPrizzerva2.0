@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
-  m_Name: A_1
+  m_Name: A_2
   m_EditorClassIdentifier: 
-  eventsOnClickContainer: {fileID: 0}
-  targetStructure: {fileID: 0}
-  answer: {fileID: 11400000, guid: a31afb5f8f59fe8429417b195680a392, type: 2}
+  eventsOnClickContainer: {fileID: 11400000, guid: 1c3a8f119b11c604b9f0072694eaef9a,
+    type: 2}
+  targetStructure: {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
+  answer: {fileID: 11400000, guid: 874bc82ba7e3a6543b9e2ecec3b58a07, type: 2}

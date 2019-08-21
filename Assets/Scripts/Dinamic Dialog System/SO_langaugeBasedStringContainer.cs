@@ -12,11 +12,6 @@ namespace Dialogues
     {
         [SerializeField] private List<SO_LanguageBasedString> languageBasedStrings_Lst;         // LBSs
 
-        private void OnValidate()
-        {
-            EditorUtility.SetDirty(this);
-        }
-
         public string GetFilename()
         {
             return "LBS_Container";
@@ -63,6 +58,8 @@ namespace Dialogues
                 newLBS.GuesLanguage();
 
                 languageBasedStrings_Lst.Add(newLBS);
+                EditorUtility.SetDirty(this);
+
             }
             AssetDatabase.SaveAssets();
             

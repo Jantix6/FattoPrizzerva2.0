@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
   m_Name: A_1
   m_EditorClassIdentifier: 
-  eventsOnClickContainer: {fileID: 0}
-  targetStructure: {fileID: 0}
-  answer: {fileID: 11400000, guid: a31afb5f8f59fe8429417b195680a392, type: 2}
+  eventsOnClickContainer: {fileID: 11400000, guid: f8cc17b64a4aacc4fa3255a4d55d4dc3,
+    type: 2}
+  targetStructure: {fileID: 11400000, guid: 16cc0184c38c3bd4b999246bd42b3a8f, type: 2}
+  answer: {fileID: 11400000, guid: 225e4ca116e940e499dd5be6840fbb88, type: 2}

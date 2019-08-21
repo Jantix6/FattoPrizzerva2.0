@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65a7292f0dfc0e94eaae20fcb14c6d48, type: 3}
-  m_Name: LBS_Container_A_0
+  m_Name: LBS_Container_A_1
   m_EditorClassIdentifier: 
   languageBasedStrings_Lst:
-  - {fileID: 11400000, guid: 41260affd11d76b47b3c666024ec9465, type: 2}
-  - {fileID: 11400000, guid: 6c7c65114a3fe6b4b9099a3405cbe6d8, type: 2}
-  - {fileID: 11400000, guid: 85ad2cadec0050648bc7cc2f3e9d3aa8, type: 2}
+  - {fileID: 11400000, guid: 732aa13a5455bbe44bff461007e80f4b, type: 2}
+  - {fileID: 11400000, guid: 01d161fb108c90247a3dfb3707ff30ae, type: 2}
+  - {fileID: 11400000, guid: b1e3f1d3548452e4fa48004cd1a85430, type: 2}

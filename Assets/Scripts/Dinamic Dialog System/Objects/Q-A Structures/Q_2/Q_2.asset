@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Q_2
   m_EditorClassIdentifier: 
   speaker: {fileID: 0}
-  answers_Lst: []
-  question: {fileID: 0}
+  answers_Lst:
+  - {fileID: 11400000, guid: b13f656c735aeba46a5697d14f18038d, type: 2}
+  - {fileID: 11400000, guid: 043f41ac4e6139d47ac699eb65bfb109, type: 2}
+  - {fileID: 11400000, guid: 9e2c21645d2bfe641bc63adf52eed8f2, type: 2}
+  - {fileID: 11400000, guid: abd66a5f7372f094e81423f463c19923, type: 2}
+  - {fileID: 11400000, guid: 55734f5ea26e7e44c95906b27fac3112, type: 2}
+  - {fileID: 11400000, guid: 68d4dea870b2cd24db24345863f37d33, type: 2}
+  question: {fileID: 11400000, guid: 85bac2506de27f24faca54c94250b726, type: 2}

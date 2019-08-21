@@ -34,6 +34,10 @@ namespace Dialogues
             question = _questionLBS;
         }
 
+        public void ResetAnswersList()
+        {
+            answers_Lst = new List<SO_Answer>();
+        }
         public List<SO_Answer> GetAnswers()
         {
             if (CheckAnswersIntegrity())

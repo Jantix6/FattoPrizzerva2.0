@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: LBS_Container_A_0
   m_EditorClassIdentifier: 
   languageBasedStrings_Lst:
-  - {fileID: 11400000, guid: 41260affd11d76b47b3c666024ec9465, type: 2}
-  - {fileID: 11400000, guid: 6c7c65114a3fe6b4b9099a3405cbe6d8, type: 2}
-  - {fileID: 11400000, guid: 85ad2cadec0050648bc7cc2f3e9d3aa8, type: 2}
+  - {fileID: 11400000, guid: 4bcd35b984585f54a9ff0758159d1bec, type: 2}
+  - {fileID: 11400000, guid: b953604e14cd2f349b409a562e3dc219, type: 2}
+  - {fileID: 11400000, guid: 274e234502609c246914dd04da61ebfe, type: 2}

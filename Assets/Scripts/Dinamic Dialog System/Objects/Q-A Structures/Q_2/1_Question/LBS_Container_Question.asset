@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a7292f0dfc0e94eaae20fcb14c6d48, type: 3}
   m_Name: LBS_Container_Question
   m_EditorClassIdentifier: 
-  languageBasedStrings_Lst: []
+  languageBasedStrings_Lst:
+  - {fileID: 11400000, guid: b7294a238083f9a4f91a7d4a838be59a, type: 2}
+  - {fileID: 11400000, guid: 369612b48b81aa745956d7ed77cf6f9f, type: 2}
+  - {fileID: 11400000, guid: fbae7ed448519b648aac6ea8864c6a3a, type: 2}

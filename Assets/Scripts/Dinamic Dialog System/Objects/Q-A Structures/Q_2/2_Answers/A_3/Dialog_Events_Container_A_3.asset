@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
-  m_Name: A_1
+  m_Script: {fileID: 11500000, guid: cf49ccdee801b9b46bf3624666dc3ca3, type: 3}
+  m_Name: Dialog_Events_Container_A_3
   m_EditorClassIdentifier: 
-  eventsOnClickContainer: {fileID: 0}
-  targetStructure: {fileID: 0}
-  answer: {fileID: 11400000, guid: a31afb5f8f59fe8429417b195680a392, type: 2}
+  listOfObjectEvents: []

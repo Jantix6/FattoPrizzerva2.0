@@ -21,7 +21,7 @@ namespace Dialogues
 
         public List<SO_DialogEvent> GetEventsList()
         {
-            if (listOfObjectEvents.Count != 0)
+            if (listOfObjectEvents != null && listOfObjectEvents.Count != 0)
                 return listOfObjectEvents;
 
             return null;
@@ -47,7 +47,10 @@ namespace Dialogues
             }
         }
 
-        
+        public string GetFilename()
+        {
+            return "Dialog_Events_Container";
+        }
     }
 }
 
