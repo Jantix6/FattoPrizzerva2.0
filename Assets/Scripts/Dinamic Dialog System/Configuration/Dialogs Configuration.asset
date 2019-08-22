@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogsWithTriggers:
   - dialogTrigger: 0
-    dialogStructure: {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
+    dialogStructure: {fileID: 11400000, guid: ac2cfe9b9d751014bbb00d8570cf44db, type: 2}
   - dialogTrigger: 1
     dialogStructure: {fileID: 0}
   - dialogTrigger: 2

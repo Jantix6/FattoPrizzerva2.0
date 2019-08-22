@@ -503,10 +503,16 @@ MonoBehaviour:
     type: 3}
   dialogStructures:
   - {fileID: 11400000, guid: 438e8afe701722b4693fb8ed0aba3e30, type: 2}
+  - {fileID: 11400000, guid: ac2cfe9b9d751014bbb00d8570cf44db, type: 2}
+  - {fileID: 11400000, guid: 16cc0184c38c3bd4b999246bd42b3a8f, type: 2}
+  - {fileID: 11400000, guid: e42f4c699a07b144f9f35fff0f0da45d, type: 2}
+  - {fileID: 11400000, guid: 614abd55a00d0c74bafd6f9e55b371b0, type: 2}
+  - {fileID: 11400000, guid: d1a2ac4c97a06f243b2bf1c2ee795153, type: 2}
+  - {fileID: 11400000, guid: f5bb0e6e51a7dec4c9ff9d6cae2ef596, type: 2}
+  - {fileID: 11400000, guid: d18259c8e49e28d4b96eb332c9f41fb7, type: 2}
   currentStructureIndex: 0
-  previousStrcture_Key: 282
-  nextStrcutre_Key: 283
-  selectedLanguage: 1
+  karmaDataContainer: {fileID: 0}
+  selectedLanguage: 3
 --- !u!4 &1853820471
 Transform:
   m_ObjectHideFlags: 0

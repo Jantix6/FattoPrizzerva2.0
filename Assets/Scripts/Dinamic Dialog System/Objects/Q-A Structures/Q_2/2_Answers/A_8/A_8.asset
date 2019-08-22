@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aca638e01ecdc5f4495feeba5e990f77, type: 3}
+  m_Name: A_8
+  m_EditorClassIdentifier: 
+  eventsOnClickContainer: {fileID: 11400000, guid: eb46f814b43274543ac504a986d80b5d,
+    type: 2}
+  targetStructure: {fileID: 11400000, guid: d1a2ac4c97a06f243b2bf1c2ee795153, type: 2}
+  answer: {fileID: 11400000, guid: f91656adfd848994b996c4b5b0f8aff0, type: 2}

@@ -20,8 +20,16 @@ namespace Dialogues
                 return desiredLBS.text;
             }
 
+            return null;         
+        }
+        public SO_langaugeBasedStringContainer GetQuestionContainer()
+        {
+            if (question)
+                return question;
+            else
+                Debug.LogError("No question found");
+
             return null;
-            
         }
         public void SetQuestion(Language _targetLanguage, string _text)
         {

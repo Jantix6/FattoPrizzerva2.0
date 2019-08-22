@@ -14,7 +14,7 @@ namespace Dialogues
     public class Editor_SOQuestionAnswerStructure : Editor
     {
         SO_QuestionAnswerStructure structure;
-        public Language previewLanguage = Language.ENGLISH;
+        public Language previewLanguage = Language.CATALAN;
         private Language previousLanguage;
 
         // Structure genrator variables
@@ -104,6 +104,9 @@ namespace Dialogues
             {
                 question = GUILayout.TextArea(question);
                 structure.SetQuestion(_desiredLanguage, question);
+
+                // mark the question SO_LBS modified by the text change and set it up as dirty to save it's new value
+                EditorUtility.SetDirty(structure.GetQuestionContainer().GetLanguageBasedString(_desiredLanguage));
             }
             else
                 GUILayout.Label("Question not found");
@@ -136,8 +139,12 @@ namespace Dialogues
                         // BODY
                         DrawAnswerBody(answer, index, _desiredLanguage);
 
+                        EditorGUILayout.Space();
+
                         // NEXT STRUCTURE
                         DrawNextStructure(answer, style);
+
+                        EditorGUILayout.Space();
 
                         // events to invoke
                         DrawEventsToInvoke(answer, style);
@@ -167,7 +174,9 @@ namespace Dialogues
 
             _answer.SetAnswerBody(_desiredLanguage, answerBody);     // edit the answer body via editor
             EditorUtility.SetDirty(_answer);
+            EditorUtility.SetDirty(_answer.GetAnswerLBSContainer().GetLanguageBasedString(_desiredLanguage));
         }
+
         private void DrawNextStructure(SO_Answer _answer, GUIStyle _style)
         {
             SO_DialogStructure nextStructure;
@@ -200,17 +209,16 @@ namespace Dialogues
 
             if (dialogEventsContainer != null)
             {
-
                 // draw a list of events
                 List<SO_DialogEvent> dialogEvents = dialogEventsContainer.GetEventsList();
 
                 if (dialogEvents != null && dialogEvents.Count != 0)
                 {
-                    EditorGUILayout.Space();
+                    
 
                     for (int i = 0; i < dialogEvents.Count; i++)
                     {
-                        dialogEvents[i] = (SO_DialogEvent)EditorGUILayout.ObjectField("\t\t\t Dialog Event: ", dialogEvents[i], typeof(SO_DialogEvent), true);
+                        dialogEvents[i] = (SO_DialogEvent)EditorGUILayout.ObjectField("\t\t Dialog Event: ", dialogEvents[i], typeof(SO_DialogEvent), true);
 
                         if (dialogEvents[i] != null)
                         {
@@ -222,25 +230,39 @@ namespace Dialogues
                 else
                 {
                     EditorGUILayout.HelpBox("You might wan to add some events to the event container if you are willing to use it, otherwise remove it from the object", MessageType.Warning);
+            
                 }
 
-                // add event button
-                if (dialogEventsContainer)
-                {
-                    if (GUILayout.Button("Add Event"))
-                    {
+                EditorGUILayout.BeginHorizontal();
 
+                // remove last event
+                if (dialogEvents != null && dialogEvents.Count != 0)
+                {
+                    if (GUILayout.Button("Remove Last Event"))
+                    {
+                        dialogEventsContainer.RemoveLastDialogEvent();
                     }
                 }
 
+                // add event button
+                if (GUILayout.Button("Add Event"))
+                {
+                    dialogEventsContainer.AddSO_DialogEventToList(null);
+                }
 
+                EditorGUILayout.EndHorizontal();
+
+
+            } else
+            {
+                EditorGUILayout.HelpBox("You might want to set the events container located on the folder of this answer ", MessageType.Warning);
 
             }
 
         }
 
         // Structure generator //
-        // ---------------------------------------------------------------------------------- //
+        // ----------------------------------------------------------------------------------------------- //
 
         private void CreateQuestionAnswerFullStructure()
         {
@@ -321,7 +343,7 @@ namespace Dialogues
                 AssetDatabase.CreateAsset(dialogEventsConteiner, folderPaths[i] + "/" + dialogEventsConteiner.GetFilename() + "_" + answerFolderName + extension);
                 answerObject.SetEventsOnClickContainer(dialogEventsConteiner);
                 EditorUtility.SetDirty(answerObject);  // mark in order to make unity aware of the new status of the object (is modified) so it's saved
-
+                
 
             }
 

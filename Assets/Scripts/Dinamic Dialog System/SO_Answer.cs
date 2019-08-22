@@ -60,8 +60,16 @@ namespace Dialogues
                 desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
                 return desiredLBS.text;
             }
+            return null;      
+        }
+        public SO_langaugeBasedStringContainer GetAnswerLBSContainer()
+        {
+            if (answer)
+                return answer;
+            else
+                Debug.LogError("No answer is found on " + this.name);
+
             return null;
-            
         }
         public void SetAnswerBody(Language _targetLanguage, string _newText)
         {

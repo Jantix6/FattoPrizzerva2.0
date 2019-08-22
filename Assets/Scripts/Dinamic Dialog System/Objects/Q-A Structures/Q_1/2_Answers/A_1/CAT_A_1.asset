@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a387e57d15864488ef86f684c2a885, type: 3}
   m_Name: CAT_A_1
   m_EditorClassIdentifier: 
-  language: 0
-  text: 
+  language: 3
+  text: "Gr\xE0cies per les seves indicacions, amb el seu perm\xEDs, ho intentar\xE9"

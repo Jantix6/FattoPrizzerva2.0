@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Dialogues
@@ -25,6 +26,21 @@ namespace Dialogues
                 return listOfObjectEvents;
 
             return null;
+        }
+        public void AddSO_DialogEventToList(SO_DialogEvent _newDialogEvent)
+        {
+            if (listOfObjectEvents == null)
+                listOfObjectEvents = new List<SO_DialogEvent>();
+
+            listOfObjectEvents.Add(_newDialogEvent);
+            EditorUtility.SetDirty(this);
+
+            Debug.LogWarning(listOfObjectEvents.Count);
+        }
+        public void RemoveLastDialogEvent()
+        {
+            if (listOfObjectEvents != null && listOfObjectEvents.Count != 0)
+                listOfObjectEvents.RemoveAt(listOfObjectEvents.Count - 1);
         }
 
 

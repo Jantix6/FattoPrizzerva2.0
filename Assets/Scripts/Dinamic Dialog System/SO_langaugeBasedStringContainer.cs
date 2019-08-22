@@ -65,7 +65,7 @@ namespace Dialogues
             
         }
 
-        public SO_LanguageBasedString GetLanguageBasedString(Language _desiredLanguage, string _callerName)
+        public SO_LanguageBasedString GetLanguageBasedString(Language _desiredLanguage, string _callerName = "not defined")
         {
             SO_LanguageBasedString returnLBS = null;
 

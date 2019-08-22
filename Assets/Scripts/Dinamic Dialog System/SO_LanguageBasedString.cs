@@ -17,9 +17,9 @@ namespace Dialogues
         [TextArea(4, 228)] public string text;
         private static Dictionary<string   , Language> languagesDictionary;
 
-
         private static void InitializeLanguagesDictinary()
         {
+            // if you want to have more languages you should add them here
             languagesDictionary = new Dictionary<string, Language>();
             languagesDictionary.Add("CAT", Language.CATALAN);
             languagesDictionary.Add("ESP", Language.SPANISH);
@@ -116,7 +116,7 @@ namespace Dialogues
         }
 
         // PROCESS ---------------------------------------------------------------------------------------------------------- //
-        public static bool CheckListIntegrity(List<SO_LanguageBasedString> _languageBasedStrings, Language _targetLanguage, string _callerName)
+        public static bool CheckListIntegrity(List<SO_LanguageBasedString> _languageBasedStrings, Language _targetLanguage, string _callerName = "not defined")
         {
             if (_languageBasedStrings.Count == 0 || _languageBasedStrings == null)
             {

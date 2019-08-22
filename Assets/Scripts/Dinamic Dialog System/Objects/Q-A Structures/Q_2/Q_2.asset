@@ -14,10 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speaker: {fileID: 0}
   answers_Lst:
-  - {fileID: 11400000, guid: b13f656c735aeba46a5697d14f18038d, type: 2}
-  - {fileID: 11400000, guid: 043f41ac4e6139d47ac699eb65bfb109, type: 2}
-  - {fileID: 11400000, guid: 9e2c21645d2bfe641bc63adf52eed8f2, type: 2}
-  - {fileID: 11400000, guid: abd66a5f7372f094e81423f463c19923, type: 2}
-  - {fileID: 11400000, guid: 55734f5ea26e7e44c95906b27fac3112, type: 2}
-  - {fileID: 11400000, guid: 68d4dea870b2cd24db24345863f37d33, type: 2}
+  - {fileID: 11400000, guid: 683af2bc097604849adf72f94a9958eb, type: 2}
+  - {fileID: 11400000, guid: a11fa0253f0b6b9458eb36164c24dac8, type: 2}
+  - {fileID: 11400000, guid: 68bfd4c46b585b04c8761ad9e14e5d95, type: 2}
   question: {fileID: 11400000, guid: 85bac2506de27f24faca54c94250b726, type: 2}
