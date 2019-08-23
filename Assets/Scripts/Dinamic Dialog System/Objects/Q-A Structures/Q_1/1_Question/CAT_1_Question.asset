@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CAT_1_Question
   m_EditorClassIdentifier: 
   language: 3
-  text: 
+  text: "B\xE9 que et comentes?\r"

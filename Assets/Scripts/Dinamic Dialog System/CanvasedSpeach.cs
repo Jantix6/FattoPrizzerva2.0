@@ -22,7 +22,6 @@ namespace Dialogues
         [SerializeField] private SO_DialogStructure nextDialogStructure;
 
 
-
         // get the button deffined by its index (in this case there is only one button so the index is not used)
         public Button GetButton(int _desiredIndex)
         {

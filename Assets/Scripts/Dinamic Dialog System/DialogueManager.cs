@@ -40,6 +40,8 @@ namespace Dialogues
         }
         public void StartDialogue(SO_DialogStructure _dialogStructure)
         {
+
+
             if (dialogStructures.Contains(_dialogStructure))
             {
                 // busca el indice del objeto donde a (parametro) es igual al objeto que estamos buscando 
@@ -114,7 +116,7 @@ namespace Dialogues
                 ShowDialogueStructure(_objectIndex);
             } else
             {
-                Debug.LogWarning("The target Structure is not set on the managers list" + _targetStructure);
+                Debug.LogError("The target Structure is not set on the managers list" + _targetStructure);
             }
 
         }
@@ -172,17 +174,14 @@ namespace Dialogues
                 Debug.LogError("canvasedSpeachPrefab");
             if (karmaDataContainer == null)
                 Debug.LogError("karmaDataContianer is not set");
-
-            
+       
 
             if (dialogStructures is null || dialogStructures.Count == 0)
                 Debug.LogError("ERROR: dialogStructures is not set or it is empty");
             currentStructureIndex = 0;
-        }
 
-        private void Start()
-        {
             DebugSetLenguage();
+
         }
 
 

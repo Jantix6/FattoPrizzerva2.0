@@ -26,6 +26,7 @@ namespace Dialogues
 
         List<bool> fold_Lst = new List<bool>();
 
+        bool foldCreateStructures;
 
         public override void OnInspectorGUI()
         {
@@ -48,6 +49,7 @@ namespace Dialogues
                 // Draw question
                 GUILayout.Space(5);
                 DrawQuestion(previewLanguage);
+                EditorGUILayout.Space();
                 // Draw Answers
                 DrawAnswers(previewLanguage);
                 GUILayout.Space(5);
@@ -66,7 +68,9 @@ namespace Dialogues
 
             // Structure creation //
             // ------------------------------------------------------------------------ //
+            EditorGUILayout.Space();
             StructureCreation();
+
         }
 
         private void StructureCreation()
@@ -214,7 +218,7 @@ namespace Dialogues
 
                 if (dialogEvents != null && dialogEvents.Count != 0)
                 {
-                    
+
 
                     for (int i = 0; i < dialogEvents.Count; i++)
                     {
@@ -230,7 +234,7 @@ namespace Dialogues
                 else
                 {
                     EditorGUILayout.HelpBox("You might wan to add some events to the event container if you are willing to use it, otherwise remove it from the object", MessageType.Warning);
-            
+
                 }
 
                 EditorGUILayout.BeginHorizontal();
@@ -253,7 +257,8 @@ namespace Dialogues
                 EditorGUILayout.EndHorizontal();
 
 
-            } else
+            }
+            else
             {
                 EditorGUILayout.HelpBox("You might want to set the events container located on the folder of this answer ", MessageType.Warning);
 
@@ -343,7 +348,7 @@ namespace Dialogues
                 AssetDatabase.CreateAsset(dialogEventsConteiner, folderPaths[i] + "/" + dialogEventsConteiner.GetFilename() + "_" + answerFolderName + extension);
                 answerObject.SetEventsOnClickContainer(dialogEventsConteiner);
                 EditorUtility.SetDirty(answerObject);  // mark in order to make unity aware of the new status of the object (is modified) so it's saved
-                
+
 
             }
 

@@ -511,7 +511,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f5bb0e6e51a7dec4c9ff9d6cae2ef596, type: 2}
   - {fileID: 11400000, guid: d18259c8e49e28d4b96eb332c9f41fb7, type: 2}
   currentStructureIndex: 0
-  karmaDataContainer: {fileID: 0}
+  karmaDataContainer: {fileID: 11400000, guid: 7c6a87ebd5b877c4fbee38eea283c18c, type: 2}
   selectedLanguage: 3
 --- !u!4 &1853820471
 Transform:
