@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07fa3242364aad84e87956f33a2e1f7c, type: 3}
+  m_Name: Stay 20 sec without taking damage
+  m_EditorClassIdentifier: 
+  taskName: Stay 20 seconds without taking damage
+  taskDescription: NONE
+  rewards_Lst: []
+  taskId: 1
+  tasksToAcomplish:
+  - {fileID: 11400000, guid: a418e5b190bdc234b88bdff9c1d75c71, type: 2}
+  - {fileID: 11400000, guid: 56cf6a0a60e32cf428f5e379f3f54963, type: 2}
+  acomplishedTasks: 0
