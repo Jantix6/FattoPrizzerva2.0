@@ -9,6 +9,8 @@ namespace Dialogues
     {
          protected Dialogs_GameController dialogsGameController;
 
+        [SerializeField] [TextArea] private string eventDescription;
+
         public virtual void Initialize(Dialogs_GameController _dialogGameController)
         {
             dialogsGameController = _dialogGameController;          

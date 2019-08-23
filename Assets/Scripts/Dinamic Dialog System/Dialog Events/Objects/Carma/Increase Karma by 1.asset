@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d37bddf3e11f74f83edb3573ec1a1a, type: 3}
   m_Name: Increase Karma by 1
   m_EditorClassIdentifier: 
+  eventDescription: Increase the carma of the player by KARMA DELTA
   karmaDelta: 1
   karmaObject: {fileID: 11400000, guid: 7c6a87ebd5b877c4fbee38eea283c18c, type: 2}

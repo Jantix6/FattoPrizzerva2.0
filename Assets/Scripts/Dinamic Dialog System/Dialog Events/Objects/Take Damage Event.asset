@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5de257f9d96c204589750f84cc8935c, type: 3}
   m_Name: Take Damage Event
   m_EditorClassIdentifier: 
+  eventDescription: Substracts DAMAGE_ON_BASE_ONE% of the target tag (currently it
+    does not work because the health system is yet being cleaned up
   targetOfTheDamage_Tag: Player
   damageOnBaseOne: 0.1
