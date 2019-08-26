@@ -18,7 +18,7 @@ namespace Dialogues
         [SerializeField] private SO_DialogObjectCreatorConfig configScriptableObject;
 
         //private List<DC_ImportedSpeachStructure> speachStructures_Lst;
-       // private List<DC_ImportedQuestionAnswerStructure> qaStructures_Lst;
+        // private List<DC_ImportedQuestionAnswerStructure> qaStructures_Lst;
 
         // called by a button
         public void StartObjectGeneration()
@@ -27,20 +27,19 @@ namespace Dialogues
             // List<string> dataLoaded = CSVProcesser.ReadDataFromPath(_dataBasePath);
 
 
-
+            GenerateCSVObjects();
 
         }
 
         private void GenerateCSVObjects()
         {
-           
             GenerateSpeachObjects();
             GenerateQAObjects();
         }
 
         public void GenerateSpeachObjects()
         {
-             string _dataBasePath;
+            string _dataBasePath;
 
             if (speachData_CSV)
                 _dataBasePath = AssetDatabase.GetAssetPath(speachData_CSV);               // probar si funciona tambien fuera del editor
@@ -123,6 +122,7 @@ namespace Dialogues
             if (_separators.Length != 0)
             {
                 string[] separatedWords = _dataLine.Split(_separators, StringSplitOptions.RemoveEmptyEntries);        // split and remove empty spaces
+                Debug.LogWarning("Separated words = " + separatedWords.Length);
                 return separatedWords;
             }
 
@@ -135,7 +135,7 @@ namespace Dialogues
 
             string mainFolderPath = configScriptableObject.GetSPeachCSVSettings().GetMainFolderPath();
             string extension = ".asset";
-            string objectName = "SpeachStructure";
+            string objectName = "SpeachStructure_" + _mappedImportedStructure.GetName();
             string finalPath = mainFolderPath + '/' + objectName + extension;
 
             AssetDatabase.CreateAsset(newSpeachStructure, finalPath);
@@ -149,13 +149,31 @@ namespace Dialogues
 
             string mainFolderPath = configScriptableObject.GetSPeachCSVSettings().GetMainFolderPath();
             string extension = ".asset";
-            string objectName = "QAStructure";
+            string objectName = "QAStructure_" + _mappedImprtedStructure.GetName();
             string finalPath = mainFolderPath + '/' + objectName + extension;
 
             AssetDatabase.CreateAsset(newQAStrcuture, finalPath);
 
             Debug.LogWarning("Created QA Object");
 
+        }
+
+
+
+        private bool CheckLineValidity(string _word)
+        {
+            // is not empty
+            if (string.IsNullOrEmpty(_word))
+                return false;
+
+            // and is not a letter (we want a character
+            foreach (char character in _word)
+            {
+                if (char.IsNumber(character) == false)
+                    return false;
+            }
+
+            return true;
         }
 
 

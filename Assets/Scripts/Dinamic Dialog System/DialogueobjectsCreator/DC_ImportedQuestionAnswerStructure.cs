@@ -9,6 +9,7 @@ namespace Dialogues
         private SO_DialogObjectCreatorConfig config;
 
         private string id;
+        private string objectName;
 
         private string catQuestion;
         private string espQuestion;
@@ -17,6 +18,13 @@ namespace Dialogues
         private List<DC_ImportedAnswerStructure> answers;
         private DC_ImportedAnswerStructure answer;
 
+        public string GetName()
+        {
+            return objectName;
+        }
+
+
+
         public DC_ImportedQuestionAnswerStructure(SO_DialogObjectCreatorConfig configScriptableObject)
         {
             this.config = configScriptableObject;
@@ -24,7 +32,15 @@ namespace Dialogues
 
         public void PrintStoredData()
         {
-            throw new System.NotImplementedException();
+            string data = string.Empty;
+
+            data += "id " + id + "\n" +
+                    "catQuestion " + catQuestion + "\n" +
+                    "espQuestion " + espQuestion + "\n" +
+                    "engQuestion " + engQuestion + "\n"
+                    ;
+
+            Debug.Log(data);
         }
 
         public void SetValue(int _indexOnLine, string _fieldData)
@@ -38,6 +54,11 @@ namespace Dialogues
             if (_indexOnLine == qaConfig.QuestionIDPosition)
             {
                 id = _fieldData;
+            }
+            // QA Name
+            else if (_indexOnLine == qaConfig.ObjectName)
+            {
+                objectName = _fieldData;
             }
             // cat question
             else if (_indexOnLine == qaConfig.CatQuestionPosition)
@@ -95,7 +116,15 @@ namespace Dialogues
 
         public void PrintStoredData()
         {
-            throw new System.NotImplementedException();
+            string data = string.Empty;
+
+            data += "ANSWER id " + id + "\n" +
+                    "catAnswer " + catAnswer + "\n" +
+                    "espAnswer " + espAnswer + "\n" +
+                    "engAnswer " + engAnswer + "\n"
+                    ;
+
+            Debug.Log(data);
         }
 
         public void SetValue(int _indexOnLine, string _fieldData)

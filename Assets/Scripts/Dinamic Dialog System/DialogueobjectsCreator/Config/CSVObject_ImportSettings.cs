@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Dialogues
 {
-    public class CSVObject_ImportSettings : ScriptableObject
+    public abstract class CSVObject_ImportSettings : ScriptableObject
     {
         // Do not touch this unless is extremelly necesary (future changes on the engine)
         private string assetsFolderName = "Assets";

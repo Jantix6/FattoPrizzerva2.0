@@ -9,15 +9,17 @@ namespace Dialogues
     {
         [Header("QA Object configuration")]
         [SerializeField] private int questionIDPosition = 0;
-        [SerializeField] private int catQuestionPosition = 1;
-        [SerializeField] private int espQuestionPosition = 2;
-        [SerializeField] private int engQuestionPosition = 3;
-        [SerializeField] private int answerIdPosition = 4;
-        [SerializeField] private int catAnswerBodyPosition = 5;
-        [SerializeField] private int espAnswerBodyPosition = 6;
-        [SerializeField] private int engAnswerBodyPosition = 7;
+        [SerializeField] private int objectName = 1;
+        [SerializeField] private int catQuestionPosition = 2;
+        [SerializeField] private int espQuestionPosition = 3;
+        [SerializeField] private int engQuestionPosition = 4;
+        [SerializeField] private int answerIdPosition = 5;
+        [SerializeField] private int catAnswerBodyPosition = 6;
+        [SerializeField] private int espAnswerBodyPosition = 7;
+        [SerializeField] private int engAnswerBodyPosition = 8;
 
         public int QuestionIDPosition { get => questionIDPosition; set => questionIDPosition = value; }
+        public int ObjectName { get => objectName; }
         public int CatQuestionPosition { get => catQuestionPosition; set => catQuestionPosition = value; }
         public int EspQuestionPosition { get => espQuestionPosition; set => espQuestionPosition = value; }
         public int EngQuestionPosition { get => engQuestionPosition; set => engQuestionPosition = value; }

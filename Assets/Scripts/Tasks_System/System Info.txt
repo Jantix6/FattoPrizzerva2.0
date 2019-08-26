@@ -1,0 +1,17 @@
+
+[Tasks]
+
+Tasks to do:
+	-	Reach Position					[WORKING]
+	- 	Destroy objective
+	- 	Do before time limit			[WORKING BUT NEEDS ADDITIONS] -->	Make this task capable of forcing the completion of a complex task
+	-	Do until time limit				[WORKING BUT NEEDS ADDITIONS] -->	Make this task capable of forcing the completion of a complex task
+	-	Do x actions					[IS THIS NEEDED?]
+	-	Don't do x actions				[IS THIS NEEDED?]
+	-	Sequence of Tasks				[WORKING BUT NEEDS TESTING]
+	-	Random order of Tasks			[WORKING BUT NEEDS TESTING]
+
+Adjustments
+	-	Task data asignation (recursivity on complex task interfaces)		[ON THE WORKS] --> [STOPPED]
+	-	There are tasks that will be shown on the left coll (hostile) or on the right coll (player)		[ON THE WORKS]
+

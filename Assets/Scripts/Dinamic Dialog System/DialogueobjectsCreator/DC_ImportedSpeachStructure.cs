@@ -10,6 +10,7 @@ namespace Dialogues
         SO_DialogObjectCreatorConfig config;
 
         private string id;
+        private string objectName;
 
         private string catTitle;
         private string espTitle;
@@ -23,6 +24,10 @@ namespace Dialogues
         public string GetId ()
         {
             return id;
+        }
+        public string GetName()
+        {
+            return objectName;
         }
         public string GetCatTitle()
         {
@@ -59,6 +64,7 @@ namespace Dialogues
             string data = string.Empty;
 
             data += "id " + id + "\n" +
+                    "objectName " + objectName + "\n" +
                     "catTitle " + catTitle + "\n" +
                     "espTitle " + espTitle + "\n" +
                     "engTitle " + engTitle + "\n" +
@@ -71,9 +77,14 @@ namespace Dialogues
 
         public void SetValue(int _indexOnLine, string _fieldData)
         {
+
             if (_indexOnLine == config.GetSPeachCSVSettings().ObjectIdentifierPosition)
             {
                 id = (_fieldData);
+            }
+            else if (_indexOnLine == config.GetSPeachCSVSettings().ObjectNamePosition)
+            {
+                objectName = _fieldData;
             }
             else if (_indexOnLine == config.GetSPeachCSVSettings().CatTitlePosition)
             {

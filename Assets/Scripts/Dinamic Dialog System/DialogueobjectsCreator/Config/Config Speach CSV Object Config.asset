@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e511a3c15a0014d46b5801d691a0b239, type: 3}
   m_Name: Config Speach CSV Object Config
   m_EditorClassIdentifier: 
-  objectInstantiationPath: Assets/Scripts/Dinamic Dialog System/Test folder/Speaches
+  objectInstantiationPath: Assets/Scripts/Dinamic Dialog System/Test Folder
   objectIdentifierPosition: 0
-  catTitlePosition: 1
-  espTitlePosition: 2
-  engTitlePosition: 3
-  catBodyPosition: 4
-  espBodyPosition: 5
-  engBodyPosition: 6
+  objectNamePosition: 1
+  catTitlePosition: 2
+  espTitlePosition: 3
+  engTitlePosition: 4
+  catBodyPosition: 5
+  espBodyPosition: 6
+  engBodyPosition: 7
