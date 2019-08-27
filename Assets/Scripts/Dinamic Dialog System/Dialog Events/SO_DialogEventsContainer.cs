@@ -27,7 +27,7 @@ namespace Dialogues
 
             return null;
         }
-        public void AddSO_DialogEventToList(SO_DialogEvent _newDialogEvent)
+        public void AddDialogEvent(SO_DialogEvent _newDialogEvent)
         {
             if (listOfObjectEvents == null)
                 listOfObjectEvents = new List<SO_DialogEvent>();

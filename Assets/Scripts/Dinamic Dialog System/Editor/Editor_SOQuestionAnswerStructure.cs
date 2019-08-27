@@ -82,13 +82,7 @@ namespace Dialogues
             if (GUILayout.Button("Create all my structures"))
             {
                 CreateQuestionAnswerFullStructure();
-
             }
-
-
-
-
-
         }
 
         private void SaveProject()
@@ -164,7 +158,6 @@ namespace Dialogues
                 style.normal.textColor = Color.red;
                 GUILayout.Label("No answers found");
                 style.normal.textColor = Color.grey;
-
             }
         }
 
@@ -251,7 +244,7 @@ namespace Dialogues
                 // add event button
                 if (GUILayout.Button("Add Event"))
                 {
-                    dialogEventsContainer.AddSO_DialogEventToList(null);
+                    dialogEventsContainer.AddDialogEvent(null);
                 }
 
                 EditorGUILayout.EndHorizontal();
@@ -260,7 +253,7 @@ namespace Dialogues
             }
             else
             {
-                EditorGUILayout.HelpBox("You might want to set the events container located on the folder of this answer ", MessageType.Warning);
+                EditorGUILayout.HelpBox("You might want to set the events container located on the folder of this answer ", MessageType.Info);
 
             }
 

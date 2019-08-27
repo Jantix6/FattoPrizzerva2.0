@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraBackgroundRandomColor : MonoBehaviour
 {
-
+    public bool enabled;
     Camera camera;
 
     private void Awake()
@@ -13,7 +13,8 @@ public class CameraBackgroundRandomColor : MonoBehaviour
 
         camera.clearFlags = CameraClearFlags.SolidColor;
 
-        camera.backgroundColor = GenerateRandomColor();
+        if (enabled)
+            camera.backgroundColor = GenerateRandomColor();
     }
     private Color GenerateRandomColor()
     {
