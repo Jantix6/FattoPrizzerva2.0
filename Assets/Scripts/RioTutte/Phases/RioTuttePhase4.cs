@@ -31,6 +31,10 @@ public class RioTuttePhase4 : MonoBehaviour
     public GameObject wall;
     public LayerMask layerMask;
 
+    [Header("Wall Raycast")]
+    [SerializeField] private GameObject objectToInstantiateOnRayImpact;
+
+
     public void StartExecution()
     {
 
@@ -103,7 +107,11 @@ public class RioTuttePhase4 : MonoBehaviour
                     && (mainScript.GetPlayer().currentState == PlayerScript.State.MOVING || mainScript.GetPlayer().currentState == PlayerScript.State.RUNING))
                 {
                     if (rayhit.collider.gameObject != wall)
+                    {
                         ChangeState(State.FIRSTTELEPORT);
+                        Debug.DrawLine(mainScript.GetPlayer().transform.position, rayhit.point, Color.red);
+                    }
+                        
                 }
             }
 
