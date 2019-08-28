@@ -32,7 +32,7 @@ public class RioTuttePhase4 : MonoBehaviour
     public LayerMask layerMask;
 
     [Header("Wall Raycast")]
-    [SerializeField] private GameObject objectToInstantiateOnRayImpact;
+    [SerializeField] private WallInstantiatedObject objectToInstantiateOnRayImpact;
 
 
     public void StartExecution()
@@ -52,6 +52,13 @@ public class RioTuttePhase4 : MonoBehaviour
             out rayhit, 200, layerMask))
         {
             wall = rayhit.collider.gameObject;
+
+            if (objectToInstantiateOnRayImpact)
+            {
+                Instantiate(objectToInstantiateOnRayImpact, rayhit.point, Quaternion.identity);
+                objectToInstantiateOnRayImpact.Initialize(mainScript.GetPlayer().transform,
+                                                            teleport);
+            }
         }
         else
             print("NULL");

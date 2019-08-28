@@ -147,7 +147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.295709, y: 0.7854044}
   m_AnchorMax: {x: 0.34329104, y: 0.8605392}
-  m_AnchoredPosition: {x: -1.300003, y: -0.6000061}
+  m_AnchoredPosition: {x: -1.2999878, y: -0.6000061}
   m_SizeDelta: {x: 73, y: 76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &38969082
@@ -1145,7 +1145,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.22652735, y: 0.892}
   m_AnchorMax: {x: 0.27447268, y: 0.9768088}
-  m_AnchoredPosition: {x: 1.0999832, y: -1.699997}
+  m_AnchoredPosition: {x: 1.0999756, y: -1.7000122}
   m_SizeDelta: {x: 73, y: 73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &428484329
@@ -3831,7 +3831,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1970859528}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ad3828dd25e0334c912848b7c293dba, type: 3}
   m_Name: 
@@ -4045,6 +4045,12 @@ PrefabInstance:
       propertyPath: timesStunedToChangePhase
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3711986757945743631, guid: 8cf8bc268b178ed4f8740e7727c34315,
+        type: 3}
+      propertyPath: objectToInstantiateOnRayImpact
+      value: 
+      objectReference: {fileID: 232996484753546222, guid: 4b355f55825ec4c40b0d7202b05e3c19,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cf8bc268b178ed4f8740e7727c34315, type: 3}
 --- !u!1001 &7403947891400062001

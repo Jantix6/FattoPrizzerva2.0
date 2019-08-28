@@ -38,8 +38,8 @@ public class RioTutteMainScript : EnemieBasic, ICongelable
 
     private void Start()
     {
-        phase = 1;
-        ChangePhase(1);
+        phase = 0;
+        ChangePhase(phase);
     }
 
     // Update is called once per frame
