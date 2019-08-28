@@ -1,22 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class DistanceChecker
 {
-    Transform hostTransform;
-    Transform targetTransform;
+    [SerializeField] Transform hostTransform;
+    [SerializeField] Transform targetTransform;
 
-    Vector3 distanceVector;
-    float distance;
+    [SerializeField] Vector3 distanceVector;
+    [SerializeField] float distance;
+
+    bool isDebugOnline;
 
     public Vector3 DistanceVector { get => distanceVector; }
     public float Distance { get => distance; }
 
-    public DistanceChecker(Transform _hostTransform, Transform _targetTransform)
+    public DistanceChecker(Transform _hostTransform, Transform _targetTransform, bool _debug = false)
     {
         this.hostTransform = _hostTransform;
         this.targetTransform = _targetTransform;
+
+        this.isDebugOnline = _debug;
     }
 
     public void CheckDistance()
@@ -27,7 +33,8 @@ public class DistanceChecker
         distanceVector = targetPosition - hostPosition;
         distance = distanceVector.magnitude;
 
-        Debug.DrawLine(hostPosition, targetPosition, Color.blue, 1f);
+        if (isDebugOnline)
+            Debug.DrawLine(hostPosition, targetPosition, Color.blue, 1f);
     }
 
 }

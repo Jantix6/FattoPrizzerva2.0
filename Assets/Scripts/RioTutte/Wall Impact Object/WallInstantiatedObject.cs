@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallInstantiatedObject : MonoBehaviour
 {
-    private DistanceChecker distanceCheker;
+    [SerializeField] private DistanceChecker distanceCheker;
 
     [SerializeField] private Transform objectToTrack;
     [SerializeField] private BaseState teleportScript;
@@ -13,26 +13,22 @@ public class WallInstantiatedObject : MonoBehaviour
     [SerializeField] private float currentDistance;
     [SerializeField] private float minDistance = Mathf.Infinity;
 
-    public void Initialize (Transform _objectToTrack, BaseState _teleportScript)
+    public void Initialize (Transform _objectToTrack, BaseState _stateToExecute)
     {
+        teleportScript = _stateToExecute;
+        Debug.LogError(teleportScript);
+
         objectToTrack = _objectToTrack;
-        teleportScript = _teleportScript;
-
-        if (objectToTrack == null)
-            throw new UnassignedReferenceException();
-        if (teleportScript == null)
-            throw new UnassignedReferenceException();
-
         distanceCheker = new DistanceChecker(this.transform, objectToTrack);
+        Debug.LogError(distanceCheker);
     }
 
     private void FixedUpdate()
     {
+        Debug.LogError("FixedUpdate");
+        Debug.LogError(distanceCheker);
+
         // en algunos momentos la referencia al objecToTtrack passa a ser Missing pero parece algo aleatorio
-
-        if (distanceCheker == null)
-            distanceCheker = new DistanceChecker(this.transform, objectToTrack);
-
         distanceCheker.CheckDistance();
 
         // get the current distance
@@ -47,8 +43,10 @@ public class WallInstantiatedObject : MonoBehaviour
         {
             Debug.Log("Current distance is greater than " + maxDistanceBeforeTp);
             teleportScript.Execute();
-                
+
         }
+
+
     }
 }
 

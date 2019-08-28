@@ -38,7 +38,7 @@ public class RioTutteMainScript : EnemieBasic, ICongelable
 
     private void Start()
     {
-        phase = 0;
+        phase = 4;
         ChangePhase(phase);
     }
 

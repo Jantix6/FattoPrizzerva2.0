@@ -56,8 +56,7 @@ public class RioTuttePhase4 : MonoBehaviour
             if (objectToInstantiateOnRayImpact)
             {
                 Instantiate(objectToInstantiateOnRayImpact, rayhit.point, Quaternion.identity);
-                objectToInstantiateOnRayImpact.Initialize(mainScript.GetPlayer().transform,
-                                                            teleport);
+                objectToInstantiateOnRayImpact.Initialize(mainScript.GetPlayer().transform, teleport);
             }
         }
         else
