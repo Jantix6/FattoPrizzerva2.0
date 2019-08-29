@@ -13,7 +13,9 @@ public class WallInstantiatedObject : MonoBehaviour
     [SerializeField] private float currentDistance;
     [SerializeField] private float minDistance = Mathf.Infinity;
 
-    public void Initialize (Transform _objectToTrack, BaseState _stateToExecute)
+    public bool debugMode = false;
+
+    public void Initialize (Transform _objectToTrack, BaseState _stateToExecute, bool _drawLines = false)
     {
         teleportScript = _stateToExecute;
         Debug.LogError(teleportScript);
@@ -21,12 +23,13 @@ public class WallInstantiatedObject : MonoBehaviour
         objectToTrack = _objectToTrack;
         distanceCheker = new DistanceChecker(this.transform, objectToTrack);
         Debug.LogError(distanceCheker);
+
+        debugMode = _drawLines;
     }
 
     private void FixedUpdate()
     {
         Debug.LogError("FixedUpdate");
-        Debug.LogError(distanceCheker);
 
         // en algunos momentos la referencia al objecToTtrack passa a ser Missing pero parece algo aleatorio
         distanceCheker.CheckDistance();
@@ -42,8 +45,16 @@ public class WallInstantiatedObject : MonoBehaviour
         if (currentDistance >= maxDistanceBeforeTp + minDistance)
         {
             Debug.Log("Current distance is greater than " + maxDistanceBeforeTp);
+
+            if (debugMode)
+                Debug.DrawLine(this.transform.position, objectToTrack.transform.position, Color.red);
+
             teleportScript.Execute();
 
+        } else
+        {
+            if (debugMode)
+                Debug.DrawLine(this.transform.position, objectToTrack.transform.position, Color.blue);
         }
 
 

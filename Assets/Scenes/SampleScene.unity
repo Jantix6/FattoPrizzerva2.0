@@ -4051,6 +4051,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 232996484753546222, guid: 4b355f55825ec4c40b0d7202b05e3c19,
         type: 3}
+    - target: {fileID: 3711986757945743631, guid: 8cf8bc268b178ed4f8740e7727c34315,
+        type: 3}
+      propertyPath: objectToInstantateOnRayImpactPrefab
+      value: 
+      objectReference: {fileID: 232996484753546222, guid: 4b355f55825ec4c40b0d7202b05e3c19,
+        type: 3}
+    - target: {fileID: 3711986757945743631, guid: 8cf8bc268b178ed4f8740e7727c34315,
+        type: 3}
+      propertyPath: showDistanceLines
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cf8bc268b178ed4f8740e7727c34315, type: 3}
 --- !u!1001 &7403947891400062001
