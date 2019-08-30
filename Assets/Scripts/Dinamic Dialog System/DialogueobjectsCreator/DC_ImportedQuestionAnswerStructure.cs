@@ -80,6 +80,7 @@ namespace Dialogues
                     answer = new DC_ImportedAnswerStructure(qaConfig);
 
                 answer.SetValue(_indexOnLine, _fieldData);
+                Debug.Log("Creatndo respuesta");
 
                 if (answers == null)
                     answers = new List<DC_ImportedAnswerStructure>();

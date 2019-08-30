@@ -12,6 +12,13 @@ namespace Dialogues
         [Header("Path for object to instantiate on")]
         [SerializeField] protected string objectInstantiationPath;
 
+        [Header("Speach CSV vertical mapping")]
+        [SerializeField] private int fieldsTitlesLine = 1;          // if you colour the line 0 it is imported as an empty line so the first line with data is the 1
+        [SerializeField] private int dataStartLine = 2;
+
+        public int FieldsTitlesLine { get => fieldsTitlesLine; set => fieldsTitlesLine = value; }
+        public int DataStartLine { get => dataStartLine; set => dataStartLine = value; }
+
         public string GetMainFolderPath()
         {
             if (string.IsNullOrEmpty(objectInstantiationPath) == false)

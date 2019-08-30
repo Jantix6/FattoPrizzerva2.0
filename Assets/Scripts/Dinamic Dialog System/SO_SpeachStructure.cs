@@ -16,6 +16,7 @@ namespace Dialogues
         [Header("Target structure")]
         [SerializeField] private SO_DialogStructure nextDialogStructure;
 
+
         public string GetSpeachTitle(Language _targetLanguage)
         {
             if (title != null)

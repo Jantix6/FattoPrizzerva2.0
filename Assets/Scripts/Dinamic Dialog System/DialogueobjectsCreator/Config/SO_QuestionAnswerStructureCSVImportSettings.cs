@@ -18,6 +18,8 @@ namespace Dialogues
         [SerializeField] private int espAnswerBodyPosition = 7;
         [SerializeField] private int engAnswerBodyPosition = 8;
 
+
+
         public int QuestionIDPosition { get => questionIDPosition; set => questionIDPosition = value; }
         public int ObjectName { get => objectName; }
         public int CatQuestionPosition { get => catQuestionPosition; set => catQuestionPosition = value; }
@@ -27,5 +29,6 @@ namespace Dialogues
         public int CatAnswerBodyPosition { get => catAnswerBodyPosition; set => catAnswerBodyPosition = value; }
         public int EspAnswerBodyPosition { get => espAnswerBodyPosition; set => espAnswerBodyPosition = value; }
         public int EngAnswerBodyPosition { get => engAnswerBodyPosition; set => engAnswerBodyPosition = value; }
+
     }
 }
