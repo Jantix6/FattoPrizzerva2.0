@@ -76,6 +76,7 @@ public class MoveScript : BaseState
     {
         player.currentTimeState = 0;
         speed = player.GetSpeed();
+        player.hudManager.ChangeHud(HudButtonAction.State.NOTHING);
     }
 
     public override void Execute()

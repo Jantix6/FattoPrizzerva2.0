@@ -40,6 +40,7 @@ public class RunScript : BaseState
         lastDirection = moving.lastDirection;
         speed = player.GetSpeed();
         firstTime = true;
+        player.hudManager.ChangeHud(HudButtonAction.State.RUNNING);
     }
 
     public override void Execute()

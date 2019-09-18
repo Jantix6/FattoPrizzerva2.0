@@ -171,6 +171,7 @@ public class PlantaCatapulta : MonoBehaviour
         aumentCatapult = Vector3.zero;
         inSide = true;
         pulsed = false;
+        player.hudManager.ChangeHud(HudButtonAction.State.INSIDEPLANT);
     }
 
     public void ExitPlant(bool _killPlant = false)

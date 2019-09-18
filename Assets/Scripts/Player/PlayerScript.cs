@@ -31,6 +31,8 @@ public class PlayerScript : MonoBehaviour, ICongelable
     public KeyCode runKey = KeyCode.LeftShift;
     public KeyCode jumpKey = KeyCode.Space;
 
+    public HudManagerButtons hudManager;
+
     [SerializeField] private LayerMask layerMask;
 
     [SerializeField] public IEstaminable stamina;
@@ -108,6 +110,7 @@ public class PlayerScript : MonoBehaviour, ICongelable
     // Start is called before the first frame update
     void Awake()
     {
+        hudManager = GameObject.FindGameObjectWithTag("HudManager").GetComponent<HudManagerButtons>();
         gameController = GameObject.FindGameObjectWithTag("GameManager");
         dialogsController = gameController.GetComponent<Dialogs_GameController>();
         dialogsController.AddToFreazablesList(this);

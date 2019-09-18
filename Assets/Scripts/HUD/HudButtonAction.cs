@@ -7,6 +7,7 @@ public class HudButtonAction : MonoBehaviour
 {
     private Image image;
     public List<Sprite> sprites;
+    public Sprite spriteNull;
 
     public enum State {NOTHING, RUNNING, RUNNINGHIGH, JUMP, PLANNING, INSIDEPLANT };
     public State currentState = State.NOTHING;
@@ -18,27 +19,39 @@ public class HudButtonAction : MonoBehaviour
 
     public void ChangeState(State _newState)
     {
-        if (sprites.Count >= 6)
+        if (sprites.Count >= 6 && image != null)
         {
             switch (_newState)
             {
                 case State.NOTHING:
-                    image.sprite = sprites[0];
+                    if (sprites[0] != null)
+                        image.sprite = sprites[0];
+                    else image.sprite = spriteNull;
                     break;
                 case State.RUNNING:
-                    image.sprite = sprites[1];
+                    if (sprites[1] != null)
+                        image.sprite = sprites[1];
+                    else image.sprite = spriteNull;
                     break;
                 case State.RUNNINGHIGH:
-                    image.sprite = sprites[2];
+                    if (sprites[2] != null)
+                        image.sprite = sprites[2];
+                    else image.sprite = spriteNull;
                     break;
                 case State.JUMP:
-                    image.sprite = sprites[3];
+                    if (sprites[3] != null)
+                        image.sprite = sprites[3];
+                    else image.sprite = spriteNull;
                     break;
                 case State.PLANNING:
-                    image.sprite = sprites[4];
+                    if (sprites[4] != null)
+                        image.sprite = sprites[4];
+                    else image.sprite = spriteNull;
                     break;
                 case State.INSIDEPLANT:
-                    image.sprite = sprites[5];
+                    if (sprites[5] != null)
+                        image.sprite = sprites[5];
+                    else image.sprite = spriteNull;
                     break;
             }
             currentState = _newState;

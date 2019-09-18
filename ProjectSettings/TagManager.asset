@@ -8,6 +8,7 @@ TagManager:
   - RioTutte
   - ObstacleRioTutte
   - GameManager
+  - HudManager
   layers:
   - Default
   - TransparentFX
