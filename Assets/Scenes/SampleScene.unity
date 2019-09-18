@@ -168,6 +168,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  spriteNull: {fileID: 0}
   currentState: 0
 --- !u!114 &38969083
 MonoBehaviour:
@@ -4211,6 +4212,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7471284608528957259, guid: 6ff83ad9d3c8d694489d00331837badf,
+        type: 3}
+      propertyPath: hudManager
+      value: 
+      objectReference: {fileID: 852590546}
     - target: {fileID: 7471284608528957257, guid: 6ff83ad9d3c8d694489d00331837badf,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -18,18 +18,18 @@ public class WallInstantiatedObject : MonoBehaviour
     public void Initialize (Transform _objectToTrack, BaseState _stateToExecute, bool _drawLines = false)
     {
         teleportScript = _stateToExecute;
-        Debug.LogError(teleportScript);
+
 
         objectToTrack = _objectToTrack;
         distanceCheker = new DistanceChecker(this.transform, objectToTrack);
-        Debug.LogError(distanceCheker);
+
 
         debugMode = _drawLines;
     }
 
     private void FixedUpdate()
     {
-        Debug.LogError("FixedUpdate");
+
 
         // en algunos momentos la referencia al objecToTtrack passa a ser Missing pero parece algo aleatorio
         distanceCheker.CheckDistance();
