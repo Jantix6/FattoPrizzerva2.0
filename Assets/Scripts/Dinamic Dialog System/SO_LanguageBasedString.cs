@@ -15,10 +15,41 @@ namespace Dialogues
         public bool Usable { get; set; }
         public Language language;
         [TextArea(4, 228)] public string text;
+        private static Dictionary<string   , Language> languagesDictionary;
 
-
-        private void OnEnable()
+        private static void InitializeLanguagesDictinary()
         {
+            // if you want to have more languages you should add them here
+            languagesDictionary = new Dictionary<string, Language>();
+            languagesDictionary.Add("CAT", Language.CATALAN);
+            languagesDictionary.Add("ESP", Language.SPANISH);
+            languagesDictionary.Add("ENG", Language.ENGLISH);
+        }
+        public static Dictionary<string, Language> GetLanguagesDictioanry()
+        {
+            if (languagesDictionary == null)
+                InitializeLanguagesDictinary();
+
+            return languagesDictionary;
+        }
+        public void OnEnable()
+        {
+            // add language relations
+            InitializeLanguagesDictinary();
+
+            GuesLanguage();
+
+            // ATENCIÓN ------------------------------------------------------------------------------------------------------ //
+            if (text is null)
+                text = "";              // SO- si no le asignas un valor a la variable string en este SO esta es nula!!!!!!!!!!!!
+            // Mucho ojo con los SO ------------------------------------------------------------------------------------------ //
+        }
+
+        public void GuesLanguage()
+        {
+            //Debug.LogError("Calling gues language" + this.name);
+            Debug.LogWarning("2_Calling gues language " + this.name);
+
             // nomenclature based lenguage
             Language expectedLanguage = AutoLanguageIdentification();
             if (language == Language.NONE)
@@ -34,53 +65,58 @@ namespace Dialogues
                     Debug.LogError("The object " + this.name + "might have a nomenclature problem LANGUAGE != NAME LANGUAGE");
                 }
             }
-
-
         }
-
 
         private Language AutoLanguageIdentification()
         {
-            string identifiedLanguage = ReadLanguageFromName();
-            if (identifiedLanguage != "")
-            {
-                if (identifiedLanguage == "CAT")
-                    return Language.CATALAN;
-                else if (identifiedLanguage == "ESP" || identifiedLanguage == "CAST")
-                    return Language.SPANISH;
-                else if (identifiedLanguage == "ENG")
-                    return Language.ENGLISH;
-            }
-            else
-            {
-                return Language.NONE;
-            }
+            Debug.LogWarning("2-1_Calling gues AutoLanguageIdentification " + this.name);
 
-            return Language.NONE;
+            string identifiedLanguage = null;
+            identifiedLanguage = ReadLanguageFromName();
+            Language returnLanguage = Language.NONE;
+
+            if (identifiedLanguage != null)
+            {
+                languagesDictionary.TryGetValue(identifiedLanguage, out returnLanguage);
+            }
+            
+            return returnLanguage;
 
         }
 
         private string ReadLanguageFromName()
         {
+            Debug.LogWarning("2-2_Calling ReadLanguageFromName " + this.name);
+
             string _languageExpresion = "";
             string separation = "_";
+            string objectName = this.name;
 
-            foreach (char character in this.name)
+            if (objectName.Length > 0)
             {
-                if (character.ToString() == separation.ToString())
+                foreach (char character in objectName)
                 {
-                    return _languageExpresion;
+                    if (character.ToString() == separation.ToString())
+                    {
+                        return _languageExpresion;
+                    }
+                    _languageExpresion += character;
                 }
 
-                _languageExpresion += character;
+            } else
+            {
+                Debug.LogWarning("No name set on object " + this);
+                return null;
             }
 
-            Debug.LogError("No language identified by the name of the object (is MANDATORY to use the structure: LLL_NameOfTheObject");
+            Debug.LogError("No language identified by the name of the object (is MANDATORY to use the structure: LLL_NameOfTheObject" + objectName + " " + _languageExpresion);
             return null;
+
+
         }
 
         // PROCESS ---------------------------------------------------------------------------------------------------------- //
-        public static bool CheckListIntegrity(List<SO_LanguageBasedString> _languageBasedStrings, Language _targetLanguage, string _callerName)
+        public static bool CheckListIntegrity(List<SO_LanguageBasedString> _languageBasedStrings, Language _targetLanguage, string _callerName = "not defined")
         {
             if (_languageBasedStrings.Count == 0 || _languageBasedStrings == null)
             {

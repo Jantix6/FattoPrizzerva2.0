@@ -9,6 +9,10 @@ public class PunchScript : BaseState
     [SerializeField] private float damageBase = 2;
     [SerializeField] private float timerDamage = 0.25f;
 
+    public GameObject golpePuñoPrefab;
+    private GameObject golpePuñoInstanciado;
+    private SpriteRenderer spriteRenderer;
+
     private BaseState moving;
 
     [SerializeField] private SphereCollider colliderPunch;
@@ -16,13 +20,9 @@ public class PunchScript : BaseState
     void Start()
     {
         moving = player.moving;
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public override void Enter()
     {
@@ -37,7 +37,23 @@ public class PunchScript : BaseState
     {
         player.currentTimeState += Time.deltaTime;
         if (player.currentTimeState >= timerDamage && player.currentTimeState < 0.3f)
+        {
+            if (golpePuñoInstanciado == null)
+            {
+                if (spriteRenderer.flipX)
+                {
+                    golpePuñoInstanciado = Instantiate(golpePuñoPrefab, gameObject.transform.position - new Vector3(0.7f, 0, 0), golpePuñoPrefab.transform.rotation);
+                }
+                else
+                {
+                    golpePuñoInstanciado = Instantiate(golpePuñoPrefab, gameObject.transform.position + new Vector3(0.7f, 0, 0), golpePuñoPrefab.transform.rotation);
+                }
+                golpePuñoInstanciado.transform.parent = gameObject.transform;
+                golpePuñoInstanciado.GetComponent<SpriteRenderer>().flipX = spriteRenderer.flipX;
+
+            }
             colliderPunch.enabled = true;
+        }
         if (player.currentTimeState >= 0.3f)
             player.ChangeState(PlayerScript.State.MOVING); //player.stateMachine.ChangeState(player.moving);
         moving.Execute();
@@ -46,6 +62,7 @@ public class PunchScript : BaseState
 
     public override void Exit()
     {
+        Destroy(golpePuñoInstanciado);
         player.ResetSpeed();
         player.currentTimePunch += Time.deltaTime;
         colliderPunch.enabled = false;

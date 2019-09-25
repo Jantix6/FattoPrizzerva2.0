@@ -10,7 +10,7 @@ public class AdrenalinaRun : BaseState
     public float incrementSpeedSecond = 4f;
     public float decreseSpeedSecond = 5f;
     public float resistenceToGirRunning = 15;
-
+    private bool firstTime;
     public Vector3 toMove = Vector3.zero;
     private Vector3 lastDirection = Vector3.forward;
 
@@ -45,6 +45,7 @@ public class AdrenalinaRun : BaseState
         player.currentTimeState = 0;
         lastDirection = moving.lastDirection;
         speed = player.GetSpeed();
+        firstTime = true;
     }
 
     public override void Execute()
@@ -63,7 +64,7 @@ public class AdrenalinaRun : BaseState
 
         toMove = new Vector3(toMove.x, 0, toMove.z);
         toMove.Normalize();
-        if (toMove.magnitude > 0)
+        if (toMove.magnitude > 0 && firstTime)
         {
 
             float magnitudVector = (lastDirection - toMove).magnitude;
@@ -80,23 +81,25 @@ public class AdrenalinaRun : BaseState
             {
                 toMove = (toMove / resistenceToGirRunning + lastDirection).normalized;
                 lastDirection = toMove;
-                if (speed > player.normalSpeed)
+                if (speed < maxSpeed)
                 {
-                    speed -= Time.deltaTime * incrementSpeedSecond / 4;
+                    speed += Time.deltaTime * incrementSpeedSecond;
                     speed = player.ChangeSpeed(speed);
 
                 }
+                firstTime = false;
             }
             else if (magnitudVector < 1.75f)
             {
                 toMove = (toMove / resistenceToGirRunning + lastDirection).normalized;
                 lastDirection = toMove;
-                if (speed > player.normalSpeed)
+                if (speed < maxSpeed)
                 {
-                    speed -= Time.deltaTime * incrementSpeedSecond / 2;
+                    speed += Time.deltaTime * incrementSpeedSecond;
                     speed = player.ChangeSpeed(speed);
 
                 }
+                firstTime = false;
             }
             else
             {
@@ -107,6 +110,7 @@ public class AdrenalinaRun : BaseState
                     speed = player.ChangeSpeed(speed);
 
                 }
+                firstTime = false;
             }
         }
         else

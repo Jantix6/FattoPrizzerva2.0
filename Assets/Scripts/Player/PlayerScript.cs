@@ -3,12 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : MonoBehaviour, ICongelable
 {
     public enum State
     {
-        MOVING, PUNCHING, RUNING, PUNCHRUNNING, KNOCKBACK, FLYINGKICK, HABILITY, INSIDEPLANT,
-        JUMPING, PLANNING, AEREOPUNCH, ADRENALINAPUNCH, ADRENALINARUN, ADRENALINAPUNCHRUN, ADRENALINAAEREOPUNCH
+        MOVING,
+        PUNCHING,
+        RUNING,
+        PUNCHRUNNING,
+        KNOCKBACK,
+        FLYINGKICK,
+        HABILITY,
+        INSIDEPLANT,
+        JUMPING,
+        PLANNING,
+        AEREOPUNCH,
+        ADRENALINAPUNCH,
+        ADRENALINARUN,
+        ADRENALINAPUNCHRUN,
+        ADRENALINAAEREOPUNCH
     };
     public State currentState = State.MOVING;
     public KeyCode upKey = KeyCode.W;
@@ -80,11 +93,14 @@ public class PlayerScript : MonoBehaviour
 
     private Vector3 directionKnockBack;
 
-
+    private bool freezed = false;
 
     private CharacterController characterController;
+    private GameObject gameController;
+    private Dialogs_GameController dialogsController;
     public SpriteRenderer spriteRenderer;
     public Animator anim;
+    private float speedToSave = 0;
     private Color startColor;
     public GameObject children;
     public StateMachine stateMachine;
@@ -92,6 +108,10 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        gameController = GameObject.FindGameObjectWithTag("GameManager");
+        dialogsController = gameController.GetComponent<Dialogs_GameController>();
+        dialogsController.AddToFreazablesList(this);
+
         stamina = GetComponent<IEstaminable>();
         adrenalina = GetComponent<IAdrenalinable>();
         characterController = GetComponent<CharacterController>();
@@ -118,46 +138,49 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (adrenalinaOn)
-            AdrenalinaCheckVariablesUntilMoving();
-        else CheckVariablesUntilMoving();
-
-        stateMachine.ExecuteState();
-        switch (currentState)
+        if (!freezed)
         {
-            case State.MOVING:
-                if(!adrenalinaOn)
-                    stamina.RegenStamina();
+            if (adrenalinaOn)
+                AdrenalinaCheckVariablesUntilMoving();
+            else CheckVariablesUntilMoving();
 
-                break;
-            case State.PUNCHING:
+            stateMachine.ExecuteState();
+            switch (currentState)
+            {
+                case State.MOVING:
+                    if (!adrenalinaOn)
+                        stamina.RegenStamina();
 
-                break;
-            case State.RUNING:
-                break;
-            case State.PUNCHRUNNING:
-                break;
-            case State.FLYINGKICK:
+                    break;
+                case State.PUNCHING:
 
-                break;
-            case State.KNOCKBACK:
+                    break;
+                case State.RUNING:
+                    break;
+                case State.PUNCHRUNNING:
+                    break;
+                case State.FLYINGKICK:
 
-                break;
-            case State.HABILITY:
+                    break;
+                case State.KNOCKBACK:
 
-                break;
-            case State.ADRENALINAPUNCH:
+                    break;
+                case State.HABILITY:
 
-                break;
-            case State.ADRENALINARUN:
-                break;
-            case State.ADRENALINAPUNCHRUN:
-                break;
-            case State.ADRENALINAAEREOPUNCH:
+                    break;
+                case State.ADRENALINAPUNCH:
 
-                break;
+                    break;
+                case State.ADRENALINARUN:
+                    break;
+                case State.ADRENALINAPUNCHRUN:
+                    break;
+                case State.ADRENALINAAEREOPUNCH:
+
+                    break;
+            }
+            CheckStats();
         }
-        CheckStats();
     }
 
     public void ChangeState(State newState)
@@ -375,7 +398,7 @@ public class PlayerScript : MonoBehaviour
             adrenalina.ReduceAdrenalina();
             canvasPlayer.ChangeAdrenalina();
 
-            if(adrenalina.Adrenalina <= 0)
+            if (adrenalina.Adrenalina <= 0)
             {
                 exhaust = true;
                 normalSpeed = normalSpeed / 3;//cambiar cosas
@@ -403,10 +426,10 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if(impacted)
+        if (impacted)
         {
             currentTEimeToExitImpacted += Time.deltaTime;
-            if(currentTEimeToExitImpacted >= 0.2f)
+            if (currentTEimeToExitImpacted >= 0.2f)
             {
                 impacted = false;
                 currentTEimeToExitImpacted = 0;
@@ -438,7 +461,7 @@ public class PlayerScript : MonoBehaviour
     {
         adrenalinaOn = _active;
         exhaust = false;
-        if(adrenalinaOn)
+        if (adrenalinaOn)
         {
             adrenalina.Adrenalina = adrenalina.MaxAdrenalina;
         }
@@ -449,7 +472,7 @@ public class PlayerScript : MonoBehaviour
 
     public float ChangeSpeed(float _speed)
     {
-        if(!adrenalinaOn)
+        if (!adrenalinaOn)
             _speed = Mathf.Clamp(_speed, normalSpeed, runScript.maxSpeed);
         else
             _speed = Mathf.Clamp(_speed, adrenalinaSpeed, adrenalinaRunScript.maxSpeed);
@@ -602,6 +625,26 @@ public class PlayerScript : MonoBehaviour
         }
         else
             forceJump = 0;
+    }
+
+    public void Congelar(bool _anim = false)
+    {
+        freezed = true;
+        if (_anim && speedToSave == 0)
+        {
+            speedToSave = anim.speed;
+            anim.speed = 0;
+        }
+    }
+
+    public void Descongelar(bool _anim = false)
+    {
+        freezed = false;
+        if (speedToSave != 0)
+        {
+            anim.speed = speedToSave;
+            speedToSave = 0;
+        }
     }
     #endregion
 }

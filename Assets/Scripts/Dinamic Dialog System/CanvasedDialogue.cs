@@ -32,9 +32,9 @@ namespace Dialogues
             return buttonToReturn;
         }
 
-        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Language _targetlanguage)
+        public void Initialize(SO_DialogStructure _inputData, DialogueManager _dialogManager,Dialogs_GameController _gameControler , Language _targetlanguage)
         {
-            dialogueManager = _manager;
+            dialogueManager = _dialogManager;
             dialogueData = _inputData as SO_QuestionAnswerStructure;
 
             question.text = dialogueData.GetQuestion(_targetlanguage);
@@ -42,6 +42,8 @@ namespace Dialogues
 
             foreach (SO_Answer answer in dialogueData.GetAnswers())
             {
+                answer.Initialize(_gameControler);
+
                 CanvasedAnswer canvasedAnswer = Instantiate(answerPrefab, answersContainer);
                 canvasedAnswer.Initialize(answer, dialogueManager, _targetlanguage);
 

@@ -9,29 +9,84 @@ namespace Dialogues
     [CreateAssetMenu(fileName = "Answer", menuName = "Answers/New Answer")]
     public class SO_Answer : ScriptableObject 
     {
-        //[SerializeField] private List<LanguageBasedString> answers;
+        private Dialogs_GameController gameController;
+
+        [SerializeField] private SO_DialogEventsContainer eventsOnClickContainer;
         [SerializeField] private SO_DialogStructure targetStructure;
 
         [SerializeField] private SO_langaugeBasedStringContainer answer;
-        
-        public string GetAnswerBody(Language _targetLanguage)
+
+
+        public void Initialize (Dialogs_GameController _gameController)
         {
-            /*
-            if (LanguageBasedString.CheckListIntegrity(answers,_targetLanguage,this.name))
+            gameController = _gameController;
+            Debug.Log(gameController.name + " is now setup and ready to rock!");
+        }
+
+        public UnityAction GetEventActionsToPerform()
+        {
+            if (eventsOnClickContainer)
             {
-                for (int i = 0; i < answers.Count; i++)
-                {
-                    if (answers[i].language == _targetLanguage)
-                        return answers[i].text;
-                }
+                eventsOnClickContainer.Initialize(gameController);
+                return eventsOnClickContainer.Excecute;
             }
             return null;
-            */
 
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
-            return desiredLBS.text;
+        }
+        public List<SO_DialogEvent> GetListOfEvents()
+        {
+            if (eventsOnClickContainer)
+            {
+                return eventsOnClickContainer.GetEventsList();
+            }
+            return null;
+        }
+        public SO_DialogEventsContainer GetDialogEventsContainer()
+        {
+            return eventsOnClickContainer;
+        }
+        public void SetDialogEventsContainer(SO_DialogEventsContainer _dialogEventsContainer)
+        {
+             eventsOnClickContainer = _dialogEventsContainer;
+        }
 
+        public string GetAnswerBody(Language _targetLanguage)
+        {
+            if (answer)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
+                return desiredLBS.text;
+            }
+            return null;      
+        }
+        public SO_langaugeBasedStringContainer GetAnswerLBSContainer()
+        {
+            if (answer)
+                return answer;
+            else
+                Debug.LogError("No answer is found on " + this.name);
+
+            return null;
+        }
+        public void SetAnswerBody(Language _targetLanguage, string _newText)
+        {
+            if (answer)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = answer.GetLanguageBasedString(_targetLanguage, this.name);
+                desiredLBS.text = _newText;
+            }
+
+        }
+        public void SetAnswerBody(SO_langaugeBasedStringContainer _languageBasedStringContainer)
+        {
+            if (_languageBasedStringContainer)
+                answer = _languageBasedStringContainer;
+        }
+        public SO_langaugeBasedStringContainer GetLanguageBasedStringContainer()
+        {
+            return answer;
         }
 
         public SO_DialogStructure GetTargetStructure()
@@ -40,13 +95,24 @@ namespace Dialogues
                 return targetStructure;
             else
             {
-                Debug.LogError("Target strucuture is not set on " + this.name);
+                // Debug.LogError("Target strucuture is not set on " + this.name);
                 return null;
-            }
-                
+            }          
         }
 
+        public void SetEventsOnClickContainer (SO_DialogEventsContainer _containerOfEvents)
+        {
+            if (_containerOfEvents == null)
+                Debug.LogError("You are trying to assign a null object");
+            else 
+                eventsOnClickContainer = _containerOfEvents;
+        }
 
+        public void SetTargetStructure(SO_DialogStructure _targetStructure)
+        {
+            if (_targetStructure)
+                targetStructure = _targetStructure;
+        }
     }
 
 

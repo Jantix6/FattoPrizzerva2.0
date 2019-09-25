@@ -10,30 +10,66 @@ namespace Dialogues
     public class SO_SpeachStructure : SO_DialogStructure 
     {
         [Header("Object data by langauge")]
-       // public List<LanguageBasedString> titles;
-      //  public List<LanguageBasedString> bodies;           // contienen idioma y texto pero es necesario tambien poder ver en que idioma esta desde el inspector
-
         public SO_langaugeBasedStringContainer title;
         public SO_langaugeBasedStringContainer body;
+
+        [Header("Target structure")]
+        [SerializeField] private SO_DialogStructure nextDialogStructure;
 
 
         public string GetSpeachTitle(Language _targetLanguage)
         {
-            SO_LanguageBasedString desiredLBS = null;
-            desiredLBS = title.GetLanguageBasedString(_targetLanguage,this.name);
+            if (title != null)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = title.GetLanguageBasedString(_targetLanguage, this.name);
 
-            return desiredLBS.text;
+                return desiredLBS.text;
+            }
+            return null;
+
         }
         public string GetSpeachBody(Language _targetLanguage)
+        {
+            if (body != null)
+            {
+                SO_LanguageBasedString desiredLBS = null;
+                desiredLBS = body.GetLanguageBasedString(_targetLanguage, this.name);
+
+                return desiredLBS.text;
+            }
+            return null;
+
+
+        }
+        public void SetSpeachBody(Language _targetLanguage, string _newText)
         {
             SO_LanguageBasedString desiredLBS = null;
             desiredLBS = body.GetLanguageBasedString(_targetLanguage, this.name);
 
-            return desiredLBS.text;
+            desiredLBS.text = _newText;
+
+        }
+        public SO_DialogStructure GetTargetStructure()
+        {
+            return nextDialogStructure;
         }
 
+        public void SetTitleBody(Language _targetLanguage, string text)
+        {
+            SO_LanguageBasedString desiredLBS = null;
+            desiredLBS = title.GetLanguageBasedString(_targetLanguage, this.name);
 
-
+            desiredLBS.text = text;
+        }
+        public void SetTitle(SO_langaugeBasedStringContainer _title)
+        {
+            title = _title;
+        }
+        public void SetBody(SO_langaugeBasedStringContainer _body)
+        {
+            body = _body;
+        }
 
     }
 

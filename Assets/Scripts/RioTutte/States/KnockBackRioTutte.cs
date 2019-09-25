@@ -20,6 +20,7 @@ public class KnockBackRioTutte : BaseState
 
     public override void Enter()
     {
+        mainScript.hudCaras.ChangeCara(HudCambioCarasRioTutte.Caras.SERIEDAD);
         currentTime = 0;
         speed = mainScript.GetSpeedKnockback();
         timeKnockback = mainScript.GetTimeKnockBack();
@@ -56,5 +57,20 @@ public class KnockBackRioTutte : BaseState
 
     public override void Exit()
     {
+        switch (mainScript.phase)
+        {
+            case 1:
+            case 2:
+                mainScript.hudCaras.ChangeCara(HudCambioCarasRioTutte.Caras.NORMAL);
+                break;
+            case 3:
+                mainScript.hudCaras.ChangeCara(HudCambioCarasRioTutte.Caras.HERIDO);
+                    break;
+            case 4:
+                mainScript.GetPhase4().ChangeState(RioTuttePhase4.State.IDLECANSADO);
+
+                break;
+        }
+        
     }
 }

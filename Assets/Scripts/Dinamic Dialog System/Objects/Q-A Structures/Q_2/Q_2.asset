@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Q_2
   m_EditorClassIdentifier: 
   speaker: {fileID: 0}
-  questions:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  answers_Lst: []
+  answers_Lst:
+  - {fileID: 11400000, guid: 683af2bc097604849adf72f94a9958eb, type: 2}
+  - {fileID: 11400000, guid: a11fa0253f0b6b9458eb36164c24dac8, type: 2}
+  - {fileID: 11400000, guid: 68bfd4c46b585b04c8761ad9e14e5d95, type: 2}
+  question: {fileID: 11400000, guid: 85bac2506de27f24faca54c94250b726, type: 2}

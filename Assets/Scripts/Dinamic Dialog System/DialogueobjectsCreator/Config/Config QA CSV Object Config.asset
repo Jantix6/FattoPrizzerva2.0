@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9284128d7ec217f4ab2291643b7379e3, type: 3}
+  m_Name: Config QA CSV Object Config
+  m_EditorClassIdentifier: 
+  objectInstantiationPath: Assets/Scripts/Dinamic Dialog System/DialogueobjectsCreator/Test
+    Dialogue objects folder/Dialogues
+  fieldsTitlesLine: 1
+  dataStartLine: 2
+  questionIDPosition: 0
+  objectName: 1
+  catQuestionPosition: 2
+  espQuestionPosition: 3
+  engQuestionPosition: 4
+  answerIdPosition: 5
+  catAnswerBodyPosition: 6
+  espAnswerBodyPosition: 7
+  engAnswerBodyPosition: 8

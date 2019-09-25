@@ -8,9 +8,10 @@ namespace Dialogues
 {
     public class DialogueManager : MonoBehaviour
     {
+        [SerializeField] private Dialogs_GameController gameController;
 
         [SerializeField] private Canvas dialogueCanvas;
-        [SerializeField] private EventSystem dialogueEventSystem;           
+        [SerializeField] private EventSystem dialogueNavitagionEventSystem;           
         [SerializeField] private CanvasedDialogue canvasedDialoguePrefab;
         [SerializeField] private CanvasedSpeach canvasedSpeachPrefab;
 
@@ -19,9 +20,12 @@ namespace Dialogues
 
         private CanvasedDialogElement activeDialogueElement;
 
+        // Karma Data 
+        [SerializeField] private DC_Karma karmaDataContainer;
+
         [Header("Debug")]
-        [SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
-        [SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
+        //[SerializeField] private KeyCode previousStrcture_Key = KeyCode.F1;
+        //[SerializeField] private KeyCode nextStrcutre_Key = KeyCode.F2;
         public Language selectedLanguage = Language.CATALAN;
 
         // Contrlol
@@ -34,8 +38,10 @@ namespace Dialogues
             ShowDialogueStructure(_index);
             IsEnabled = true;
         }
-        private void StartDialogue(SO_DialogStructure _dialogStructure)
+        public void StartDialogue(SO_DialogStructure _dialogStructure)
         {
+
+
             if (dialogStructures.Contains(_dialogStructure))
             {
                 // busca el indice del objeto donde a (parametro) es igual al objeto que estamos buscando 
@@ -44,14 +50,17 @@ namespace Dialogues
                 int index = dialogStructures.FindIndex(a => a == _dialogStructure);
                  
                 if (index != -1)
+                {
                     ShowDialogueStructure(index);
+                    gameController.FreezeGame();
+                }
                 else
                     Debug.LogError("The dialog you want to make active was not found on the dialogs list");
 
             }
         }
 
-        private void EndDialogue()
+        public void EndDialogue()
         {
             if (activeDialogueElement != null)
             {
@@ -61,6 +70,8 @@ namespace Dialogues
                 currentStructureIndex = -1;
 
                 IsEnabled = false;
+                karmaDataContainer.ApplyLocakToGlobalKarma();       
+                gameController.UnFreezeGame();
             }
         }
         private void DestroyDialogueElement (CanvasedDialogElement _target)
@@ -81,21 +92,21 @@ namespace Dialogues
             if (dialogStructures[_index] is SO_QuestionAnswerStructure)
             {
                 activeDialogueElement = Instantiate(canvasedDialoguePrefab, dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, LanguageManager.GetGameLanguage());               
+                (activeDialogueElement as CanvasedDialogue).Initialize(dialogStructures[_index] as SO_QuestionAnswerStructure, this, gameController, LanguageManager.GetGameLanguage());               
             }
             // Is it a speach element?
             else if (dialogStructures[_index] is SO_SpeachStructure)
             {
                 activeDialogueElement = Instantiate(canvasedSpeachPrefab,dialogueCanvas.transform);
-                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, LanguageManager.GetGameLanguage());             
+                (activeDialogueElement as CanvasedSpeach).Initialize(dialogStructures[_index] as SO_SpeachStructure,this, gameController, LanguageManager.GetGameLanguage());             
             }
             // ---------------------------------------------------------------------------------------------------------------------------- //   
 
             // setup the navigation using the keyboard (default axis)
-            dialogueEventSystem.firstSelectedGameObject = null;
-            (activeDialogueElement as I_DialogElement).InitializeDefaultKeyboardNavigation(dialogueEventSystem);
+            dialogueNavitagionEventSystem.firstSelectedGameObject = null;
+            (activeDialogueElement as I_DialogElement).InitializeDefaultKeyboardNavigation(dialogueNavitagionEventSystem);
 
-            Debug.LogWarning("showing as active the object " + dialogueEventSystem.firstSelectedGameObject.GetType());
+            Debug.LogWarning("showing as active the object " + dialogueNavitagionEventSystem.firstSelectedGameObject.GetType());
         }
         public void ShowDialogueStructure(SO_DialogStructure _targetStructure)
         {
@@ -105,11 +116,12 @@ namespace Dialogues
                 ShowDialogueStructure(_objectIndex);
             } else
             {
-                Debug.LogWarning("The target Structure is not set on the managers list" + _targetStructure);
+                Debug.LogError("The target Structure is not set on the managers list" + _targetStructure);
             }
 
         }
 
+        /*
         public void GoToNextStructure()
         {
             int desiredIndex;
@@ -141,7 +153,7 @@ namespace Dialogues
                 EndDialogue();
             }
         }
-
+        */
         #endregion
 
 
@@ -150,27 +162,26 @@ namespace Dialogues
 
         private void Awake()
         {
-            DebugSetLenguage();
+            if (gameController == null)
+                Debug.LogError("Gamecontroller is not set");
+            if (dialogueCanvas == null)
+                Debug.LogError("Dialoguecanvas is not set");
+            if (dialogueNavitagionEventSystem == null)
+                Debug.LogError("dialogueNavitagionEventSystem is not set");
+            if (canvasedDialoguePrefab == null)
+                Debug.LogError("canvasedDialoguePrefab is not set");
+            if (canvasedSpeachPrefab == null)
+                Debug.LogError("canvasedSpeachPrefab");
+            if (karmaDataContainer == null)
+                Debug.LogError("karmaDataContianer is not set");
+       
 
             if (dialogStructures is null || dialogStructures.Count == 0)
-                Debug.LogError("QAStructures ERROR");
+                Debug.LogError("ERROR: dialogStructures is not set or it is empty");
             currentStructureIndex = 0;
-        }
 
-        private void Start()
-        {
-            StartDialogue(currentStructureIndex);
-        }
-        private void Update()
-        {
-            if (Input.GetKeyUp(nextStrcutre_Key))
-            {
-                GoToNextStructure();
-            }
-            else if (Input.GetKeyUp(previousStrcture_Key))
-            {
-                GoToPreviousStructure();
-            }
+            DebugSetLenguage();
+
         }
 
 

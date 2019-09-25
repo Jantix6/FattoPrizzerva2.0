@@ -19,6 +19,9 @@ namespace Dialogues
         [SerializeField] private TMP_Text textTitle;
         [SerializeField] private TMP_Text textBody;
 
+        [SerializeField] private SO_DialogStructure nextDialogStructure;
+
+
         // get the button deffined by its index (in this case there is only one button so the index is not used)
         public Button GetButton(int _desiredIndex)
         {
@@ -34,7 +37,7 @@ namespace Dialogues
 
         }
 
-        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Language _targetLanguage)
+        public void Initialize(SO_DialogStructure _inputData, DialogueManager _manager, Dialogs_GameController _gameController,  Language _targetLanguage)
         {
             dialogueManager = _manager;
             speachData = _inputData as SO_SpeachStructure;
@@ -44,6 +47,8 @@ namespace Dialogues
             speakerName.text = speachData.GetSpeakerName();
 
             spekerImage.sprite = speachData.GetSpeakerSprite();
+
+            nextDialogStructure = speachData.GetTargetStructure();
 
             // al pulsar siguiente vamos a la siguiente estructura
             nextButton.onClick.AddListener(OnNextButtonClick);
@@ -68,8 +73,13 @@ namespace Dialogues
 
         private void OnNextButtonClick()
         {
-            // Change to the next dialogue
-            dialogueManager.GoToNextStructure();
+            if (nextDialogStructure)
+                dialogueManager.ShowDialogueStructure(nextDialogStructure);
+            else
+            {
+                Debug.LogWarning("The target Structure is not set , EXITING DIALOG");
+                dialogueManager.EndDialogue();
+            }
         }
     }
 
