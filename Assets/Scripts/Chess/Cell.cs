@@ -14,6 +14,7 @@ namespace Assets.Scripts.Chess
             DestructibleWall,
             IndestructibleWall,
             Void,
+            Count
         }
 
         public CellType type;
